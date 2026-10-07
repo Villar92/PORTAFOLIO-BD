@@ -43,9 +43,17 @@ export function Trabajos() {
           });
           
           if (!res.ok) {
-             const errorData = await res.json();
-             console.error("Error al subir a GitHub:", errorData);
-             alert(`Error al subir ${file.name}: ${errorData.error || 'Verifica tu Token en Vercel y que el archivo no sea mayor a 4MB'}`);
+             let errorMsg = 'Verifica tu Token en Vercel y asegúrate que el archivo pese menos de 4MB';
+             try {
+               const errorData = await res.json();
+               if (errorData.error) errorMsg = errorData.error;
+             } catch (e) {
+               // If it's not JSON, it might be a Vercel 413 Payload Too Large error
+               if (res.status === 413) {
+                 errorMsg = 'El archivo es demasiado grande. Vercel sólo permite archivos menores a 4.5MB en la versión gratuita.';
+               }
+             }
+             alert(`Error al subir ${file.name}: ${errorMsg}`);
           } else {
              // Success, add it to the view
              const newFileObj = {
@@ -59,9 +67,9 @@ export function Trabajos() {
                [actividadId]: [...(prev[actividadId] || []), newFileObj]
              }));
           }
-        } catch (error) {
+        } catch (error: any) {
           console.error("Error de red:", error);
-          alert(`Error de conexión al subir ${file.name}`);
+          alert(`Error de red al subir ${file.name}. ¿Estás conectado a internet?`);
         } finally {
           setUploading(prev => ({ ...prev, [`${actividadId}-${file.name}`]: false }));
         }
