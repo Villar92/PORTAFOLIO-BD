@@ -1,21 +1,70 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Server, Database, ShieldCheck, Gauge, Upload, FileText, CheckCircle2, Eye, X } from "lucide-react";
 
 export function Trabajos() {
   // Store an array of files for each activity/week
-  const [uploadedFiles, setUploadedFiles] = useState<Record<string, File[]>>({});
+  const [uploadedFiles, setUploadedFiles] = useState<Record<string, any[]>>({});
+  // State to track uploading status for files
+  const [uploading, setUploading] = useState<Record<string, boolean>>({});
   // State for full-screen modal
   const [selectedUnidad, setSelectedUnidad] = useState<string | null>(null);
 
-  const handleFileUpload = (actividadId: string, e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    const loadFiles = async () => {
+      try {
+        const res = await fetch('/api/files');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.files) setUploadedFiles(data.files);
+        }
+      } catch (e) {
+        console.error("Error loading files", e);
+      }
+    };
+    loadFiles();
+  }, []);
+
+  const handleFileUpload = async (actividadId: string, e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const newFiles = Array.from(e.target.files);
+      
+      const newFilesObj = newFiles.map(f => ({
+        name: f.name,
+        isLocal: true,
+        file: f,
+        url: URL.createObjectURL(f)
+      }));
+
       setUploadedFiles(prev => ({
         ...prev,
-        [actividadId]: [...(prev[actividadId] || []), ...newFiles]
+        [actividadId]: [...(prev[actividadId] || []), ...newFilesObj]
       }));
+
+      for (const file of newFiles) {
+        setUploading(prev => ({ ...prev, [`${actividadId}-${file.name}`]: true }));
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('actividadId', actividadId);
+
+          const res = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData
+          });
+          
+          if (!res.ok) {
+             const errorData = await res.json();
+             console.error("Error al subir a GitHub:", errorData);
+             alert(`Aviso: ${file.name} no se pudo guardar en GitHub (falta configurar .env).`);
+          }
+        } catch (error) {
+          console.error("Error de red:", error);
+        } finally {
+          setUploading(prev => ({ ...prev, [`${actividadId}-${file.name}`]: false }));
+        }
+      }
     }
   };
 
@@ -194,12 +243,15 @@ export function Trabajos() {
                           <div className="flex flex-col gap-2">
                             {filesForAct.map((file, idx) => {
                               // Generar una URL temporal para visualizar el archivo local en otra pestaña
-                              const fileUrl = URL.createObjectURL(file);
+                              const fileUrl = file.url;
                               return (
                                 <div key={idx} className="flex items-center justify-between bg-slate-900/60 p-2 rounded-md border border-white/10 group/file">
                                   <div className="flex items-center gap-2 truncate pr-2">
                                     <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                                     <span className="text-xs text-slate-300 truncate">{file.name}</span>
+                                    {uploading[`${act.id}-${file.name}`] && (
+                                      <span className="text-[10px] text-blue-400 animate-pulse ml-2">Subiendo...</span>
+                                    )}
                                   </div>
                                   <div className="flex items-center gap-1 opacity-100 lg:opacity-0 lg:group-hover/file:opacity-100 transition-opacity">
                                     <a 
@@ -304,12 +356,15 @@ export function Trabajos() {
                             {filesForAct.length > 0 && (
                               <div className="mt-4 pt-4 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 {filesForAct.map((file, idx) => {
-                                  const fileUrl = URL.createObjectURL(file);
+                                  const fileUrl = file.url;
                                   return (
                                     <div key={idx} className="flex items-center justify-between bg-slate-900 p-3 rounded-xl border border-white/5 group/file">
                                       <div className="flex items-center gap-3 truncate pr-2">
                                         <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
                                         <span className="text-sm text-slate-300 truncate" title={file.name}>{file.name}</span>
+                                        {uploading[`${act.id}-${file.name}`] && (
+                                          <span className="text-[10px] text-blue-400 animate-pulse ml-2">Subiendo...</span>
+                                        )}
                                       </div>
                                       <div className="flex items-center gap-1">
                                         <a 
