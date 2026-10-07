@@ -29,18 +29,6 @@ export function Trabajos() {
   const handleFileUpload = async (actividadId: string, e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const newFiles = Array.from(e.target.files);
-      
-      const newFilesObj = newFiles.map(f => ({
-        name: f.name,
-        isLocal: true,
-        file: f,
-        url: URL.createObjectURL(f)
-      }));
-
-      setUploadedFiles(prev => ({
-        ...prev,
-        [actividadId]: [...(prev[actividadId] || []), ...newFilesObj]
-      }));
 
       for (const file of newFiles) {
         setUploading(prev => ({ ...prev, [`${actividadId}-${file.name}`]: true }));
@@ -57,10 +45,23 @@ export function Trabajos() {
           if (!res.ok) {
              const errorData = await res.json();
              console.error("Error al subir a GitHub:", errorData);
-             alert(`Aviso: ${file.name} no se pudo guardar en GitHub (falta configurar .env).`);
+             alert(`Error al subir ${file.name}: ${errorData.error || 'Verifica tu Token en Vercel y que el archivo no sea mayor a 4MB'}`);
+          } else {
+             // Success, add it to the view
+             const newFileObj = {
+               name: file.name,
+               isLocal: true,
+               file: file,
+               url: URL.createObjectURL(file)
+             };
+             setUploadedFiles(prev => ({
+               ...prev,
+               [actividadId]: [...(prev[actividadId] || []), newFileObj]
+             }));
           }
         } catch (error) {
           console.error("Error de red:", error);
+          alert(`Error de conexión al subir ${file.name}`);
         } finally {
           setUploading(prev => ({ ...prev, [`${actividadId}-${file.name}`]: false }));
         }
