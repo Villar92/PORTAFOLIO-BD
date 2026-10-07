@@ -225,7 +225,7 @@ export function Trabajos() {
                         
                         <label className="cursor-pointer flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap w-full lg:w-auto">
                           <Upload className="w-4 h-4" />
-                          Subir Archivos
+                          ☁️ Subir a GitHub
                           <input 
                             type="file" 
                             className="hidden" 
@@ -341,7 +341,7 @@ export function Trabajos() {
                               
                               <label className="cursor-pointer inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-lg shadow-blue-500/25">
                                 <Upload className="w-5 h-5" />
-                                Subir Archivos
+                                ☁️ Subir a GitHub
                                 <input 
                                   type="file" 
                                   className="hidden" 
