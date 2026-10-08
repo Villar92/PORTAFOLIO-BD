@@ -3,29 +3,29 @@ import { ArrowRight, Database, BookOpen, User } from "lucide-react";
 
 export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => void }) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[85vh] py-12 px-4 animate-in fade-in duration-700">
+    <div className="flex flex-col items-center justify-center min-h-[75vh] py-8 px-4 animate-in fade-in duration-700">
       
-      <div className="bg-[#0B1120] rounded-3xl sm:rounded-[2.5rem] p-6 sm:p-10 md:p-16 border border-cyan-400/50 shadow-[0_0_40px_rgba(34,211,238,0.2)] max-w-5xl w-full flex flex-col items-center text-center relative overflow-hidden">
+      <div className="bg-[#0B1120] rounded-3xl sm:rounded-[2rem] p-6 sm:p-8 md:p-10 border border-cyan-400/50 shadow-[0_0_40px_rgba(34,211,238,0.2)] max-w-5xl w-full flex flex-col items-center text-center relative overflow-hidden">
         
         {/* Glow de fondo en la tarjeta */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-cyan-400/20 blur-[100px] pointer-events-none"></div>
 
         {/* Etiqueta superior */}
-        <div className="mb-8 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#0f172a] border border-cyan-400/30 shadow-[0_0_15px_rgba(34,211,238,0.15)]">
-          <Database className="w-4 h-4 text-cyan-400" />
-          <span className="text-sm font-bold text-cyan-50 tracking-wide">Universidad Peruana Los Andes</span>
+        <div className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0f172a] border border-cyan-400/30 shadow-[0_0_15px_rgba(34,211,238,0.15)]">
+          <Database className="w-3.5 h-3.5 text-cyan-400" />
+          <span className="text-xs font-bold text-cyan-50 tracking-wide">Universidad Peruana Los Andes</span>
         </div>
 
-        <div className="space-y-4 sm:space-y-6 max-w-4xl mb-8 sm:mb-12">
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-[family-name:var(--font-outfit)] font-light text-white tracking-[0.1em] sm:tracking-[0.15em] drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] leading-tight">
+        <div className="space-y-4 max-w-4xl mb-8">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-[family-name:var(--font-outfit)] font-light text-white tracking-[0.1em] sm:tracking-[0.15em] drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] leading-tight">
             BASE DE DATOS <span className="text-white font-medium">II</span>
           </h1>
           
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-wide mt-6 sm:mt-10 drop-shadow-md">
-            JORGE LUIS <span className="text-xl md:text-2xl text-white">CURO VILLAR</span>
+          <h2 className="text-xl sm:text-2xl font-bold text-white tracking-wide mt-4 sm:mt-6 drop-shadow-md">
+            JORGE LUIS <span className="text-lg md:text-xl text-white">CURO VILLAR</span>
           </h2>
           
-          <p className="text-base sm:text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-normal mt-6 sm:mt-8 leading-relaxed drop-shadow-md">
+          <p className="text-sm sm:text-base md:text-lg text-slate-200 max-w-2xl mx-auto font-normal mt-4 sm:mt-6 leading-relaxed drop-shadow-md">
             Aprende a manejar bases de datos y hacer consultas más rápidas en SQL Server.
           </p>
         </div>
