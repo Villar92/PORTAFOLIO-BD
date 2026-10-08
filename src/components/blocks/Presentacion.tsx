@@ -26,7 +26,7 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
           </h2>
           
           <p className="text-base sm:text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-normal mt-6 sm:mt-8 leading-relaxed drop-shadow-md">
-            Explorando el mundo de las bases de datos relacionales, la optimización de consultas y la administración de datos con SQL Server.
+            Aprende a manejar bases de datos y hacer consultas más rápidas en SQL Server.
           </p>
         </div>
 
