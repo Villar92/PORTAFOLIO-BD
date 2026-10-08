@@ -17,8 +17,8 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
         </div>
 
         <div className="space-y-6 max-w-4xl mb-12">
-          <h1 className="text-5xl md:text-7xl font-sans font-black text-white tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] leading-tight">
-            BASE DE DATOS <span className="text-cyan-400 drop-shadow-[0_0_20px_rgba(34,211,238,0.8)] font-serif italic">II</span>
+          <h1 className="text-5xl md:text-7xl font-[family-name:var(--font-outfit)] font-light text-white tracking-[0.15em] drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] leading-tight">
+            BASE DE DATOS <span className="text-cyan-400 font-medium">II</span>
           </h1>
           
           <h2 className="text-2xl md:text-3xl font-bold text-white tracking-wide mt-6">
