@@ -1,40 +1,47 @@
 import React from "react";
-import NextImage from "next/image";
+import { ArrowRight, Database, Code, BookOpen } from "lucide-react";
 
-export function Presentacion() {
+export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => void }) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[85vh] py-12 px-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="flex flex-col items-center justify-center min-h-[85vh] py-12 px-4 animate-in fade-in duration-700">
       
       {/* Etiqueta superior */}
-      <div className="inline-flex items-center justify-center px-6 py-2 border border-cyan-500/50 rounded-full mb-8 bg-[#0B1120]/60 backdrop-blur-md">
-        <span className="text-cyan-400 font-bold tracking-[0.2em] text-xs uppercase flex items-center gap-2">
-          <span className="text-[10px]">✦</span> PORTAFOLIO ACADÉMICO <span className="text-[10px]">✦</span>
-        </span>
+      <div className="mb-8 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-slate-200 shadow-sm backdrop-blur-md">
+        <Database className="w-4 h-4 text-blue-600" />
+        <span className="text-sm font-semibold text-slate-700">Universidad Peruana Los Andes</span>
       </div>
 
       <div className="text-center space-y-6 max-w-4xl mb-12">
-        <h1 className="text-5xl md:text-7xl font-serif font-bold text-white tracking-widest drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-          BASE DE DATOS <span className="text-cyan-400 drop-shadow-[0_0_20px_rgba(34,211,238,0.8)]">II</span>
+        <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight drop-shadow-sm">
+          BASE DE DATOS <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">II</span>
         </h1>
         
-        <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight mt-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-800 tracking-tight mt-6">
           Jorge Luis Curo Villar
         </h2>
         
-        <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-light mt-4">
-          Explorando el mundo de las bases de datos relacionales.
+        <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto font-medium mt-4">
+          Explorando el mundo de las bases de datos relacionales, la optimización de consultas y la administración de datos con SQL Server.
         </p>
       </div>
 
-      {/* Botones */}
-      <div className="flex flex-col sm:flex-row gap-6 mt-4">
-        <button className="px-8 py-3 bg-cyan-400 text-[#0B1120] rounded-full font-bold tracking-wide hover:bg-cyan-300 transition-all shadow-[0_0_20px_rgba(34,211,238,0.6)]">
-          COMENZAR CURSO
+      <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+        <button 
+          onClick={() => setActiveTab("trabajos")}
+          className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold shadow-lg shadow-blue-600/30 transition-all duration-300 flex items-center justify-center group"
+        >
+          <BookOpen className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+          Ver Unidades
         </button>
-        <button className="px-8 py-3 bg-transparent border-2 border-cyan-500 text-cyan-400 rounded-full font-bold tracking-wide hover:bg-cyan-500/10 transition-all shadow-[0_0_15px_rgba(34,211,238,0.2)]">
-          CONÓCEME
+        <button 
+          onClick={() => setActiveTab("informacion")}
+          className="px-8 py-4 bg-white/80 hover:bg-white text-slate-800 border border-slate-200 rounded-full font-bold shadow-sm transition-all duration-300 flex items-center justify-center group backdrop-blur-md"
+        >
+          Sobre Mí
+          <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform text-blue-600" />
         </button>
       </div>
+      
     </div>
   );
 }

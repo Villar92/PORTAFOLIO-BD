@@ -6,28 +6,26 @@ export function AntigravityBackground() {
   const [particles, setParticles] = useState<any[]>([]);
 
   useEffect(() => {
-    // Generar las partículas solo del lado del cliente para evitar errores de hidratación
-    const newParticles = Array.from({ length: 15 }).map((_, i) => ({
+    // Generar las partículas
+    const newParticles = Array.from({ length: 8 }).map((_, i) => ({
       id: i,
-      size: Math.random() * 60 + 20, 
+      size: Math.random() * 150 + 50, 
       left: Math.random() * 100, 
-      delay: Math.random() * 15, 
-      duration: Math.random() * 10 + 15, 
-      opacity: Math.random() * 0.4 + 0.1, 
+      delay: Math.random() * 10, 
+      duration: Math.random() * 20 + 20, 
     }));
     setParticles(newParticles);
   }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[0] overflow-hidden">
-      {/* Imagen de fondo */}
+      {/* Imagen de fondo más visible */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-90"
         style={{ backgroundImage: 'url("/sql-server.jpg")' }}
       ></div>
-      {/* Overlay oscuro para mejorar contraste con el nuevo diseño minimalista */}
-      <div className="absolute inset-0 bg-[#0B1120]/80 mix-blend-multiply"></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120] via-transparent to-[#0B1120]/50"></div>
+      {/* Overlay claro para que resalten las cajas grises/blancas */}
+      <div className="absolute inset-0 bg-slate-50/70 backdrop-blur-sm"></div>
 
       <style>{`
         @keyframes floatUp {
@@ -36,10 +34,10 @@ export function AntigravityBackground() {
             opacity: 0;
           }
           20% {
-            opacity: 0.4;
+            opacity: 0.8;
           }
           80% {
-            opacity: 0.4;
+            opacity: 0.8;
           }
           100% {
             transform: translateY(-20vh) scale(1.2) rotate(360deg);
@@ -51,33 +49,19 @@ export function AntigravityBackground() {
           animation: floatUp linear infinite;
         }
       `}</style>
+      
+      {/* Formas geométricas corporativas y limpias flotando */}
       {particles.map((p) => (
         <div
           key={p.id}
-          className="antigravity-particle rounded-2xl bg-gradient-to-tr from-indigo-500/30 to-purple-500/20 blur-md shadow-2xl"
+          className="antigravity-particle rounded-3xl bg-white/40 border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-md"
           style={{
             width: `${p.size}px`,
             height: `${p.size}px`,
             left: `${p.left}%`,
             animationDelay: `${p.delay}s`,
             animationDuration: `${p.duration}s`,
-            bottom: "-100px", // inicia fuera de pantalla abajo
-          }}
-        ></div>
-      ))}
-      
-      {/* Círculos flotantes adicionales para variar formas */}
-      {particles.slice(0, 5).map((p) => (
-        <div
-          key={`circle-${p.id}`}
-          className="antigravity-particle rounded-full bg-gradient-to-tl from-white/5 to-white/10 border border-white/10 blur-sm shadow-xl"
-          style={{
-            width: `${p.size * 1.5}px`,
-            height: `${p.size * 1.5}px`,
-            left: `${100 - p.left}%`,
-            animationDelay: `${p.delay + 5}s`,
-            animationDuration: `${p.duration + 5}s`,
-            bottom: "-150px",
+            bottom: "-200px", 
           }}
         ></div>
       ))}
