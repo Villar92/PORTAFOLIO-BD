@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Lock, Mail, ArrowRight, UserCircle2 } from "lucide-react";
+import { Trabajos } from "./Trabajos";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -15,11 +16,9 @@ export function Login() {
     setIsLoading(true);
     setError("");
     
-    // Simular un pequeño retraso de red
     setTimeout(() => {
       if (email === "admin@upla.edu.pe" && password === "admin") {
         setSuccess(true);
-        // Aquí se podría guardar el token o redirigir
       } else {
         setError("Credenciales incorrectas. (Pista: admin@upla.edu.pe / admin)");
         setSuccess(false);
@@ -30,19 +29,26 @@ export function Login() {
 
   if (success) {
     return (
-      <div className="max-w-md mx-auto py-20 px-4 animate-in fade-in zoom-in duration-500">
-        <div className="bg-slate-900/70 backdrop-blur-xl rounded-3xl shadow-2xl border border-green-500/30 p-10 text-center">
-          <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-            <UserCircle2 className="w-10 h-10 text-green-400" />
+      <div className="animate-in fade-in zoom-in duration-500 w-full">
+        <div className="max-w-7xl mx-auto py-8 px-4 flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              <UserCircle2 className="w-8 h-8 text-emerald-400" />
+              Panel de Administración
+            </h2>
+            <p className="text-slate-400 mt-1">Aquí puedes gestionar (subir/eliminar) los archivos de tu portafolio.</p>
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">¡Bienvenido!</h2>
-          <p className="text-slate-300 mb-8">Has iniciado sesión correctamente en la plataforma.</p>
           <button 
             onClick={() => setSuccess(false)}
-            className="w-full py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium transition-colors border border-white/10"
+            className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-xl font-medium transition-colors border border-red-500/30"
           >
             Cerrar Sesión
           </button>
+        </div>
+        
+        {/* Render Trabajos con permisos de administrador */}
+        <div className="-mt-8">
+          <Trabajos isAdmin={true} />
         </div>
       </div>
     );
@@ -50,10 +56,10 @@ export function Login() {
 
   return (
     <div className="max-w-md mx-auto py-12 px-4 animate-in fade-in duration-500">
-      <div className="bg-slate-900/70 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
-        <div className="p-8 pb-6 border-b border-white/10 bg-slate-800/40 text-center">
+      <div className="bg-black/40 backdrop-blur-2xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/10 overflow-hidden">
+        <div className="p-8 pb-6 border-b border-white/5 bg-white/5 text-center">
           <h2 className="text-2xl font-bold text-white tracking-tight">Iniciar Sesión</h2>
-          <p className="text-slate-400 mt-2 text-sm">Acceso exclusivo para docentes y administración</p>
+          <p className="text-slate-400 mt-2 text-sm">Acceso exclusivo para administración del portafolio</p>
         </div>
 
         <div className="p-8">
@@ -74,7 +80,7 @@ export function Login() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                   placeholder="ejemplo@upla.edu.pe"
                   required
                 />
@@ -91,7 +97,7 @@ export function Login() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-slate-800/50 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                   placeholder="••••••••"
                   required
                 />
@@ -101,13 +107,13 @@ export function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-xl font-bold shadow-lg shadow-blue-500/25 transition-all duration-300 flex items-center justify-center group disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold shadow-lg shadow-indigo-500/25 transition-all duration-300 flex items-center justify-center group disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
               ) : (
                 <>
-                  Ingresar a la Plataforma
+                  Ingresar al Panel
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </>
               )}

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Server, Database, ShieldCheck, Gauge, Upload, FileText, CheckCircle2, Eye, X } from "lucide-react";
 
-export function Trabajos() {
+export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
   // Store an array of files for each activity/week
   const [uploadedFiles, setUploadedFiles] = useState<Record<string, any[]>>({});
   // State to track uploading status for files
@@ -232,17 +232,19 @@ export function Trabajos() {
                           <span className="text-base text-white font-bold leading-tight">{act.nombre}</span>
                         </div>
                         
-                        <label className="cursor-pointer flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap w-full lg:w-auto">
-                          <Upload className="w-4 h-4" />
-                          ☁️ Subir a GitHub
-                          <input 
-                            type="file" 
-                            className="hidden" 
-                            multiple
-                            onChange={(e) => handleFileUpload(act.id, e)}
-                            accept=".pdf,.doc,.docx,.zip,.png,.jpg"
-                          />
-                        </label>
+                        {isAdmin && (
+                          <label className="cursor-pointer flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors whitespace-nowrap w-full lg:w-auto">
+                            <Upload className="w-4 h-4" />
+                            ☁️ Subir a GitHub
+                            <input 
+                              type="file" 
+                              className="hidden" 
+                              multiple
+                              onChange={(e) => handleFileUpload(act.id, e)}
+                              accept=".pdf,.doc,.docx,.zip,.png,.jpg"
+                            />
+                          </label>
+                        )}
                       </div>
 
                       {/* Mostrar Archivos Subidos */}
@@ -272,13 +274,15 @@ export function Trabajos() {
                                     >
                                       <Eye className="w-4 h-4" />
                                     </a>
-                                    <button 
-                                      onClick={() => handleRemoveFile(act.id, idx)}
-                                      className="p-1.5 hover:bg-red-500/20 text-red-400 rounded-md transition-colors"
-                                      title="Quitar archivo"
-                                    >
-                                      <X className="w-4 h-4" />
-                                    </button>
+                                    {isAdmin && (
+                                      <button 
+                                        onClick={() => handleRemoveFile(act.id, idx)}
+                                        className="p-1.5 hover:bg-red-500/20 text-red-400 rounded-md transition-colors"
+                                        title="Quitar archivo"
+                                      >
+                                        <X className="w-4 h-4" />
+                                      </button>
+                                    )}
                                   </div>
                                 </div>
                               );
@@ -348,17 +352,19 @@ export function Trabajos() {
                                 <span className="text-lg text-white font-bold">{act.nombre}</span>
                               </div>
                               
-                              <label className="cursor-pointer inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-lg shadow-blue-500/25">
-                                <Upload className="w-5 h-5" />
-                                ☁️ Subir a GitHub
-                                <input 
-                                  type="file" 
-                                  className="hidden" 
-                                  multiple
-                                  onChange={(e) => handleFileUpload(act.id, e)}
-                                  accept=".pdf,.doc,.docx,.zip,.png,.jpg"
-                                />
-                              </label>
+                              {isAdmin && (
+                                <label className="cursor-pointer inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-lg shadow-blue-500/25">
+                                  <Upload className="w-5 h-5" />
+                                  ☁️ Subir a GitHub
+                                  <input 
+                                    type="file" 
+                                    className="hidden" 
+                                    multiple
+                                    onChange={(e) => handleFileUpload(act.id, e)}
+                                    accept=".pdf,.doc,.docx,.zip,.png,.jpg"
+                                  />
+                                </label>
+                              )}
                             </div>
 
                             {/* Mostrar Archivos Subidos en el Modal */}
@@ -385,13 +391,15 @@ export function Trabajos() {
                                         >
                                           <Eye className="w-4 h-4" />
                                         </a>
-                                        <button 
-                                          onClick={() => handleRemoveFile(act.id, idx)}
-                                          className="p-2 hover:bg-red-500/20 text-red-400 rounded-lg transition-colors"
-                                          title="Quitar archivo"
-                                        >
-                                          <X className="w-4 h-4" />
-                                        </button>
+                                        {isAdmin && (
+                                          <button 
+                                            onClick={() => handleRemoveFile(act.id, idx)}
+                                            className="p-2 hover:bg-red-500/20 text-red-400 rounded-lg transition-colors"
+                                            title="Quitar archivo"
+                                          >
+                                            <X className="w-4 h-4" />
+                                          </button>
+                                        )}
                                       </div>
                                     </div>
                                   );
