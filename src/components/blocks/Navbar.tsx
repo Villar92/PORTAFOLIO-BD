@@ -10,10 +10,10 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
 
   return (
     <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#0B1120]/95 border-b border-cyan-400/30 shadow-[0_4px_30px_rgba(34,211,238,0.15)]">
-      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-10">
+      <div className="container mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+        <div className="flex items-center gap-4 sm:gap-10">
           <div className="flex items-center">
-            <div className="relative h-[3.2rem] w-48 bg-white rounded-xl px-3 py-1.5 flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.15)] border border-cyan-400/20">
+            <div className="relative h-10 w-32 sm:h-[3.2rem] sm:w-48 bg-white rounded-xl px-2 sm:px-3 py-1 sm:py-1.5 flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.15)] border border-cyan-400/20">
               <img 
                 src="/upla-logo.png" 
                 alt="Logo UPLA" 
