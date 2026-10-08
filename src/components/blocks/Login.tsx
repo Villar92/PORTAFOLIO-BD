@@ -35,15 +35,15 @@ export function Login() {
       <div className="animate-in fade-in zoom-in duration-500 w-full min-h-[80vh] flex flex-col">
         <div className="max-w-7xl mx-auto py-8 px-4 flex justify-between items-center w-full">
           <div>
-            <h2 className="text-2xl font-sans font-bold text-slate-800 flex items-center gap-3">
-              <User className="w-8 h-8 text-blue-600" />
+            <h2 className="text-3xl font-sans font-black text-white flex items-center gap-3 drop-shadow-md tracking-wide">
+              <User className="w-8 h-8 text-cyan-400" />
               PANEL DE ADMINISTRACIÓN
             </h2>
-            <p className="text-slate-500 mt-1 font-medium">Aquí puedes gestionar (subir/eliminar) los archivos de tu portafolio.</p>
+            <p className="text-cyan-100 mt-2 font-medium text-lg opacity-90">Aquí puedes gestionar (subir/eliminar) los archivos de tu portafolio.</p>
           </div>
           <button 
             onClick={() => setSuccess(false)}
-            className="px-6 py-2 bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 rounded-full font-bold transition-all"
+            className="px-6 py-2 bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 hover:text-red-300 rounded-full font-bold transition-all"
           >
             Cerrar Sesión
           </button>
