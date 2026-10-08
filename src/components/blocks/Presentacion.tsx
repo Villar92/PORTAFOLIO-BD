@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowRight, Database, BookOpen } from "lucide-react";
+import { ArrowRight, Database, BookOpen, User } from "lucide-react";
 
 export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => void }) {
   return (
@@ -33,17 +33,22 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
         <div className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto">
           <button 
             onClick={() => setActiveTab("trabajos")}
-            className="px-8 py-4 bg-cyan-400 hover:bg-cyan-300 text-[#0B1120] rounded-full font-extrabold tracking-widest shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all duration-300 flex items-center justify-center group"
+            className="pr-8 pl-2 py-2 bg-gradient-to-r from-blue-500 to-cyan-400 hover:brightness-110 text-white rounded-full font-bold text-sm tracking-wide shadow-lg shadow-cyan-500/20 transition-all duration-300 flex items-center justify-center group"
           >
-            <BookOpen className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
+            <div className="w-10 h-10 rounded-full border-2 border-white/80 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+              <BookOpen className="w-4 h-4 text-white" />
+            </div>
             VER UNIDADES
           </button>
+          
           <button 
             onClick={() => setActiveTab("informacion")}
-            className="px-8 py-4 bg-transparent hover:bg-white/5 text-cyan-400 border border-cyan-400/50 rounded-full font-bold tracking-widest transition-all duration-300 flex items-center justify-center group"
+            className="pr-8 pl-2 py-2 bg-gradient-to-r from-blue-500 to-cyan-400 hover:brightness-110 text-white rounded-full font-bold text-sm tracking-wide shadow-lg shadow-cyan-500/20 transition-all duration-300 flex items-center justify-center group"
           >
+            <div className="w-10 h-10 rounded-full border-2 border-white/80 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+              <User className="w-4 h-4 text-white" />
+            </div>
             SOBRE MÍ
-            <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       </div>
