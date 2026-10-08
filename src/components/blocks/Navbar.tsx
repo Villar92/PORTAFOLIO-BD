@@ -11,7 +11,7 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
   return (
     <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#0B1120]/95 border-b border-cyan-400/30 shadow-[0_4px_30px_rgba(34,211,238,0.15)]">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-10">
           <div className="flex items-center">
             <div className="relative h-[3.2rem] w-48 bg-white rounded-xl px-3 py-1.5 flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.15)] border border-cyan-400/20">
               <img 
@@ -21,7 +21,7 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
               />
             </div>
           </div>
-          <div className="hidden sm:flex items-center gap-3 ml-2">
+          <div className="hidden lg:flex items-center gap-4">
             {/* Ícono de carpeta tecnológica con gradiente cyan a índigo */}
             <svg 
               width="32" 

@@ -21,16 +21,16 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
             BASE DE DATOS <span className="text-cyan-400 font-medium">II</span>
           </h1>
           
-          <h2 className="text-2xl md:text-3xl font-bold text-white tracking-wide mt-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-white tracking-wide mt-10">
             JORGE LUIS <span className="text-xl md:text-2xl text-cyan-100/80">CURO VILLAR</span>
           </h2>
           
-          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-light mt-4 leading-relaxed">
+          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-light mt-8 leading-relaxed">
             Explorando el mundo de las bases de datos relacionales, la optimización de consultas y la administración de datos con SQL Server.
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row gap-10 md:gap-14 w-full sm:w-auto mt-4">
           <button 
             onClick={() => setActiveTab("trabajos")}
             className="pr-8 pl-2 py-2 bg-gradient-to-r from-blue-500 to-cyan-400 hover:brightness-110 text-white rounded-full font-bold text-sm tracking-wide shadow-lg shadow-cyan-500/20 transition-all duration-300 flex items-center justify-center group"
