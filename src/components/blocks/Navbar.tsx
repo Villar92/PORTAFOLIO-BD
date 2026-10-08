@@ -3,31 +3,38 @@ import { GraduationCap } from "lucide-react";
 
 export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActiveTab: (tab: string) => void }) {
   const tabs = [
-    { id: "presentacion", label: "Presentación" },
-    { id: "informacion", label: "Información" },
-    { id: "trabajos", label: "Trabajos" },
-    { id: "contacto", label: "Contacto" },
-    { id: "login", label: "Login" }
+    { id: "presentacion", label: "Inicio" },
+    { id: "informacion", label: "Sobre mí" },
+    { id: "trabajos", label: "Unidades" },
+    { id: "login", label: "Iniciar Sesión" }
   ];
 
   return (
-    <nav className="sticky top-0 z-50 w-full backdrop-blur-2xl bg-black/40 border-b border-white/10 shadow-2xl">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-3 text-white font-bold text-xl tracking-tighter">
-          <GraduationCap className="h-7 w-7 text-indigo-400" />
-          <span>UPLA <span className="text-white/40 font-light hidden sm:inline-block">| Portafolio</span></span>
+    <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#0B1120]/90 border-b border-cyan-900/50 shadow-lg">
+      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 text-white font-bold text-2xl tracking-tighter">
+            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+              {/* Aproximación al logo UPLA con ícono */}
+              <GraduationCap className="h-7 w-7 text-[#0B1120]" />
+            </div>
+            <span className="text-xl">UPLA</span>
+          </div>
+          <span className="text-cyan-400 font-serif font-bold tracking-widest text-lg sm:text-xl hidden sm:inline-block uppercase drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]">
+            Mi Portafolio Académico
+          </span>
         </div>
         
         {/* Desktop Menu */}
-        <div className="hidden md:flex gap-2">
+        <div className="hidden md:flex gap-4 items-center">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${
                 activeTab === tab.id
-                  ? "bg-white/10 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)] border border-white/20"
-                  : "text-white/60 hover:bg-white/5 hover:text-white border border-transparent"
+                  ? "bg-cyan-400 text-black shadow-[0_0_15px_rgba(34,211,238,0.5)]"
+                  : "text-white/80 hover:text-cyan-400"
               }`}
             >
               {tab.label}
@@ -41,10 +48,10 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+              className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${
                 activeTab === tab.id
-                  ? "bg-white/10 text-white border border-white/20"
-                  : "text-white/60"
+                  ? "bg-cyan-400 text-black shadow-[0_0_10px_rgba(34,211,238,0.5)]"
+                  : "text-white/80"
               }`}
             >
               {tab.label}

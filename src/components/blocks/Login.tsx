@@ -17,10 +17,12 @@ export function Login() {
     setError("");
     
     setTimeout(() => {
-      if (email === "admin@upla.edu.pe" && password === "admin") {
+      if (email === "admin@ms.upla.edu.pe" && password === "123") {
+        setSuccess(true);
+      } else if (email === "admin@upla.edu.pe" && password === "admin") {
         setSuccess(true);
       } else {
-        setError("Credenciales incorrectas. (Pista: admin@upla.edu.pe / admin)");
+        setError("Credenciales incorrectas.");
         setSuccess(false);
       }
       setIsLoading(false);
@@ -29,25 +31,25 @@ export function Login() {
 
   if (success) {
     return (
-      <div className="animate-in fade-in zoom-in duration-500 w-full">
-        <div className="max-w-7xl mx-auto py-8 px-4 flex justify-between items-center">
+      <div className="animate-in fade-in zoom-in duration-500 w-full min-h-[80vh] flex flex-col">
+        <div className="max-w-7xl mx-auto py-8 px-4 flex justify-between items-center w-full">
           <div>
-            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-              <UserCircle2 className="w-8 h-8 text-emerald-400" />
-              Panel de Administración
+            <h2 className="text-2xl font-serif font-bold text-cyan-400 flex items-center gap-3 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">
+              <UserCircle2 className="w-8 h-8 text-cyan-400" />
+              PANEL DE ADMINISTRACIÓN
             </h2>
-            <p className="text-slate-400 mt-1">Aquí puedes gestionar (subir/eliminar) los archivos de tu portafolio.</p>
+            <p className="text-slate-400 mt-1 font-light tracking-wide">Aquí puedes gestionar (subir/eliminar) los archivos de tu portafolio.</p>
           </div>
           <button 
             onClick={() => setSuccess(false)}
-            className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-xl font-medium transition-colors border border-red-500/30"
+            className="px-6 py-2 bg-transparent border-2 border-red-500/50 hover:bg-red-500/10 text-red-400 rounded-full font-bold transition-all shadow-[0_0_10px_rgba(239,68,68,0.2)]"
           >
             Cerrar Sesión
           </button>
         </div>
         
         {/* Render Trabajos con permisos de administrador */}
-        <div className="-mt-8">
+        <div className="flex-1 w-full mt-4">
           <Trabajos isAdmin={true} />
         </div>
       </div>
@@ -55,71 +57,75 @@ export function Login() {
   }
 
   return (
-    <div className="max-w-md mx-auto py-12 px-4 animate-in fade-in duration-500">
-      <div className="bg-black/40 backdrop-blur-2xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/10 overflow-hidden">
-        <div className="p-8 pb-6 border-b border-white/5 bg-white/5 text-center">
-          <h2 className="text-2xl font-bold text-white tracking-tight">Iniciar Sesión</h2>
-          <p className="text-slate-400 mt-2 text-sm">Acceso exclusivo para administración del portafolio</p>
+    <div className="flex flex-col items-center justify-center min-h-[85vh] py-12 px-4 animate-in fade-in duration-500">
+      
+      <div className="text-center mb-10">
+        <h2 className="text-3xl md:text-4xl font-serif font-bold text-cyan-400 tracking-widest drop-shadow-[0_0_15px_rgba(34,211,238,0.6)]">
+          ACCESO ADMINISTRATIVO
+        </h2>
+      </div>
+
+      <div className="w-full max-w-md bg-[#0B1120] rounded-[2rem] border border-cyan-400 shadow-[0_0_30px_rgba(34,211,238,0.2)] p-10 relative">
+        <div className="text-center mb-10">
+          <h3 className="text-2xl font-serif font-bold text-cyan-400 flex items-center justify-center gap-3 drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]">
+            <span className="text-3xl">🔐</span> INICIAR SESIÓN
+          </h3>
+          <p className="text-slate-400 text-sm mt-3 font-light tracking-wide">Panel exclusivo para administradores</p>
         </div>
 
-        <div className="p-8">
-          <form onSubmit={handleLogin} className="space-y-6">
-            {error && (
-              <div className="p-4 bg-red-900/30 border border-red-500/30 rounded-xl text-red-200 text-sm animate-in shake">
-                {error}
-              </div>
+        <form onSubmit={handleLogin} className="space-y-6">
+          {error && (
+            <div className="p-3 bg-red-900/30 border border-red-500/50 rounded-xl text-red-200 text-sm text-center animate-in shake">
+              {error}
+            </div>
+          )}
+          
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-cyan-400 flex items-center gap-2">
+              <Mail className="w-4 h-4" /> Correo institucional
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 bg-[#0f172a] border border-white/5 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all font-light"
+              placeholder="admin@ms.upla.edu.pe"
+              required
+            />
+          </div>
+
+          <div className="space-y-2 pb-4">
+            <label className="text-sm font-bold text-cyan-400 flex items-center gap-2">
+              <Lock className="w-4 h-4" /> Contraseña
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 bg-[#0f172a] border border-white/5 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all font-light tracking-[0.2em]"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-4 bg-cyan-400 hover:bg-cyan-300 text-[#0B1120] rounded-full font-extrabold tracking-widest shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all duration-300 flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            {isLoading ? (
+              <span className="w-6 h-6 border-2 border-[#0B1120]/30 border-t-[#0B1120] rounded-full animate-spin"></span>
+            ) : (
+              "INGRESAR"
             )}
-            
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300 ml-1">Correo Institucional</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-slate-500" />
-                </div>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                  placeholder="ejemplo@upla.edu.pe"
-                  required
-                />
-              </div>
-            </div>
+          </button>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-300 ml-1">Contraseña</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-slate-500" />
-                </div>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                  placeholder="••••••••"
-                  required
-                />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold shadow-lg shadow-indigo-500/25 transition-all duration-300 flex items-center justify-center group disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-              {isLoading ? (
-                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-              ) : (
-                <>
-                  Ingresar al Panel
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </>
-              )}
-            </button>
-          </form>
-        </div>
+          <div className="pt-6 mt-6 border-t border-white/10 border-dashed text-center">
+            <p className="text-xs text-slate-500 font-light">
+              <span className="text-cyan-400 font-bold">Demo:</span> admin@ms.upla.edu.pe / 123
+            </p>
+          </div>
+        </form>
       </div>
     </div>
   );
