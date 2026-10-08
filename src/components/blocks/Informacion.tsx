@@ -41,7 +41,7 @@ export function Informacion() {
         <div className="lg:col-span-8 flex flex-col relative z-10">
           <p className="text-cyan-400 font-bold tracking-widest text-sm mb-2 uppercase">Sobre Mí</p>
           <h3 className="text-3xl md:text-5xl font-serif font-bold text-white tracking-wide mb-3">
-            JORGE LUIS CURO VILLAR
+            JORGE LUIS <span className="text-2xl md:text-4xl text-cyan-100/80">CURO VILLAR</span>
           </h3>
           <p className="text-cyan-100/70 mb-6 font-medium tracking-wide">
             Estudiante de Ingeniería de Sistemas · V Ciclo

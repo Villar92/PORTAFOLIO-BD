@@ -22,7 +22,7 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
           </h1>
           
           <h2 className="text-2xl md:text-3xl font-bold text-white tracking-wide mt-6">
-            Jorge Luis Curo Villar
+            JORGE LUIS <span className="text-xl md:text-2xl text-cyan-100/80">CURO VILLAR</span>
           </h2>
           
           <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-light mt-4 leading-relaxed">
