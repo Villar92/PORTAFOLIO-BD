@@ -5,13 +5,13 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
   return (
     <div className="flex flex-col items-center justify-center min-h-[85vh] py-12 px-4 animate-in fade-in duration-700">
       
-      <div className="bg-[#2A3441]/95 backdrop-blur-sm rounded-3xl sm:rounded-[2.5rem] p-6 sm:p-10 md:p-16 border border-cyan-400/20 shadow-2xl max-w-5xl w-full flex flex-col items-center text-center relative overflow-hidden">
+      <div className="bg-[#0B1120] rounded-3xl sm:rounded-[2.5rem] p-6 sm:p-10 md:p-16 border border-cyan-400/50 shadow-[0_0_40px_rgba(34,211,238,0.2)] max-w-5xl w-full flex flex-col items-center text-center relative overflow-hidden">
         
         {/* Glow de fondo en la tarjeta */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-cyan-400/10 blur-[100px] pointer-events-none"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-cyan-400/20 blur-[100px] pointer-events-none"></div>
 
         {/* Etiqueta superior */}
-        <div className="mb-8 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#1E252F] border border-cyan-400/30 shadow-sm">
+        <div className="mb-8 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#0f172a] border border-cyan-400/30 shadow-[0_0_15px_rgba(34,211,238,0.15)]">
           <Database className="w-4 h-4 text-cyan-400" />
           <span className="text-sm font-bold text-cyan-50 tracking-wide">Universidad Peruana Los Andes</span>
         </div>
