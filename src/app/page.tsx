@@ -11,7 +11,7 @@ import { Footer } from "@/components/blocks/Footer";
 import { AntigravityBackground } from "@/components/blocks/AntigravityBackground";
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("presentacion");
+  const [activeTab, setActiveTab] = useState("inicio");
 
   return (
     <div className="min-h-screen flex flex-col bg-transparent selection:bg-blue-200 selection:text-blue-900 font-sans relative z-0">
@@ -19,8 +19,8 @@ export default function Home() {
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
       
       <main className="flex-1 w-full relative">
-        <div className={`transition-opacity duration-300 ${activeTab === 'presentacion' ? 'block' : 'hidden'}`}>
-          <Presentacion />
+        <div className={`transition-opacity duration-300 ${activeTab === 'inicio' || activeTab === 'presentacion' ? 'block' : 'hidden'}`}>
+          <Presentacion setActiveTab={setActiveTab} />
         </div>
         
         <div className={`transition-opacity duration-300 ${activeTab === 'informacion' ? 'block' : 'hidden'}`}>
