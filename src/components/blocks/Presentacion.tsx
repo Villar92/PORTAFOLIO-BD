@@ -21,12 +21,11 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
           </h1>
           
           <h2 className="text-xl sm:text-2xl font-medium text-slate-300 tracking-[0.2em] mt-4 sm:mt-6">
-            <span className="text-sm text-slate-400 tracking-widest mr-2 uppercase">por</span>
             JORGE LUIS <span className="font-bold text-white">CURO VILLAR</span>
           </h2>
           
           <p className="text-base sm:text-lg text-slate-300/90 max-w-2xl mx-auto font-light mt-6 leading-relaxed drop-shadow-sm">
-            Domina el diseño, la optimización y la consulta avanzada en SQL Server para el curso de Base de Datos II.
+            Dominando el diseño, la optimización y la consulta avanzada en SQL Server. Utilizando los retos de Base de Datos II como trampolín para construir soluciones reales, escalables y listas para la industria.
           </p>
         </div>
 
