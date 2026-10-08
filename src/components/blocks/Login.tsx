@@ -33,20 +33,44 @@ export function Login() {
   if (success) {
     return (
       <div className="animate-in fade-in zoom-in duration-500 w-full min-h-[80vh] flex flex-col">
-        <div className="max-w-7xl mx-auto py-8 px-4 flex justify-between items-center w-full">
-          <div>
-            <h2 className="text-3xl font-sans font-black text-white flex items-center gap-3 drop-shadow-md tracking-wide">
-              <User className="w-8 h-8 text-cyan-400" />
-              PANEL DE ADMINISTRACIÓN
-            </h2>
-            <p className="text-cyan-100 mt-2 font-medium text-lg opacity-90">Aquí puedes gestionar (subir/eliminar) los archivos de tu portafolio.</p>
+        <div className="max-w-7xl mx-auto py-8 px-4 w-full">
+          {/* Header Premium Admin */}
+          <div className="relative rounded-[2.5rem] bg-gradient-to-r from-[#0f172a]/95 to-[#0B1120]/95 border border-cyan-500/20 shadow-[0_0_50px_rgba(34,211,238,0.15)] p-8 md:p-10 backdrop-blur-xl flex flex-col md:flex-row justify-between items-center gap-8 overflow-hidden group">
+            {/* Glow de fondo dinámico */}
+            <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 blur-[100px] rounded-full pointer-events-none animate-pulse group-hover:bg-cyan-400/20 transition-all duration-700"></div>
+            
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 relative z-10 text-center md:text-left">
+              <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-cyan-400 to-blue-600 p-[2px] shadow-[0_0_30px_rgba(34,211,238,0.3)] flex-shrink-0">
+                <div className="w-full h-full bg-[#0B1120] rounded-3xl flex items-center justify-center">
+                  <User className="w-10 h-10 text-cyan-400" />
+                </div>
+              </div>
+              
+              <div className="flex flex-col justify-center">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/50 border border-cyan-500/30 mb-3 mx-auto md:mx-0 shadow-inner w-fit">
+                  <div className="relative flex h-2.5 w-2.5 items-center justify-center">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan-400"></span>
+                  </div>
+                  <span className="text-cyan-300 text-[10px] font-bold tracking-[0.25em] uppercase">Modo Administrador</span>
+                </div>
+                
+                <h2 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-cyan-100 tracking-tight mb-2 drop-shadow-md">
+                  PANEL DE CONTROL
+                </h2>
+                <p className="text-slate-400 text-sm md:text-base font-light max-w-xl leading-relaxed">
+                  Gestiona, sube o elimina los recursos académicos y archivos de cada unidad del portafolio.
+                </p>
+              </div>
+            </div>
+            
+            <button 
+              onClick={() => setSuccess(false)}
+              className="relative z-10 px-8 py-3.5 bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500 hover:text-white rounded-2xl font-bold tracking-widest text-xs uppercase transition-all duration-300 shadow-[0_0_20px_rgba(239,68,68,0.1)] hover:shadow-[0_0_40px_rgba(239,68,68,0.4)] hover:-translate-y-1"
+            >
+              Cerrar Sesión
+            </button>
           </div>
-          <button 
-            onClick={() => setSuccess(false)}
-            className="px-6 py-2 bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 hover:text-red-300 rounded-full font-bold transition-all"
-          >
-            Cerrar Sesión
-          </button>
         </div>
         
         <div className="flex-1 w-full mt-4">
