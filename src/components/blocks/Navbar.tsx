@@ -1,11 +1,12 @@
 import React from "react";
+import { Home, User, BookOpen, LogIn } from "lucide-react";
 
 export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActiveTab: (t: string) => void }) {
   const tabs = [
-    { id: "inicio", label: "Inicio" },
-    { id: "informacion", label: "Sobre Mí" },
-    { id: "trabajos", label: "Unidades" },
-    { id: "login", label: "Acceso" }
+    { id: "inicio", label: "Inicio", icon: Home },
+    { id: "informacion", label: "Sobre Mí", icon: User },
+    { id: "trabajos", label: "Unidades", icon: BookOpen },
+    { id: "login", label: "Acceso", icon: LogIn }
   ];
 
   return (
@@ -55,20 +56,30 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
           </div>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-6 bg-[#0f172a] p-1.5 rounded-full border border-cyan-900/50 shadow-inner">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`relative px-4 py-2 rounded-full text-sm font-bold transition-all duration-300 ${
-                activeTab === tab.id
-                  ? "text-[#0B1120] bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.5)]"
-                  : "text-slate-400 hover:text-cyan-300 hover:bg-white/5"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        <div className="flex items-center gap-2 sm:gap-4">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center pr-3 sm:pr-6 pl-1.5 py-1.5 rounded-full font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 group ${
+                  isActive
+                    ? "bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-lg shadow-cyan-500/20"
+                    : "bg-[#0f172a] text-slate-300 hover:text-white border border-cyan-900/50 hover:border-cyan-400/50"
+                }`}
+              >
+                <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center mr-0 sm:mr-3 transition-transform group-hover:scale-105 ${
+                  isActive ? "border-white/80" : "border-slate-500/50 group-hover:border-cyan-400/50"
+                }`}>
+                  <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-slate-400 group-hover:text-cyan-300"}`} />
+                </div>
+                <span className="hidden sm:inline-block">{tab.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </nav>
