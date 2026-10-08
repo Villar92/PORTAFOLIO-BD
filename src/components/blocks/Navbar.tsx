@@ -21,12 +21,38 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
               />
             </div>
           </div>
-          <span 
-            className="text-cyan-400 font-light tracking-[0.15em] text-xl sm:text-2xl hidden sm:inline-block drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]"
-            style={{ fontFamily: 'var(--font-outfit), sans-serif' }}
-          >
-            Mi Portafolio Académico
-          </span>
+          <div className="hidden sm:flex items-center gap-3 ml-2">
+            {/* Ícono de carpeta tecnológica con gradiente cyan a índigo */}
+            <svg 
+              width="32" 
+              height="32" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="url(#techGradient)" 
+              strokeWidth="1.5" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+              className="drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]"
+            >
+              <defs>
+                <linearGradient id="techGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#818cf8" /> {/* Indigo */}
+                  <stop offset="100%" stopColor="#22d3ee" /> {/* Cyan */}
+                </linearGradient>
+              </defs>
+              {/* Carpeta */}
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+              {/* Circuitos internos */}
+              <path d="M9 14h2l2-2h4" />
+              <circle cx="17" cy="12" r="1" fill="#22d3ee" />
+              <path d="M7 14v-2l2-2" />
+              <circle cx="9" cy="10" r="1" fill="#818cf8" />
+            </svg>
+            
+            <span className="text-cyan-400 font-sans font-medium text-lg sm:text-xl tracking-wide drop-shadow-[0_0_5px_rgba(34,211,238,0.3)]">
+              Mi Portafolio Académico
+            </span>
+          </div>
         </div>
 
         <div className="flex items-center gap-2 sm:gap-6 bg-[#0f172a] p-1.5 rounded-full border border-cyan-900/50 shadow-inner">
