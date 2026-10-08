@@ -18,11 +18,11 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
 
         <div className="space-y-4 sm:space-y-6 max-w-4xl mb-8 sm:mb-12">
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-[family-name:var(--font-outfit)] font-light text-white tracking-[0.1em] sm:tracking-[0.15em] drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] leading-tight">
-            BASE DE DATOS <span className="text-cyan-400 font-medium">II</span>
+            BASE DE DATOS <span className="text-white font-medium">II</span>
           </h1>
           
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-wide mt-6 sm:mt-10 drop-shadow-md">
-            JORGE LUIS <span className="text-xl md:text-2xl text-cyan-200">CURO VILLAR</span>
+            JORGE LUIS <span className="text-xl md:text-2xl text-white">CURO VILLAR</span>
           </h2>
           
           <p className="text-base sm:text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-normal mt-6 sm:mt-8 leading-relaxed drop-shadow-md">
