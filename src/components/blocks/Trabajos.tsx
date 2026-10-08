@@ -392,9 +392,13 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
                 </button>
               </div>
             </div>
-            <div className="flex-1 w-full bg-slate-100 relative">
+            <div className="flex-1 w-full bg-slate-100 relative rounded-b-2xl overflow-hidden">
               <iframe 
-                src={previewFile.url} 
+                src={
+                  previewFile.name.toLowerCase().endsWith('.pdf') 
+                    ? `https://docs.google.com/gview?url=${encodeURIComponent(previewFile.url)}&embedded=true` 
+                    : previewFile.url
+                } 
                 className="absolute inset-0 w-full h-full border-0"
                 title={previewFile.name}
               />
