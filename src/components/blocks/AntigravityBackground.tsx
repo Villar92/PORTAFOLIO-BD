@@ -22,11 +22,12 @@ export function AntigravityBackground() {
     <div className="fixed inset-0 pointer-events-none z-[0] overflow-hidden">
       {/* Imagen de fondo */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
-        style={{ backgroundImage: 'url("/images.jpg")' }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
+        style={{ backgroundImage: 'url("/sql-server.jpg")' }}
       ></div>
       {/* Overlay oscuro para mejorar contraste con el nuevo diseño minimalista */}
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
+      <div className="absolute inset-0 bg-[#0B1120]/80 mix-blend-multiply"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120] via-transparent to-[#0B1120]/50"></div>
 
       <style>{`
         @keyframes floatUp {
