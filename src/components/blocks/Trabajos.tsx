@@ -392,16 +392,44 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
                 </button>
               </div>
             </div>
-            <div className="flex-1 w-full bg-slate-100 relative rounded-b-2xl overflow-hidden">
-              <iframe 
-                src={
-                  previewFile.name.toLowerCase().endsWith('.pdf') 
-                    ? `https://docs.google.com/gview?url=${encodeURIComponent(previewFile.url)}&embedded=true` 
-                    : previewFile.url
-                } 
-                className="absolute inset-0 w-full h-full border-0"
-                title={previewFile.name}
-              />
+            <div className="flex-1 w-full relative rounded-b-2xl overflow-hidden flex items-center justify-center">
+              {(() => {
+                const ext = previewFile.name.split('.').pop()?.toLowerCase() || '';
+                const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
+                const docExts = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'rtf', 'csv'];
+
+                if (imageExts.includes(ext)) {
+                  return (
+                    <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-[#0f172a] p-4">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img 
+                        src={previewFile.url} 
+                        alt={previewFile.name} 
+                        className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                      />
+                    </div>
+                  );
+                }
+
+                if (docExts.includes(ext)) {
+                  return (
+                    <iframe 
+                      src={`https://docs.google.com/gview?url=${encodeURIComponent(previewFile.url)}&embedded=true`} 
+                      className="absolute inset-0 w-full h-full border-0 bg-slate-100"
+                      title={previewFile.name}
+                    />
+                  );
+                }
+
+                return (
+                  <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-slate-100">
+                    <FileText className="w-16 h-16 text-slate-400 mb-4" />
+                    <p className="text-slate-600 font-medium text-lg">Sin vista previa disponible</p>
+                    <p className="text-slate-500 mt-2 text-sm">El formato <b>.{ext}</b> no admite previsualización en línea.</p>
+                    <p className="text-slate-500 text-sm">Por favor, usa el botón "Descargar" en la esquina superior derecha.</p>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
