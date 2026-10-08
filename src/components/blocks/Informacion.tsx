@@ -49,10 +49,7 @@ export function Informacion() {
           
           <div className="bg-[#1E252F] p-6 rounded-2xl border border-white/5 mb-8">
             <p className="text-slate-300 leading-relaxed font-light text-sm md:text-base">
-              Soy estudiante de la carrera de Ingeniería de Sistemas en la Universidad Peruana Los Andes. 
-              Actualmente curso el V ciclo y este portafolio documenta mi aprendizaje en Base de Datos II. 
-              Me apasiona entender cómo funcionan los sistemas de información y cómo las bases de datos son 
-              el corazón de cualquier aplicación moderna.
+              Bienvenidos a mi portafolio de Base de Datos II. Como estudiante del V ciclo de Ingeniería de Sistemas en la Universidad Peruana Los Andes, me apasiona entender la arquitectura detrás de los sistemas de información. Al considerar las bases de datos como el motor principal de cualquier aplicación moderna, aquí documento mi dominio en la gestión de datos relacionales, la optimización de consultas y la administración en SQL Server.
             </p>
           </div>
 
