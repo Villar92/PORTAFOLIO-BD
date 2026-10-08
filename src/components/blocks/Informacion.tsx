@@ -14,14 +14,14 @@ export function Informacion() {
     <div className="max-w-6xl mx-auto py-8 px-4 animate-in fade-in zoom-in-95 duration-500">
       
       {/* Grid: 1 columna en móvil, 2 en PC (Izquierda foto, Derecha texto) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center bg-[#2A3441] p-6 md:p-8 lg:p-10 rounded-[2rem] shadow-2xl relative overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center bg-[#2A3441] p-6 md:p-8 rounded-[2rem] shadow-2xl relative overflow-hidden">
         
         {/* Glow de fondo */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-400/10 blur-[80px] pointer-events-none rounded-full"></div>
 
         {/* Lado Izquierdo: Foto */}
         <div className="lg:col-span-4 flex flex-col items-center justify-center relative z-10">
-          <div className="w-48 h-48 md:w-56 md:h-56 rounded-full p-2 bg-[#1E252F] relative border border-cyan-400/30 shadow-xl mb-6">
+          <div className="w-40 h-40 md:w-48 md:h-48 rounded-full p-1.5 bg-[#1E252F] relative border border-cyan-400/30 shadow-xl mb-6">
             <div className="w-full h-full relative rounded-full overflow-hidden">
               <NextImage 
                 src="/JORGE CV.jpg" 

@@ -11,10 +11,10 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
 
   return (
     <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#0B1120]/95 border-b border-cyan-400/30 shadow-[0_4px_30px_rgba(34,211,238,0.15)]">
-      <div className="container mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
         <div className="flex items-center gap-3 sm:gap-6">
           <div className="flex items-center">
-            <div className="relative h-8 w-24 sm:h-10 sm:w-32 bg-white rounded-xl px-2 py-1 flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.15)] border border-cyan-400/20">
+            <div className="relative h-7 w-20 sm:h-8 sm:w-28 bg-white rounded-xl px-2 py-1 flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.15)] border border-cyan-400/20">
               <img 
                 src="/upla-logo.png" 
                 alt="Logo UPLA" 
@@ -25,8 +25,8 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
           <div className="hidden lg:flex items-center gap-3">
             {/* Ícono de carpeta tecnológica con gradiente cyan a índigo */}
             <svg 
-              width="24" 
-              height="24" 
+              width="20" 
+              height="20" 
               viewBox="0 0 24 24" 
               fill="none" 
               stroke="url(#techGradient)" 
@@ -50,7 +50,7 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
               <circle cx="9" cy="10" r="1" fill="#818cf8" />
             </svg>
             
-            <span className="text-white font-sans font-medium text-base sm:text-lg tracking-wide drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]">
+            <span className="text-white font-sans font-medium text-sm sm:text-base tracking-wide drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]">
               MI PORTAFOLIO
             </span>
           </div>
