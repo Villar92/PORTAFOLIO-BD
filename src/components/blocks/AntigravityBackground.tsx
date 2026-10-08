@@ -22,11 +22,11 @@ export function AntigravityBackground() {
     <div className="fixed inset-0 pointer-events-none z-[0] overflow-hidden">
       {/* Imagen de fondo */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
         style={{ backgroundImage: 'url("/images.jpg")' }}
       ></div>
-      {/* Overlay oscuro para mejorar contraste */}
-      <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+      {/* Overlay oscuro para mejorar contraste con el nuevo diseño minimalista */}
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
 
       <style>{`
         @keyframes floatUp {
@@ -35,10 +35,10 @@ export function AntigravityBackground() {
             opacity: 0;
           }
           20% {
-            opacity: 0.6;
+            opacity: 0.4;
           }
           80% {
-            opacity: 0.6;
+            opacity: 0.4;
           }
           100% {
             transform: translateY(-20vh) scale(1.2) rotate(360deg);
@@ -53,7 +53,7 @@ export function AntigravityBackground() {
       {particles.map((p) => (
         <div
           key={p.id}
-          className="antigravity-particle rounded-2xl bg-gradient-to-tr from-blue-500 to-cyan-400 blur-[2px] shadow-2xl"
+          className="antigravity-particle rounded-2xl bg-gradient-to-tr from-indigo-500/30 to-purple-500/20 blur-md shadow-2xl"
           style={{
             width: `${p.size}px`,
             height: `${p.size}px`,
@@ -69,7 +69,7 @@ export function AntigravityBackground() {
       {particles.slice(0, 5).map((p) => (
         <div
           key={`circle-${p.id}`}
-          className="antigravity-particle rounded-full bg-gradient-to-tl from-indigo-400 to-blue-300 blur-md shadow-xl"
+          className="antigravity-particle rounded-full bg-gradient-to-tl from-white/5 to-white/10 border border-white/10 blur-sm shadow-xl"
           style={{
             width: `${p.size * 1.5}px`,
             height: `${p.size * 1.5}px`,
