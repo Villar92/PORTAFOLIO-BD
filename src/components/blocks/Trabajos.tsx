@@ -94,9 +94,7 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
     });
   };
 
-  const toggleWeek = (weekId: string) => {
-    setOpenWeeks(prev => ({ ...prev, [weekId]: !prev[weekId] }));
-  };
+
 
   const unidades = [
     {
