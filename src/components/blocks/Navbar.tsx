@@ -13,11 +13,11 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="flex items-center">
-            <div className="relative h-12 w-36">
+            <div className="relative h-[3.2rem] w-48 bg-white rounded-xl px-3 py-1.5 flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.15)] border border-cyan-400/20">
               <img 
                 src="/upla-logo.png" 
                 alt="Logo UPLA" 
-                className="object-contain w-full h-full drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]"
+                className="object-contain w-full h-full"
               />
             </div>
           </div>
