@@ -51,7 +51,7 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
             </svg>
             
             <span className="text-white font-sans font-medium text-lg sm:text-xl tracking-wide drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]">
-              Mi Portafolio Académico
+              MI PORTAFOLIO
             </span>
           </div>
         </div>
