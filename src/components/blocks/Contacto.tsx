@@ -7,14 +7,14 @@ export function Contacto() {
   const whatsappMessage = "Hola, me contacto desde tu portafolio académico.";
 
   return (
-    <div className="max-w-3xl mx-auto py-12 px-4">
-      <div className="text-center mb-12">
+    <div className="max-w-3xl mx-auto py-8 px-4">
+      <div className="text-center mb-8">
         <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">CONTACTO</h2>
         <div className="h-1.5 w-24 bg-blue-500 mx-auto rounded-full"></div>
       </div>
 
       <div className="bg-slate-900/70 backdrop-blur-xl rounded-3xl shadow-xl overflow-hidden border border-white/20 flex flex-col md:flex-row">
-        <div className="bg-gradient-to-br from-blue-700 to-blue-900 text-white p-10 md:w-2/5 flex flex-col items-center justify-center text-center">
+        <div className="bg-gradient-to-br from-blue-700 to-blue-900 text-white p-8 md:w-2/5 flex flex-col items-center justify-center text-center">
           <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mb-6 border-2 border-white/20 relative overflow-hidden">
             <NextImage 
               src="/JORGE CV.jpg" 
@@ -28,7 +28,7 @@ export function Contacto() {
           <p className="text-blue-200 font-medium tracking-wide">Estudiante de Ingeniería</p>
         </div>
         
-        <div className="p-10 md:w-3/5 space-y-6 bg-transparent">
+        <div className="p-8 md:w-3/5 space-y-6 bg-transparent">
           <div className="flex items-center gap-4 bg-slate-800/60 p-4 rounded-xl shadow-sm border border-white/10">
             <div className="p-2 bg-blue-900/50 rounded-lg text-blue-400">
               <Hash className="w-5 h-5" />

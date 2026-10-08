@@ -162,20 +162,20 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
   const activeData = unidades.find(u => u.id === activeTab) || unidades[0];
 
   return (
-    <div className="max-w-5xl mx-auto py-12 px-4 animate-in fade-in zoom-in-95 duration-500">
+    <div className="max-w-5xl mx-auto py-8 px-4 animate-in fade-in zoom-in-95 duration-500">
       
       {/* HEADER BANNER */}
-      <div className="text-center mb-10">
-        <p className="text-cyan-400 font-bold tracking-[0.2em] text-xs uppercase flex items-center justify-center gap-2 mb-3">
+      <div className="text-center mb-6">
+        <p className="text-cyan-400 font-bold tracking-[0.2em] text-xs uppercase flex items-center justify-center gap-2 mb-2">
           <span className="text-[10px]">✦</span> BASE DE DATOS II
         </p>
-        <h2 className="text-4xl md:text-[3.5rem] font-[family-name:var(--font-bodoni)] font-medium text-white mb-8 tracking-wide drop-shadow-md">
+        <h2 className="text-3xl md:text-5xl font-[family-name:var(--font-bodoni)] font-medium text-white mb-6 tracking-wide drop-shadow-md">
           UNIDADES DEL CURSO
         </h2>
       </div>
 
       {/* Tabs / Botones de Unidad */}
-      <div className="relative mb-10 flex items-center">
+      <div className="relative mb-8 flex items-center">
         {/* Botón de desplazamiento Izquierdo (Círculo Transparente) */}
         <button 
           onClick={handlePrevTab}
