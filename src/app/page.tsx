@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/blocks/Navbar";
 import { Presentacion } from "@/components/blocks/Presentacion";
 import { Informacion } from "@/components/blocks/Informacion";
@@ -12,6 +12,11 @@ import { AntigravityBackground } from "@/components/blocks/AntigravityBackground
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("inicio");
+
+  // Auto-scroll to top when tab changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [activeTab]);
 
   return (
     <div className="min-h-screen flex flex-col bg-transparent selection:bg-blue-200 selection:text-blue-900 font-sans relative z-0">
