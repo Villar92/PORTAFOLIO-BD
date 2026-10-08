@@ -88,8 +88,8 @@ export function Login() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-[#0f172a] border border-white/5 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all font-light"
-              placeholder="admin@ms.upla.edu.pe"
+              className="w-full px-4 py-3 bg-[#f1f5f9] border-none rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all font-medium"
+              placeholder="admin@upla.edu.pe"
               required
             />
           </div>
@@ -102,7 +102,7 @@ export function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-[#0f172a] border border-white/5 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all font-light tracking-[0.2em]"
+              className="w-full px-4 py-3 bg-[#f1f5f9] border-none rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all font-medium tracking-[0.2em]"
               placeholder="••••••••"
               required
             />
@@ -120,7 +120,7 @@ export function Login() {
             )}
           </button>
 
-          <div className="pt-6 mt-6 border-t border-white/10 border-dashed text-center">
+          <div className="pt-6 mt-6 border-t border-white/5 border-dashed text-center">
             <p className="text-xs text-slate-500 font-light">
               <span className="text-cyan-400 font-bold">Demo:</span> admin@ms.upla.edu.pe / 123
             </p>

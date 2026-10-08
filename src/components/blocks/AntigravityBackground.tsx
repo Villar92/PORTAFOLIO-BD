@@ -7,25 +7,25 @@ export function AntigravityBackground() {
 
   useEffect(() => {
     // Generar las partículas
-    const newParticles = Array.from({ length: 8 }).map((_, i) => ({
+    const newParticles = Array.from({ length: 10 }).map((_, i) => ({
       id: i,
-      size: Math.random() * 150 + 50, 
+      size: Math.random() * 80 + 30, 
       left: Math.random() * 100, 
       delay: Math.random() * 10, 
-      duration: Math.random() * 20 + 20, 
+      duration: Math.random() * 20 + 15, 
     }));
     setParticles(newParticles);
   }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[0] overflow-hidden">
-      {/* Imagen de fondo más visible */}
+      {/* Imagen de fondo desenfocada */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-90"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80 blur-xl scale-110"
         style={{ backgroundImage: 'url("/sql-server.jpg")' }}
       ></div>
-      {/* Overlay claro para que resalten las cajas grises/blancas */}
-      <div className="absolute inset-0 bg-slate-50/70 backdrop-blur-sm"></div>
+      {/* Overlay claro/blanco para dar la apariencia corporativa brillante */}
+      <div className="absolute inset-0 bg-white/40 backdrop-blur-3xl"></div>
 
       <style>{`
         @keyframes floatUp {
@@ -34,10 +34,10 @@ export function AntigravityBackground() {
             opacity: 0;
           }
           20% {
-            opacity: 0.8;
+            opacity: 0.6;
           }
           80% {
-            opacity: 0.8;
+            opacity: 0.6;
           }
           100% {
             transform: translateY(-20vh) scale(1.2) rotate(360deg);
@@ -50,11 +50,11 @@ export function AntigravityBackground() {
         }
       `}</style>
       
-      {/* Formas geométricas corporativas y limpias flotando */}
+      {/* Formas sutiles cyan flotando al fondo */}
       {particles.map((p) => (
         <div
           key={p.id}
-          className="antigravity-particle rounded-3xl bg-white/40 border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-md"
+          className="antigravity-particle rounded-full bg-cyan-400/10 blur-xl shadow-xl"
           style={{
             width: `${p.size}px`,
             height: `${p.size}px`,
