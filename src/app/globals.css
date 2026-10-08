@@ -13,6 +13,7 @@
   --font-mono: var(--font-geist-mono);
   --font-serif: var(--font-cinzel), serif;
   --font-outfit: var(--font-outfit), sans-serif;
+  --font-bodoni: var(--font-bodoni), serif;
 }
 
 body {

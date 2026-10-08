@@ -21,7 +21,7 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
               />
             </div>
           </div>
-          <span className="text-cyan-400 font-serif font-bold tracking-widest text-lg sm:text-xl hidden sm:inline-block uppercase drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]">
+          <span className="text-cyan-400 font-[family-name:var(--font-bodoni)] font-black tracking-normal text-2xl sm:text-3xl hidden sm:inline-block drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]">
             Mi Portafolio Académico
           </span>
         </div>
