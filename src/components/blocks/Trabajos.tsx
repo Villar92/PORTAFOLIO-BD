@@ -182,94 +182,115 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
         ))}
       </div>
 
-      {/* Main Unit Card */}
-      <div className="bg-[#0f172a] rounded-xl border-l-4 border-l-cyan-400 shadow-2xl p-8 mb-8 animate-in slide-in-from-right-4 duration-500">
-        <div className="flex items-start gap-6">
-          <span className="text-6xl md:text-8xl font-serif font-bold text-slate-700/50 leading-none select-none">
-            {activeData.numero}
-          </span>
-          <div className="pt-2">
-            <span className="text-cyan-400 font-bold tracking-[0.2em] text-[10px] uppercase flex items-center gap-2 mb-2">
-              <span className="text-[8px]">✦</span> {activeData.tabTitle}
-            </span>
-            <h3 className="text-2xl md:text-3xl font-serif font-bold text-white mb-3">
+      {/* Main Unit Card (Premium Dashboard Style) */}
+      <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#0f172a]/95 to-[#0B1120]/95 border border-cyan-500/20 shadow-[0_0_50px_rgba(34,211,238,0.1)] p-8 md:p-12 mb-12 backdrop-blur-md group animate-in slide-in-from-bottom-4 duration-700">
+        {/* Glow de fondo dinámico */}
+        <div className="absolute -top-32 -right-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px] group-hover:bg-cyan-400/20 transition-all duration-700"></div>
+        <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] group-hover:bg-blue-500/20 transition-all duration-700"></div>
+        
+        {/* Marca de agua gigante */}
+        <div className="absolute -bottom-8 -right-4 text-[12rem] font-black text-white/[0.03] select-none pointer-events-none leading-none font-sans tracking-tighter">
+          {activeData.numero}
+        </div>
+
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-8">
+          {/* Anillo circular animado */}
+          <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 p-[2px] flex-shrink-0 shadow-[0_0_30px_rgba(34,211,238,0.3)] group-hover:shadow-[0_0_50px_rgba(34,211,238,0.5)] transition-shadow duration-500">
+            <div className="w-full h-full bg-[#0B1120] rounded-full flex items-center justify-center">
+              <span className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                U{activeData.numero}
+              </span>
+            </div>
+          </div>
+          
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/40 border border-cyan-500/30 mb-4 shadow-inner">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+              <span className="text-cyan-300 text-xs font-bold tracking-[0.2em] uppercase">{activeData.tabTitle}</span>
+            </div>
+            <h3 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight drop-shadow-md">
               {activeData.titulo}
             </h3>
-            <p className="text-cyan-400/80 text-xs md:text-sm tracking-widest uppercase font-semibold leading-relaxed max-w-2xl">
+            <p className="text-slate-300 text-base md:text-lg leading-relaxed max-w-3xl font-light">
               {activeData.concepto}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Weeks Accordion */}
-      <div className="space-y-4">
+      {/* Grid de Semanas (Dashboard Cards) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in slide-in-from-bottom-8 duration-700 delay-150">
         {activeData.actividades.map((act, index) => {
-          const isOpen = openWeeks[act.id];
           const filesForAct = uploadedFiles[act.id] || [];
+          const parts = act.nombre.split(' — ');
+          const weekLabel = parts[0];
+          const weekDesc = parts[1] || "";
 
           return (
-            <div key={act.id} className="bg-[#0f172a] rounded-xl overflow-hidden border border-[#1e293b] transition-all">
-              {/* Accordion Header */}
-              <button 
-                onClick={() => toggleWeek(act.id)}
-                className="w-full flex items-center justify-between p-5 hover:bg-slate-800/50 transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 rounded-full border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xs font-bold">
-                    S{index + 1}
+            <div key={act.id} className="group relative bg-[#0f172a]/60 backdrop-blur-xl rounded-[2rem] border border-cyan-900/40 hover:border-cyan-400/50 transition-all duration-500 overflow-hidden shadow-xl hover:shadow-[0_10px_40px_rgba(34,211,238,0.15)] flex flex-col">
+              {/* Línea de brillo superior */}
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-500/0 to-transparent group-hover:via-cyan-400/80 transition-all duration-700"></div>
+              
+              <div className="p-6 sm:p-8 flex-1 flex flex-col">
+                <div className="flex items-start justify-between mb-6 gap-4">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#0B1120] border border-cyan-500/20 flex items-center justify-center text-cyan-400 font-black text-lg sm:text-xl group-hover:scale-110 group-hover:bg-gradient-to-br group-hover:from-blue-500 group-hover:to-cyan-400 group-hover:text-white group-hover:border-transparent transition-all duration-500 flex-shrink-0 shadow-inner">
+                      S{index + 1}
+                    </div>
+                    <div className="pt-1">
+                      <h4 className="text-white font-bold text-lg sm:text-xl tracking-wide group-hover:text-cyan-300 transition-colors mb-1">
+                        {weekLabel}
+                      </h4>
+                      <p className="text-slate-400 text-xs sm:text-sm leading-snug">
+                        {weekDesc}
+                      </p>
+                    </div>
                   </div>
-                  <span className="text-white font-semibold text-sm text-left">
-                    {act.nombre}
-                  </span>
+                  
+                  {isAdmin && (
+                    <label className="cursor-pointer flex-shrink-0 inline-flex items-center justify-center w-10 h-10 bg-cyan-950/50 hover:bg-cyan-500 hover:text-white text-cyan-400 rounded-xl transition-all border border-cyan-500/30 hover:border-transparent group/btn">
+                      <Upload className="w-5 h-5 group-hover/btn:-translate-y-1 transition-transform" />
+                      <input 
+                        type="file" 
+                        className="hidden" 
+                        multiple
+                        onChange={(e) => handleFileUpload(act.id, e)}
+                        accept=".pdf,.doc,.docx,.zip,.png,.jpg"
+                      />
+                    </label>
+                  )}
                 </div>
-                {isOpen ? <ChevronUp className="w-5 h-5 text-cyan-400" /> : <ChevronDown className="w-5 h-5 text-cyan-400" />}
-              </button>
 
-              {/* Accordion Content */}
-              {isOpen && (
-                <div className="p-5 pt-0 bg-slate-900/30 border-t border-[#1e293b]">
-                  <div className="mt-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <p className="text-sm text-slate-400">Archivos adjuntos para esta semana.</p>
-                    {isAdmin && (
-                      <label className="cursor-pointer inline-flex items-center justify-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-[#0B1120] px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-[0_0_15px_rgba(34,211,238,0.3)]">
-                        <Upload className="w-4 h-4" />
-                        SUBIR ARCHIVO
-                        <input 
-                          type="file" 
-                          className="hidden" 
-                          multiple
-                          onChange={(e) => handleFileUpload(act.id, e)}
-                          accept=".pdf,.doc,.docx,.zip,.png,.jpg"
-                        />
-                      </label>
-                    )}
-                  </div>
-
+                {/* Área de Archivos */}
+                <div className="mt-auto bg-[#0B1120]/80 rounded-2xl p-4 sm:p-5 border border-white/5 shadow-inner min-h-[100px] flex flex-col justify-center">
                   {filesForAct.length > 0 ? (
-                    <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-3">
                       {filesForAct.map((file, idx) => (
-                        <div key={idx} className="flex items-center justify-between bg-[#0B1120] p-3 rounded-lg border border-white/5">
-                          <div className="flex items-center gap-3 truncate pr-2">
-                            <CheckCircle2 className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-                            <span className="text-xs text-slate-300 truncate">{file.name}</span>
+                        <div key={idx} className="flex items-center justify-between bg-white/5 hover:bg-white/10 p-3 rounded-xl border border-white/5 transition-colors">
+                          <div className="flex items-center gap-3 overflow-hidden pr-2">
+                            <div className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
+                              <FileText className="w-4 h-4 text-cyan-400" />
+                            </div>
+                            <span className="text-sm text-slate-200 truncate font-medium">{file.name}</span>
                             {uploading[`${act.id}-${file.name}`] && (
-                              <span className="text-[10px] text-cyan-400 animate-pulse ml-2">Subiendo...</span>
+                              <span className="text-xs text-cyan-400 animate-pulse ml-2 whitespace-nowrap">Subiendo...</span>
                             )}
                           </div>
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-2 flex-shrink-0">
                             <a 
                               href={file.url} 
                               target="_blank" 
                               rel="noopener noreferrer"
-                              className="p-1.5 hover:bg-cyan-500/20 text-cyan-400 rounded-md transition-colors"
+                              className="w-8 h-8 flex items-center justify-center bg-blue-500/20 hover:bg-blue-500/40 text-blue-300 rounded-lg transition-colors"
+                              title="Ver archivo"
                             >
                               <Eye className="w-4 h-4" />
                             </a>
                             {isAdmin && (
                               <button 
                                 onClick={() => handleRemoveFile(act.id, idx)}
-                                className="p-1.5 hover:bg-red-500/20 text-red-400 rounded-md transition-colors"
+                                className="w-8 h-8 flex items-center justify-center bg-red-500/10 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors"
+                                title="Eliminar"
                               >
                                 <X className="w-4 h-4" />
                               </button>
@@ -279,12 +300,13 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
                       ))}
                     </div>
                   ) : (
-                    <div className="mt-4 p-4 border border-dashed border-[#1e293b] rounded-lg text-center text-xs text-slate-500">
-                      No hay archivos subidos todavía.
+                    <div className="flex flex-col items-center justify-center text-center py-4 opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
+                      <FileText className="w-8 h-8 text-slate-500 mb-2" />
+                      <span className="text-xs font-medium text-slate-400">Sin archivos adjuntos</span>
                     </div>
                   )}
                 </div>
-              )}
+              </div>
             </div>
           );
         })}
