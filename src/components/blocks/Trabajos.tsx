@@ -156,14 +156,18 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
   return (
     <div className="max-w-7xl mx-auto py-8 px-4 animate-in fade-in zoom-in-95 duration-500 relative">
       
-      {/* HEADER BANNER */}
-      <div className="text-center mb-10">
-        <p className="text-cyan-400 font-bold tracking-[0.2em] text-xs uppercase flex items-center justify-center gap-2 mb-2">
-          <span className="text-[10px]">✦</span> BASE DE DATOS II
+      {/* HEADER BANNER ANIMADO */}
+      <div className="text-center mb-14 relative">
+        <div className="absolute inset-0 bg-cyan-500/10 blur-[100px] rounded-full animate-pulse"></div>
+        <p className="text-cyan-400 font-bold tracking-[0.3em] text-xs uppercase flex items-center justify-center gap-3 mb-4 animate-in slide-in-from-top-4 fade-in duration-700 delay-150">
+          <span className="text-[10px] animate-spin-slow">✦</span> 
+          BASE DE DATOS II 
+          <span className="text-[10px] animate-spin-slow">✦</span>
         </p>
-        <h2 className="text-3xl md:text-5xl font-[family-name:var(--font-bodoni)] font-medium text-white mb-6 tracking-wide drop-shadow-md">
+        <h2 className="relative text-4xl md:text-6xl font-[family-name:var(--font-bodoni)] font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-white mb-2 tracking-widest drop-shadow-[0_0_25px_rgba(34,211,238,0.4)] animate-in slide-in-from-bottom-8 fade-in zoom-in-95 duration-1000 hover:scale-105 transition-transform cursor-default">
           UNIDADES DEL CURSO
         </h2>
+        <div className="w-24 h-1 mx-auto bg-gradient-to-r from-transparent via-cyan-400 to-transparent rounded-full animate-in fade-in zoom-in duration-1000 delay-300"></div>
       </div>
 
       {/* Grid de Unidades */}
