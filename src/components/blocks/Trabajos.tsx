@@ -9,6 +9,14 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
   
   // Tab control
   const [activeTab, setActiveTab] = useState<string>("u1");
+  // Accordion control for the unit itself
+  const [isUnitOpen, setIsUnitOpen] = useState<boolean>(false);
+
+  // Close the unit weeks grid whenever the tab changes
+  useEffect(() => {
+    setIsUnitOpen(false);
+  }, [activeTab]);
+
   // Accordion control for weeks inside the active unit
   const [openWeeks, setOpenWeeks] = useState<Record<string, boolean>>({});
 
@@ -214,8 +222,11 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
         </button>
       </div>
 
-      {/* Main Unit Card (Premium Dashboard Style) */}
-      <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#0f172a]/95 to-[#0B1120]/95 border border-cyan-500/20 shadow-[0_0_50px_rgba(34,211,238,0.1)] p-8 md:p-12 mb-12 backdrop-blur-md group animate-in slide-in-from-bottom-4 duration-700">
+      {/* Main Unit Card (Premium Dashboard Style) - Clickable to open weeks */}
+      <div 
+        onClick={() => setIsUnitOpen(!isUnitOpen)}
+        className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#0f172a]/95 to-[#0B1120]/95 border border-cyan-500/20 shadow-[0_0_50px_rgba(34,211,238,0.1)] p-8 md:p-12 mb-12 backdrop-blur-md group animate-in slide-in-from-bottom-4 duration-700 cursor-pointer hover:border-cyan-400/50 transition-all"
+      >
         {/* Glow de fondo dinámico */}
         <div className="absolute -top-32 -right-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px] group-hover:bg-cyan-400/20 transition-all duration-700"></div>
         <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] group-hover:bg-blue-500/20 transition-all duration-700"></div>
@@ -247,10 +258,17 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
               {activeData.concepto}
             </p>
           </div>
+          </div>
+          
+          {/* Chevron Indicador */}
+          <div className="hidden md:flex ml-auto w-12 h-12 rounded-full bg-cyan-900/30 items-center justify-center text-cyan-400 group-hover:bg-cyan-500/20 group-hover:text-white transition-all">
+            {isUnitOpen ? <ChevronUp className="w-6 h-6" /> : <ChevronDown className="w-6 h-6" />}
+          </div>
         </div>
       </div>
 
       {/* Grid de Semanas (Dashboard Cards) */}
+      {isUnitOpen && (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in slide-in-from-bottom-8 duration-700 delay-150">
         {activeData.actividades.map((act, index) => {
           const filesForAct = uploadedFiles[act.id] || [];
@@ -343,6 +361,7 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
           );
         })}
       </div>
+      )}
 
     </div>
   );
