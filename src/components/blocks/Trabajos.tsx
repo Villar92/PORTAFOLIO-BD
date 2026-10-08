@@ -186,7 +186,7 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
         </button>
 
         <div 
-          className="flex w-full border-b border-cyan-900/30 overflow-x-auto px-12 scrollbar-hide"
+          className="flex w-full border-b border-cyan-900/30 overflow-hidden px-12"
         >
           
           {unidades.map((u) => (
