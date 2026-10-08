@@ -21,11 +21,11 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
             BASE DE DATOS <span className="text-cyan-400 font-medium">II</span>
           </h1>
           
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-wide mt-6 sm:mt-10">
-            JORGE LUIS <span className="text-xl md:text-2xl text-cyan-100/80">CURO VILLAR</span>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-wide mt-6 sm:mt-10 drop-shadow-md">
+            JORGE LUIS <span className="text-xl md:text-2xl text-cyan-200">CURO VILLAR</span>
           </h2>
           
-          <p className="text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-light mt-6 sm:mt-8 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-normal mt-6 sm:mt-8 leading-relaxed drop-shadow-md">
             Explorando el mundo de las bases de datos relacionales, la optimización de consultas y la administración de datos con SQL Server.
           </p>
         </div>

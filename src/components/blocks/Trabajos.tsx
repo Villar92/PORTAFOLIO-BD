@@ -170,7 +170,7 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
             className={`flex-1 py-4 text-xs md:text-sm font-bold tracking-[0.15em] uppercase transition-all duration-300 whitespace-nowrap min-w-[120px] relative ${
               activeTab === u.id
                 ? "text-cyan-400"
-                : "text-slate-400 hover:text-slate-200"
+                : "text-slate-300 hover:text-white"
             }`}
           >
             {u.tabTitle}

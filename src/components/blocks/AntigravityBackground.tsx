@@ -17,7 +17,7 @@ export function AntigravityBackground() {
       </video>
       
       {/* Sutil gradiente oscuro para asegurar la legibilidad del texto */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0B1120]/60 via-transparent to-[#0B1120]/80 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0B1120]/80 via-[#0B1120]/70 to-[#0B1120]/90 pointer-events-none"></div>
     </div>
   );
 }
