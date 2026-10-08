@@ -153,16 +153,16 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
       
       {/* HEADER BANNER */}
       <div className="text-center mb-10">
-        <span className="text-cyan-400 font-bold tracking-[0.2em] text-xs uppercase flex items-center justify-center gap-2 mb-4">
+        <p className="text-cyan-400 font-bold tracking-[0.2em] text-xs uppercase flex items-center justify-center gap-2 mb-3">
           <span className="text-[10px]">✦</span> BASE DE DATOS II
-        </span>
-        <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-6 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] tracking-wide">
+        </p>
+        <h2 className="text-4xl md:text-[3.5rem] font-[family-name:var(--font-bodoni)] font-medium text-white mb-8 tracking-wide drop-shadow-md">
           UNIDADES DEL CURSO
         </h2>
       </div>
 
       {/* Tabs / Botones de Unidad */}
-      <div className="flex w-full border-b border-slate-600/30 mb-10 overflow-x-auto scrollbar-hide">
+      <div className="flex w-full border-b border-cyan-900/30 mb-10 overflow-x-auto scrollbar-hide">
         {unidades.map((u) => (
           <button
             key={u.id}
@@ -176,7 +176,7 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
             {u.tabTitle}
             {/* Línea indicadora activa */}
             {activeTab === u.id && (
-              <div className="absolute bottom-[-1px] left-0 w-full h-[2px] bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]"></div>
+              <div className="absolute bottom-[-1px] left-0 w-full h-[2px] bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.6)]"></div>
             )}
           </button>
         ))}
