@@ -13,12 +13,14 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
     <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#0B1120]/90 border-b border-cyan-900/50 shadow-lg">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-white font-bold text-2xl tracking-tighter">
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              {/* Aproximación al logo UPLA con ícono */}
-              <GraduationCap className="h-7 w-7 text-[#0B1120]" />
+          <div className="flex items-center">
+            <div className="relative h-12 w-36">
+              <img 
+                src="/upla-logo.png" 
+                alt="Logo UPLA" 
+                className="object-contain w-full h-full"
+              />
             </div>
-            <span className="text-xl">UPLA</span>
           </div>
           <span className="text-cyan-400 font-serif font-bold tracking-widest text-lg sm:text-xl hidden sm:inline-block uppercase drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]">
             Mi Portafolio Académico
