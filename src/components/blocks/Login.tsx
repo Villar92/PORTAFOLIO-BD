@@ -60,10 +60,10 @@ export function Login() {
     <div className="flex flex-col items-center justify-center min-h-[85vh] py-12 px-4 animate-in fade-in duration-500">
       
       {/* Tarjeta principal estilo corporativo nuevo */}
-      <div className="w-full max-w-[450px] bg-[#2A3441] rounded-[2rem] overflow-hidden shadow-2xl flex flex-col">
+      <div className="w-full max-w-[380px] bg-[#2A3441] rounded-[1.5rem] overflow-hidden shadow-2xl flex flex-col">
         
         {/* Mitad superior: Imagen */}
-        <div className="h-56 w-full relative">
+        <div className="h-40 w-full relative">
           <div 
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: 'url("/sql-server.jpg")' }}
@@ -73,21 +73,21 @@ export function Login() {
         </div>
 
         {/* Círculo central con flecha */}
-        <div className="relative flex justify-center -mt-6 z-10">
-          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg cursor-pointer">
-            <ChevronDown className="w-6 h-6 text-[#2A3441] stroke-[3]" />
+        <div className="relative flex justify-center -mt-5 z-10">
+          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg cursor-pointer">
+            <ChevronDown className="w-5 h-5 text-[#2A3441] stroke-[3]" />
           </div>
         </div>
 
         {/* Mitad inferior: Formulario */}
-        <div className="px-10 pb-12 pt-6">
-          <div className="text-center mb-8">
-            <h3 className="text-xl font-sans font-bold text-white tracking-wide">
+        <div className="px-8 pb-8 pt-4">
+          <div className="text-center mb-6">
+            <h3 className="text-lg font-sans font-bold text-white tracking-wide">
               INICIAR SESIÓN
             </h3>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleLogin} className="space-y-4">
             {error && (
               <div className="p-3 bg-red-500/20 border border-red-500/50 rounded-full text-red-200 text-xs text-center animate-in shake">
                 {error}
@@ -103,7 +103,7 @@ export function Login() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-12 pr-4 py-3.5 bg-[#1E252F] border border-[#1E252F] rounded-full text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition-all text-sm font-medium"
+                className="w-full pl-12 pr-4 py-2.5 bg-[#1E252F] border border-[#1E252F] rounded-full text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition-all text-sm font-medium"
                 placeholder="CORREO INSTITUCIONAL"
                 required
               />
@@ -118,14 +118,14 @@ export function Login() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-12 pr-4 py-3.5 bg-[#1E252F] border border-[#1E252F] rounded-full text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition-all text-sm font-medium tracking-widest"
+                className="w-full pl-12 pr-4 py-2.5 bg-[#1E252F] border border-[#1E252F] rounded-full text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition-all text-sm font-medium tracking-widest"
                 placeholder="CONTRASEÑA"
                 required
               />
             </div>
 
             {/* Checkbox y Forgot Password */}
-            <div className="flex items-center justify-between pt-2 pb-6 px-2">
+            <div className="flex items-center justify-between pt-2 pb-4 px-2">
               <button 
                 type="button" 
                 onClick={() => setKeepLogged(!keepLogged)}
@@ -149,7 +149,7 @@ export function Login() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="px-12 py-3 bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-white rounded-full font-bold text-sm tracking-widest shadow-lg transition-all duration-300 flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
+                className="px-10 py-2.5 bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-white rounded-full font-bold text-sm tracking-widest shadow-lg transition-all duration-300 flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
