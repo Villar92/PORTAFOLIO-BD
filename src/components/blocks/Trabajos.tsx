@@ -161,19 +161,23 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
         </h2>
       </div>
 
-      {/* Tabs */}
-      <div className="flex border-b border-[#1e293b] mb-10 overflow-x-auto scrollbar-hide">
+      {/* Tabs / Botones de Unidad */}
+      <div className="flex w-full border-b border-slate-600/30 mb-10 overflow-x-auto scrollbar-hide">
         {unidades.map((u) => (
           <button
             key={u.id}
             onClick={() => setActiveTab(u.id)}
-            className={`flex-1 py-4 text-sm font-bold tracking-widest uppercase transition-all whitespace-nowrap min-w-[120px] ${
+            className={`flex-1 py-4 text-xs md:text-sm font-bold tracking-[0.15em] uppercase transition-all duration-300 whitespace-nowrap min-w-[120px] relative ${
               activeTab === u.id
-                ? "text-cyan-400 border-b-2 border-cyan-400"
-                : "text-slate-500 hover:text-slate-300"
+                ? "text-cyan-400"
+                : "text-slate-400 hover:text-slate-200"
             }`}
           >
             {u.tabTitle}
+            {/* Línea indicadora activa */}
+            {activeTab === u.id && (
+              <div className="absolute bottom-[-1px] left-0 w-full h-[2px] bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]"></div>
+            )}
           </button>
         ))}
       </div>
