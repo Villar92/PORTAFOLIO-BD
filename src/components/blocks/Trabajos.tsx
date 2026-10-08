@@ -186,24 +186,20 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
         </button>
 
         <div 
-          className="flex w-full border-b border-cyan-900/30 overflow-hidden px-12"
+          className="flex w-full overflow-hidden px-12 py-4 justify-center gap-4"
         >
           
           {unidades.map((u) => (
           <button
             key={u.id}
             onClick={() => setActiveTab(u.id)}
-            className={`flex-1 py-4 text-xs md:text-sm font-bold tracking-[0.15em] uppercase transition-all duration-300 whitespace-nowrap min-w-[120px] relative ${
+            className={`px-6 py-3 text-xs md:text-sm font-bold tracking-[0.15em] uppercase transition-all duration-300 whitespace-nowrap min-w-[140px] rounded-full border ${
               activeTab === u.id
-                ? "text-cyan-400"
-                : "text-slate-300 hover:text-white"
+                ? "text-cyan-400 border-cyan-400 bg-cyan-500/10 shadow-[0_0_15px_rgba(34,211,238,0.2)]"
+                : "text-slate-300 border-slate-600/50 bg-transparent hover:text-white hover:border-cyan-500/50"
             }`}
           >
             {u.tabTitle}
-            {/* Línea indicadora activa */}
-            {activeTab === u.id && (
-              <div className="absolute bottom-[-1px] left-0 w-full h-[2px] bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.6)]"></div>
-            )}
           </button>
         ))}
         </div>
