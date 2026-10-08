@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Server, Database, ShieldCheck, Gauge, Upload, FileText, CheckCircle2, Eye, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from "lucide-react";
+import { Server, Database, ShieldCheck, Gauge, Upload, FileText, CheckCircle2, Eye, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Download } from "lucide-react";
 
 export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
   const [uploadedFiles, setUploadedFiles] = useState<Record<string, any[]>>({});
@@ -9,11 +9,20 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
   
   // Selected unit for the modal
   const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
+  
+  // Preview file modal
+  const [previewFile, setPreviewFile] = useState<{url: string, name: string} | null>(null);
 
   // Close modal on Escape
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setSelectedUnitId(null);
+      if (e.key === 'Escape') {
+        setPreviewFile(prev => {
+          if (prev) return null;
+          setSelectedUnitId(null);
+          return null;
+        });
+      }
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
@@ -312,15 +321,16 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
                                   )}
                                 </div>
                                 <div className="flex items-center gap-2 flex-shrink-0">
-                                  <a 
-                                    href={file.url} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
+                                  <button 
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setPreviewFile(file);
+                                    }}
                                     className="w-8 h-8 flex items-center justify-center bg-blue-500/20 hover:bg-blue-500/40 text-blue-300 rounded-lg transition-colors"
                                     title="Ver archivo"
                                   >
                                     <Eye className="w-4 h-4" />
-                                  </a>
+                                  </button>
                                   {isAdmin && (
                                     <button 
                                       onClick={() => handleRemoveFile(act.id, idx)}
@@ -345,6 +355,49 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de previsualización de archivo */}
+      {previewFile && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm"
+            onClick={() => setPreviewFile(null)}
+          ></div>
+          <div className="relative w-full max-w-5xl h-[85vh] bg-[#0f172a] rounded-2xl shadow-2xl flex flex-col border border-cyan-500/20 animate-in fade-in zoom-in-95 duration-300 overflow-hidden">
+            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-[#0f172a]">
+              <div className="flex items-center gap-3 overflow-hidden pr-4">
+                <FileText className="w-5 h-5 text-cyan-400 flex-shrink-0" />
+                <h3 className="text-white font-medium truncate">{previewFile.name}</h3>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <a 
+                  href={previewFile.url}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 rounded-lg transition-colors text-sm font-medium"
+                >
+                  <Download className="w-4 h-4" />
+                  Descargar
+                </a>
+                <button 
+                  onClick={() => setPreviewFile(null)}
+                  className="w-8 h-8 flex items-center justify-center bg-white/5 hover:bg-white/10 text-slate-300 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+            <div className="flex-1 w-full bg-slate-100 relative">
+              <iframe 
+                src={previewFile.url} 
+                className="absolute inset-0 w-full h-full border-0"
+                title={previewFile.name}
+              />
             </div>
           </div>
         </div>
