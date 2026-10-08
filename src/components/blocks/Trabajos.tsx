@@ -12,6 +12,16 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
   // Accordion control for weeks inside the active unit
   const [openWeeks, setOpenWeeks] = useState<Record<string, boolean>>({});
 
+  const handlePrevTab = () => {
+    const currentIndex = unidades.findIndex(u => u.id === activeTab);
+    if (currentIndex > 0) setActiveTab(unidades[currentIndex - 1].id);
+  };
+
+  const handleNextTab = () => {
+    const currentIndex = unidades.findIndex(u => u.id === activeTab);
+    if (currentIndex < unidades.length - 1) setActiveTab(unidades[currentIndex + 1].id);
+  };
+
   // Scroll reference for tabs
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -168,21 +178,16 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
       <div className="relative mb-10 flex items-center">
         {/* Botón de desplazamiento Izquierdo (Círculo Transparente) */}
         <button 
-          onClick={() => scrollRef.current?.scrollBy({ left: -200, behavior: 'smooth' })}
-          className="absolute left-0 z-10 w-10 h-10 rounded-full border border-cyan-500/50 bg-transparent flex items-center justify-center text-cyan-400 hover:bg-cyan-500/10 hover:text-white transition-all"
+          onClick={handlePrevTab}
+          disabled={unidades.findIndex(u => u.id === activeTab) === 0}
+          className="absolute left-0 z-10 w-10 h-10 rounded-full border border-cyan-500/50 bg-transparent flex items-center justify-center text-cyan-400 hover:bg-cyan-500/10 hover:text-white transition-all disabled:opacity-20 disabled:cursor-not-allowed"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
 
         <div 
-          ref={scrollRef}
-          className="flex w-full border-b border-cyan-900/30 overflow-x-auto px-12"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className="flex w-full border-b border-cyan-900/30 overflow-x-auto px-12 scrollbar-hide"
         >
-          {/* Estilo para ocultar scrollbar en Webkit */}
-          <style dangerouslySetInnerHTML={{__html: `
-            div::-webkit-scrollbar { display: none; }
-          `}} />
           
           {unidades.map((u) => (
           <button
@@ -205,8 +210,9 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
 
         {/* Botón de desplazamiento Derecho (Círculo Transparente) */}
         <button 
-          onClick={() => scrollRef.current?.scrollBy({ left: 200, behavior: 'smooth' })}
-          className="absolute right-0 z-10 w-10 h-10 rounded-full border border-cyan-500/50 bg-transparent flex items-center justify-center text-cyan-400 hover:bg-cyan-500/10 hover:text-white transition-all"
+          onClick={handleNextTab}
+          disabled={unidades.findIndex(u => u.id === activeTab) === unidades.length - 1}
+          className="absolute right-0 z-10 w-10 h-10 rounded-full border border-cyan-500/50 bg-transparent flex items-center justify-center text-cyan-400 hover:bg-cyan-500/10 hover:text-white transition-all disabled:opacity-20 disabled:cursor-not-allowed"
         >
           <ChevronRight className="w-6 h-6" />
         </button>
