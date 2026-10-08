@@ -13,12 +13,12 @@ export function Presentacion() {
       </div>
 
       <div className="text-center space-y-6 max-w-4xl mb-12">
-        <h1 className="text-6xl md:text-8xl font-serif font-bold text-white tracking-widest drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+        <h1 className="text-5xl md:text-7xl font-serif font-bold text-white tracking-widest drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
           BASE DE DATOS <span className="text-cyan-400 drop-shadow-[0_0_20px_rgba(34,211,238,0.8)]">II</span>
         </h1>
         
-        <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight mt-6">
-          Eduardo Fredy Ramón Puente
+        <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight mt-6">
+          Jorge Luis Curo Villar
         </h2>
         
         <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto font-light mt-4">

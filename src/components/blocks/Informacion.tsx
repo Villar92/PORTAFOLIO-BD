@@ -27,7 +27,7 @@ export function Informacion() {
           <div className="w-56 h-56 md:w-64 md:h-64 rounded-full p-1 bg-[#0B1120] relative border-4 border-cyan-400 shadow-[0_0_30px_rgba(34,211,238,0.6)] mb-6">
             <NextImage 
               src="/JORGE CV.jpg" 
-              alt="Eduardo Fredy Ramón Puente" 
+              alt="Jorge Luis Curo Villar" 
               fill
               className="object-cover rounded-full grayscale hover:grayscale-0 transition-all duration-500"
             />
