@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Server, Database, ShieldCheck, Gauge, Upload, FileText, CheckCircle2, Eye, X, ChevronDown, ChevronUp } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Server, Database, ShieldCheck, Gauge, Upload, FileText, CheckCircle2, Eye, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from "lucide-react";
 
 export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
   const [uploadedFiles, setUploadedFiles] = useState<Record<string, any[]>>({});
@@ -11,6 +11,9 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
   const [activeTab, setActiveTab] = useState<string>("u1");
   // Accordion control for weeks inside the active unit
   const [openWeeks, setOpenWeeks] = useState<Record<string, boolean>>({});
+
+  // Scroll reference for tabs
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const loadFiles = async () => {
@@ -162,8 +165,26 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
       </div>
 
       {/* Tabs / Botones de Unidad */}
-      <div className="flex w-full border-b border-cyan-900/30 mb-10 overflow-x-auto scrollbar-hide">
-        {unidades.map((u) => (
+      <div className="relative mb-10 group">
+        {/* Botón de desplazamiento Izquierdo (Círculo Transparente) */}
+        <button 
+          onClick={() => scrollRef.current?.scrollBy({ left: -200, behavior: 'smooth' })}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full border border-cyan-500/30 bg-[#0B1120]/60 backdrop-blur-sm flex items-center justify-center text-cyan-400 hover:bg-cyan-500/20 hover:text-white transition-all opacity-0 group-hover:opacity-100 hidden md:flex"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+
+        <div 
+          ref={scrollRef}
+          className="flex w-full border-b border-cyan-900/30 overflow-x-auto px-2 md:px-10"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {/* Estilo para ocultar scrollbar en Webkit */}
+          <style dangerouslySetInnerHTML={{__html: `
+            div::-webkit-scrollbar { display: none; }
+          `}} />
+          
+          {unidades.map((u) => (
           <button
             key={u.id}
             onClick={() => setActiveTab(u.id)}
@@ -180,6 +201,15 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
             )}
           </button>
         ))}
+        </div>
+
+        {/* Botón de desplazamiento Derecho (Círculo Transparente) */}
+        <button 
+          onClick={() => scrollRef.current?.scrollBy({ left: 200, behavior: 'smooth' })}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full border border-cyan-500/30 bg-[#0B1120]/60 backdrop-blur-sm flex items-center justify-center text-cyan-400 hover:bg-cyan-500/20 hover:text-white transition-all opacity-0 group-hover:opacity-100 hidden md:flex"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Main Unit Card (Premium Dashboard Style) */}
