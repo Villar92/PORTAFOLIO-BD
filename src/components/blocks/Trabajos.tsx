@@ -92,7 +92,36 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
     }
   };
 
-  const handleRemoveFile = (actividadId: string, index: number) => {
+  const handleRemoveFile = async (actividadId: string, index: number) => {
+    const fileToDelete = uploadedFiles[actividadId]?.[index];
+    if (!fileToDelete) return;
+
+    // If it's a file from GitHub, we need to delete it from there
+    if (!fileToDelete.isLocal && fileToDelete.path && fileToDelete.sha) {
+      if (!confirm(`¿Estás seguro de que quieres eliminar ${fileToDelete.name}?`)) return;
+      
+      try {
+        const res = await fetch('/api/files', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            path: fileToDelete.path,
+            sha: fileToDelete.sha
+          })
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          alert(`Error eliminando el archivo: ${errorData.error || 'Error desconocido'}`);
+          return;
+        }
+      } catch (err) {
+        console.error("Error al eliminar", err);
+        alert('Error de red al eliminar el archivo.');
+        return;
+      }
+    }
+
     setUploadedFiles(prev => {
       const updatedFiles = [...(prev[actividadId] || [])];
       updatedFiles.splice(index, 1);
