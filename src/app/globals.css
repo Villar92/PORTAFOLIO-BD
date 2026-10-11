@@ -44,3 +44,116 @@ body {
 .animate-float-up {
   animation: float-up 15s linear infinite;
 }
+
+/* Antigravity Levitation and Intro Reveal Keyframes */
+@keyframes antigravity-levitate {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes antigravity-levitate-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(0.5deg);
+  }
+}
+
+@keyframes antigravity-glow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+    filter: drop-shadow(0 0 15px rgba(34, 211, 238, 0.4));
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 35px rgba(34, 211, 238, 0.7));
+  }
+}
+
+@keyframes antigravity-rise-particle {
+  0% {
+    transform: translateY(40px) scale(0.6);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-60px) scale(1.1);
+    opacity: 0;
+  }
+}
+
+@keyframes antigravity-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.animate-antigravity-levitate {
+  animation: antigravity-levitate 4s ease-in-out infinite;
+}
+
+.animate-antigravity-levitate-slow {
+  animation: antigravity-levitate-slow 6s ease-in-out infinite;
+}
+
+.animate-antigravity-glow {
+  animation: antigravity-glow 3s ease-in-out infinite;
+}
+
+.animate-antigravity-reveal {
+  animation: antigravity-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Rain Transition Keyframes */
+@keyframes rain-streak {
+  0% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(120vh);
+    opacity: 0;
+  }
+}
+
+@keyframes rain-wipe-curtain {
+  0% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  60% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(105%);
+    opacity: 0;
+  }
+}
+
+.animate-rain-curtain {
+  animation: rain-wipe-curtain 1.4s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+}
+
+

@@ -1,52 +1,121 @@
-import React from "react";
-import { ArrowRight, Database, BookOpen, User } from "lucide-react";
+"use client";
 
-export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => void }) {
+import React, { useEffect, useState } from "react";
+import { Database, BookOpen, User, Sparkles, CloudRain } from "lucide-react";
+import { CyberRain } from "./CyberRain";
+
+export function Presentacion({ setActiveTab, activeTab = "inicio" }: { setActiveTab: (tab: string) => void, activeTab?: string }) {
+  const [mounted, setMounted] = useState(false);
+  const [rainWipe, setRainWipe] = useState(true);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === "inicio" || activeTab === "presentacion") {
+      setRainWipe(true);
+      const timer = setTimeout(() => {
+        setRainWipe(false);
+      }, 1800);
+      return () => clearTimeout(timer);
+    }
+  }, [activeTab]);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] py-10 px-4 animate-in fade-in zoom-in-95 duration-1000">
+    <div className="flex flex-col items-center justify-center min-h-[75vh] py-10 px-4 relative overflow-hidden">
       
-      {/* Contenedor sin fondo */}
-      <div className="max-w-4xl w-full flex flex-col items-center text-center relative p-4 sm:p-8">
+      {/* 1. Lluvia cibernética continua de fondo (Cyber Rain) */}
+      <CyberRain className="z-[1] opacity-75" density={110} />
 
-        {/* Etiqueta superior */}
-        <div className="mb-6 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/5 border border-white/10 shadow-inner backdrop-blur-md">
-          <Database className="w-4 h-4 text-cyan-400" />
-          <span className="text-xs sm:text-sm font-semibold text-cyan-50 tracking-widest uppercase">Universidad Peruana Los Andes</span>
+      {/* 2. Cortina de Lluvia de Transición de Entrada (Rain Curtain Transition) */}
+      {rainWipe && (
+        <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden flex justify-between">
+          {[...Array(24)].map((_, i) => (
+            <div
+              key={i}
+              className="relative w-[2px] h-full"
+              style={{
+                animation: `rain-streak ${0.9 + (i % 6) * 0.12}s cubic-bezier(0.4, 0, 0.2, 1) forwards`,
+                animationDelay: `${(i * 0.04)}s`,
+              }}
+            >
+              {/* Estela de lluvia brillante */}
+              <div 
+                className="w-full rounded-full bg-gradient-to-b from-transparent via-cyan-400 to-white shadow-[0_0_12px_rgba(34,211,238,0.9)]"
+                style={{
+                  height: `${70 + (i % 5) * 25}px`,
+                }}
+              />
+            </div>
+          ))}
+          {/* Velo de agua translúcido que se disipa */}
+          <div className="absolute inset-0 bg-cyan-950/20 backdrop-blur-[2px] animate-rain-curtain pointer-events-none" />
+        </div>
+      )}
+
+      {/* 3. Halo de energía Antigravity / Lluvia de Luz */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[550px] h-[350px] sm:h-[550px] bg-gradient-to-tr from-cyan-500/25 via-blue-600/15 to-transparent rounded-full blur-[90px] pointer-events-none animate-antigravity-glow z-[0]" />
+
+      {/* 4. Contenedor principal con revelado tras la lluvia */}
+      <div className={`max-w-4xl w-full flex flex-col items-center text-center relative p-4 sm:p-8 z-10 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-10 blur-sm'}`}>
+
+        {/* Etiqueta superior con levitación sutil */}
+        <div 
+          className="mb-6 inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-[#0B1120]/80 border border-cyan-400/30 shadow-[0_0_20px_rgba(6,182,212,0.25)] backdrop-blur-md animate-antigravity-levitate hover:border-cyan-400/60 transition-colors"
+          style={{ animationDuration: "5s" }}
+        >
+          <Database className="w-4 h-4 text-cyan-400 animate-pulse" />
+          <span className="text-xs sm:text-sm font-semibold text-cyan-50 tracking-widest uppercase">
+            Universidad Peruana Los Andes
+          </span>
+          <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
         </div>
 
-        {/* Contenido principal */}
+        {/* Título Principal con resplandor estilo lluvia de neón */}
         <div className="space-y-4 max-w-3xl mb-10">
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-[family-name:var(--font-outfit)] font-semibold text-white tracking-[0.1em] sm:tracking-[0.15em] drop-shadow-lg leading-tight">
-            BASE DE DATOS <span className="font-black text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]">II</span>
-          </h1>
+          <div className="relative inline-block">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-[family-name:var(--font-outfit)] font-semibold text-white tracking-[0.12em] sm:tracking-[0.16em] drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] leading-tight select-none">
+              BASE DE DATOS{" "}
+              <span className="inline-block font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-200 via-cyan-400 to-blue-500 drop-shadow-[0_0_30px_rgba(34,211,238,0.8)] animate-antigravity-levitate ml-1" style={{ animationDuration: "3.5s" }}>
+                II
+              </span>
+            </h1>
+            {/* Resplandor de línea horizontal sutil bajo el título */}
+            <div className="w-3/4 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto mt-3 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
+          </div>
           
-          <h2 className="text-xl sm:text-2xl font-medium text-slate-300 tracking-[0.2em] mt-4 sm:mt-6">
-            JORGE LUIS <span className="font-bold text-white">CURO VILLAR</span>
+          <h2 className="text-xl sm:text-2xl font-medium text-slate-200 tracking-[0.2em] mt-5 sm:mt-7 drop-shadow-md">
+            JORGE LUIS{" "}
+            <span className="font-bold text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]">
+              CURO VILLAR
+            </span>
           </h2>
           
-          <p className="text-base sm:text-lg text-slate-300/90 max-w-2xl mx-auto font-light mt-6 leading-relaxed drop-shadow-sm">
+          <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-light mt-6 leading-relaxed drop-shadow px-2">
             Dominando el diseño, la optimización y la consulta avanzada en SQL Server. Utilizando los retos de Base de Datos II como trampolín para construir soluciones reales, escalables y listas para la industria.
           </p>
         </div>
 
         {/* Botones de acción */}
-        <div className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto items-center justify-center">
           <button 
             onClick={() => setActiveTab("trabajos")}
-            className="px-8 py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-full font-bold text-sm tracking-widest shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3"
+            className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-cyan-500 via-blue-600 to-blue-700 hover:from-cyan-400 hover:via-blue-500 hover:to-blue-600 text-white rounded-full font-bold text-sm tracking-widest shadow-[0_0_25px_rgba(34,211,238,0.4)] hover:shadow-[0_0_35px_rgba(34,211,238,0.7)] hover:-translate-y-1.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer group"
           >
-            <BookOpen className="w-5 h-5" />
-            VER UNIDADES
+            <BookOpen className="w-5 h-5 transition-transform duration-300 group-hover:rotate-6" />
+            <span>VER UNIDADES</span>
           </button>
           
           <button 
             onClick={() => setActiveTab("informacion")}
-            className="px-8 py-3.5 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-full font-bold text-sm tracking-widest backdrop-blur-sm transition-all duration-300 flex items-center justify-center gap-3 hover:-translate-y-1"
+            className="w-full sm:w-auto px-8 py-3.5 bg-white/[0.08] hover:bg-white/[0.16] text-white border border-cyan-400/30 hover:border-cyan-400/70 rounded-full font-bold text-sm tracking-widest backdrop-blur-md shadow-[0_0_20px_rgba(0,0,0,0.4)] hover:shadow-[0_0_25px_rgba(34,211,238,0.3)] hover:-translate-y-1.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer group"
           >
-            <User className="w-5 h-5 text-cyan-400" />
-            SOBRE MÍ
+            <User className="w-5 h-5 text-cyan-400 transition-transform duration-300 group-hover:scale-110" />
+            <span>SOBRE MÍ</span>
           </button>
         </div>
+
       </div>
       
     </div>

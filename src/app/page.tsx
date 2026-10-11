@@ -25,7 +25,7 @@ export default function Home() {
       
       <main className="flex-1 w-full relative">
         <div className={`transition-opacity duration-300 ${activeTab === 'inicio' || activeTab === 'presentacion' ? 'block' : 'hidden'}`}>
-          <Presentacion setActiveTab={setActiveTab} />
+          <Presentacion setActiveTab={setActiveTab} activeTab={activeTab} />
         </div>
         
         <div className={`transition-opacity duration-300 ${activeTab === 'informacion' ? 'block' : 'hidden'}`}>
