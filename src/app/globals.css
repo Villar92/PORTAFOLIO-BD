@@ -156,4 +156,67 @@ body {
   animation: rain-wipe-curtain 1.4s cubic-bezier(0.45, 0, 0.55, 1) forwards;
 }
 
+/* Antigravity 3D Orbital & Singularity Keyframes */
+@keyframes antigravity-shockwave {
+  0% {
+    transform: translate(-50%, -50%) scale(0.1);
+    opacity: 1;
+    filter: drop-shadow(0 0 20px #22d3ee);
+  }
+  60% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3.2);
+    opacity: 0;
+    filter: drop-shadow(0 0 5px transparent);
+  }
+}
+
+@keyframes antigravity-shockwave-2 {
+  0% {
+    transform: translate(-50%, -50%) scale(0.05);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.6);
+    opacity: 0;
+  }
+}
+
+@keyframes antigravity-spin-orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes antigravity-spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-antigravity-shockwave {
+  animation: antigravity-shockwave 1.6s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+.animate-antigravity-shockwave-delay {
+  animation: antigravity-shockwave-2 1.8s cubic-bezier(0.1, 0.9, 0.2, 1) 0.3s forwards;
+}
+
+.animate-antigravity-orbit {
+  animation: antigravity-spin-orbit 22s linear infinite;
+}
+
+.animate-antigravity-orbit-fast {
+  animation: antigravity-spin-reverse 15s linear infinite;
+}
+
+
 

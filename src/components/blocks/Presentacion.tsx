@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Database, BookOpen, User, Sparkles, CloudRain } from "lucide-react";
-import { CyberRain } from "./CyberRain";
+import { Database, BookOpen, User, Sparkles } from "lucide-react";
+import { AntigravityTransition } from "./AntigravityTransition";
 
 export function Presentacion({ setActiveTab, activeTab = "inicio" }: { setActiveTab: (tab: string) => void, activeTab?: string }) {
   const [mounted, setMounted] = useState(false);
-  const [rainWipe, setRainWipe] = useState(true);
+  const [transitionActive, setTransitionActive] = useState(true);
 
   useEffect(() => {
     setMounted(true);
@@ -14,10 +14,10 @@ export function Presentacion({ setActiveTab, activeTab = "inicio" }: { setActive
 
   useEffect(() => {
     if (activeTab === "inicio" || activeTab === "presentacion") {
-      setRainWipe(true);
+      setTransitionActive(true);
       const timer = setTimeout(() => {
-        setRainWipe(false);
-      }, 1800);
+        setTransitionActive(false);
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [activeTab]);
@@ -25,39 +25,10 @@ export function Presentacion({ setActiveTab, activeTab = "inicio" }: { setActive
   return (
     <div className="flex flex-col items-center justify-center min-h-[75vh] py-10 px-4 relative overflow-hidden">
       
-      {/* 1. Lluvia cibernética continua de fondo (Cyber Rain) */}
-      <CyberRain className="z-[1] opacity-75" density={110} />
+      {/* 1. Transición de Portal y Ondas Gravitacionales Antigravity */}
+      <AntigravityTransition active={transitionActive} />
 
-      {/* 2. Cortina de Lluvia de Transición de Entrada (Rain Curtain Transition) */}
-      {rainWipe && (
-        <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden flex justify-between">
-          {[...Array(24)].map((_, i) => (
-            <div
-              key={i}
-              className="relative w-[2px] h-full"
-              style={{
-                animation: `rain-streak ${0.9 + (i % 6) * 0.12}s cubic-bezier(0.4, 0, 0.2, 1) forwards`,
-                animationDelay: `${(i * 0.04)}s`,
-              }}
-            >
-              {/* Estela de lluvia brillante */}
-              <div 
-                className="w-full rounded-full bg-gradient-to-b from-transparent via-cyan-400 to-white shadow-[0_0_12px_rgba(34,211,238,0.9)]"
-                style={{
-                  height: `${70 + (i % 5) * 25}px`,
-                }}
-              />
-            </div>
-          ))}
-          {/* Velo de agua translúcido que se disipa */}
-          <div className="absolute inset-0 bg-cyan-950/20 backdrop-blur-[2px] animate-rain-curtain pointer-events-none" />
-        </div>
-      )}
-
-      {/* 3. Halo de energía Antigravity / Lluvia de Luz */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[550px] h-[350px] sm:h-[550px] bg-gradient-to-tr from-cyan-500/25 via-blue-600/15 to-transparent rounded-full blur-[90px] pointer-events-none animate-antigravity-glow z-[0]" />
-
-      {/* 4. Contenedor principal con revelado tras la lluvia */}
+      {/* 2. Contenedor principal con efecto de gravedad cero */}
       <div className={`max-w-4xl w-full flex flex-col items-center text-center relative p-4 sm:p-8 z-10 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-10 blur-sm'}`}>
 
         {/* Etiqueta superior con levitación sutil */}
@@ -72,7 +43,7 @@ export function Presentacion({ setActiveTab, activeTab = "inicio" }: { setActive
           <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
         </div>
 
-        {/* Título Principal con resplandor estilo lluvia de neón */}
+        {/* Título Principal con resplandor Antigravity y levitación */}
         <div className="space-y-4 max-w-3xl mb-10">
           <div className="relative inline-block">
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-[family-name:var(--font-outfit)] font-semibold text-white tracking-[0.12em] sm:tracking-[0.16em] drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] leading-tight select-none">
