@@ -143,9 +143,9 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
       concepto: "ARQUITECTURAS DE BASES DE DATOS Y CONFIGURACIÓN DEL ENTORNO CORPORATIVO.",
       actividades: [
         { id: "u1_s1", nombre: "Semana 1 — Formulación del Proyecto y Selección de la Arquitectura" },
-        { id: "u1_s2", nombre: "Semana 2 — Diseño conceptual" },
-        { id: "u1_s3", nombre: "Semana 3 — Normalización" },
-        { id: "u1_s4", nombre: "Semana 4 — Despliegue inicial" }
+        { id: "u1_s2", nombre: "Semana 2 — Despliegue y Configuración de Monitoreo de Datos (DBMS)" },
+        { id: "u1_s3", nombre: "Semana 3 — Modelamiento Físico y Mecanismos de Integración" },
+        { id: "u1_s4", nombre: "Semana 4 — Sustentación y Validación de la Infraestructura de Datos" }
       ]
     },
     {
