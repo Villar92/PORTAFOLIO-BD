@@ -2,31 +2,17 @@
 
 import React, { useEffect, useState } from "react";
 import { Database, BookOpen, User, Sparkles } from "lucide-react";
-import { AntigravityTransition } from "./AntigravityTransition";
 
-export function Presentacion({ setActiveTab, activeTab = "inicio" }: { setActiveTab: (tab: string) => void, activeTab?: string }) {
+export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => void, activeTab?: string }) {
   const [mounted, setMounted] = useState(false);
-  const [transitionActive, setTransitionActive] = useState(true);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (activeTab === "inicio" || activeTab === "presentacion") {
-      setTransitionActive(true);
-      const timer = setTimeout(() => {
-        setTransitionActive(false);
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [activeTab]);
-
   return (
     <div className="flex flex-col items-center justify-center min-h-[75vh] py-10 px-4 relative overflow-hidden">
-      
-      {/* 1. Transición de Portal y Ondas Gravitacionales Antigravity */}
-      <AntigravityTransition active={transitionActive} />
+
 
       {/* 2. Contenedor principal con efecto de gravedad cero */}
       <div className={`max-w-4xl w-full flex flex-col items-center text-center relative p-4 sm:p-8 z-10 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0 filter-none' : 'opacity-0 translate-y-10 blur-sm'}`}>
