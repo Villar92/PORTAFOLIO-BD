@@ -29,21 +29,24 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
           <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
         </div>
 
-        {/* Título Principal con resplandor Antigravity y levitación */}
-        <div className="space-y-3 max-w-4xl mb-4">
-          <p className="text-sm sm:text-lg md:text-xl font-medium tracking-[0.25em] sm:tracking-[0.35em] text-cyan-300 uppercase drop-shadow-[0_0_15px_rgba(34,211,238,0.6)]">
-            PORTAFOLIO ACADÉMICO
-          </p>
+        {/* Título Principal y Subtítulo Centrados y Proporcionados */}
+        <div className="flex flex-col items-center justify-center text-center max-w-5xl w-full mb-6 space-y-4">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-[family-name:var(--font-outfit)] font-extrabold text-white tracking-[0.10em] sm:tracking-[0.16em] drop-shadow-[0_12px_24px_rgba(0,0,0,0.9)] leading-tight select-none">
+            PORTAFOLIO{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-400 drop-shadow-[0_0_35px_rgba(34,211,238,0.7)]">
+              ACADÉMICO
+            </span>
+          </h1>
 
-          <div className="relative inline-block">
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-[family-name:var(--font-outfit)] font-semibold text-white tracking-[0.12em] sm:tracking-[0.16em] drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] leading-tight select-none">
+          <div className="flex flex-col items-center justify-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-[family-name:var(--font-outfit)] font-semibold text-slate-100 tracking-[0.15em] sm:tracking-[0.22em] drop-shadow-[0_6px_16px_rgba(0,0,0,0.8)] select-none">
               BASE DE DATOS{" "}
-              <span className="inline-block font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-200 via-cyan-400 to-blue-500 drop-shadow-[0_0_30px_rgba(34,211,238,0.8)] animate-antigravity-levitate ml-1" style={{ animationDuration: "3.5s" }}>
+              <span className="inline-block font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-200 via-cyan-400 to-blue-500 drop-shadow-[0_0_25px_rgba(34,211,238,0.8)] ml-1">
                 II
               </span>
-            </h1>
-            {/* Resplandor de línea horizontal sutil bajo el título */}
-            <div className="w-3/4 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto mt-4 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
+            </h2>
+            {/* Línea decorativa luminosa centrada */}
+            <div className="w-48 sm:w-72 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto mt-4 shadow-[0_0_12px_rgba(34,211,238,0.9)]" />
           </div>
         </div>
 
