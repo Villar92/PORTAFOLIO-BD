@@ -8,6 +8,7 @@ import { Trabajos } from "@/components/blocks/Trabajos";
 import { Login } from "@/components/blocks/Login";
 import { Footer } from "@/components/blocks/Footer";
 import { AntigravityBackground } from "@/components/blocks/AntigravityBackground";
+import { ChatWidget } from "@/components/blocks/ChatWidget";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("inicio");
@@ -48,6 +49,7 @@ export default function Home() {
       </main>
 
       <Footer />
+      <ChatWidget />
     </div>
   );
 }
