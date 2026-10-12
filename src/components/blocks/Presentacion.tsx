@@ -41,17 +41,6 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
             {/* Resplandor de línea horizontal sutil bajo el título */}
             <div className="w-3/4 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto mt-3 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
           </div>
-          
-          <h2 className="text-xl sm:text-2xl font-medium text-slate-200 tracking-[0.2em] mt-5 sm:mt-7 drop-shadow-md">
-            JORGE LUIS{" "}
-            <span className="font-bold text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]">
-              CURO VILLAR
-            </span>
-          </h2>
-          
-          <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-light mt-6 leading-relaxed drop-shadow px-2">
-            Dominando el diseño, la optimización y la consulta avanzada en SQL Server. Utilizando los retos de Base de Datos II como trampolín para construir soluciones reales, escalables y listas para la industria.
-          </p>
         </div>
 
         {/* Botones de acción con scroll suave hacia las secciones */}
