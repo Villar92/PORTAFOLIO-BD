@@ -30,23 +30,28 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
         </div>
 
         {/* Título Principal y Subtítulo Centrados y Proporcionados */}
-        <div className="flex flex-col items-center justify-center text-center max-w-5xl w-full mb-6 space-y-4">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-[family-name:var(--font-outfit)] font-extrabold text-white tracking-[0.10em] sm:tracking-[0.16em] drop-shadow-[0_12px_24px_rgba(0,0,0,0.9)] leading-tight select-none">
+        <div className="flex flex-col items-center justify-center text-center max-w-5xl w-full mb-8">
+          {/* TÍTULO SUPERIOR */}
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-[family-name:var(--font-outfit)] font-black text-white tracking-[0.10em] sm:tracking-[0.16em] drop-shadow-[0_12px_24px_rgba(0,0,0,0.9)] leading-tight select-none">
             PORTAFOLIO{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-cyan-400 to-blue-400 drop-shadow-[0_0_35px_rgba(34,211,238,0.7)]">
               ACADÉMICO
             </span>
           </h1>
 
-          <div className="flex flex-col items-center justify-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-[family-name:var(--font-outfit)] font-semibold text-slate-100 tracking-[0.15em] sm:tracking-[0.22em] drop-shadow-[0_6px_16px_rgba(0,0,0,0.8)] select-none">
-              BASE DE DATOS{" "}
-              <span className="inline-block font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-200 via-cyan-400 to-blue-500 drop-shadow-[0_0_25px_rgba(34,211,238,0.8)] ml-1">
-                II
-              </span>
-            </h2>
-            {/* Línea decorativa luminosa centrada */}
-            <div className="w-48 sm:w-72 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto mt-4 shadow-[0_0_12px_rgba(34,211,238,0.9)]" />
+          {/* BASE DE DATOS II: Separado, destacado a primera vista con animación y brillo */}
+          <div className="mt-6 sm:mt-10 flex flex-col items-center justify-center animate-antigravity-levitate" style={{ animationDuration: "4s" }}>
+            <div className="relative px-6 py-2 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-blue-950/60 to-cyan-950/40 border border-cyan-400/40 shadow-[0_0_35px_rgba(34,211,238,0.25)] backdrop-blur-md">
+              <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-[family-name:var(--font-outfit)] font-black text-white tracking-[0.16em] sm:tracking-[0.24em] drop-shadow-[0_0_25px_rgba(34,211,238,0.7)] select-none">
+                BASE DE DATOS{" "}
+                <span className="inline-block font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-200 via-cyan-400 to-blue-500 drop-shadow-[0_0_35px_rgba(34,211,238,0.9)] ml-1">
+                  II
+                </span>
+              </h2>
+            </div>
+            
+            {/* Línea decorativa luminosa centrada con brillo */}
+            <div className="w-56 sm:w-80 h-[3px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto mt-5 shadow-[0_0_15px_rgba(34,211,238,1)]" />
           </div>
         </div>
 
