@@ -39,10 +39,10 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
             </span>
           </h1>
 
-          {/* BASE DE DATOS II: Separado, destacado a primera vista con animación y brillo */}
-          <div className="mt-6 sm:mt-10 flex flex-col items-center justify-center animate-antigravity-levitate" style={{ animationDuration: "4s" }}>
-            <div className="relative px-6 py-2 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-blue-950/60 to-cyan-950/40 border border-cyan-400/40 shadow-[0_0_35px_rgba(34,211,238,0.25)] backdrop-blur-md">
-              <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-[family-name:var(--font-outfit)] font-black text-white tracking-[0.16em] sm:tracking-[0.24em] drop-shadow-[0_0_25px_rgba(34,211,238,0.7)] select-none">
+          {/* BASE DE DATOS II: En una sola línea garantizada (whitespace-nowrap) */}
+          <div className="mt-6 sm:mt-10 flex flex-col items-center justify-center w-full animate-antigravity-levitate" style={{ animationDuration: "4s" }}>
+            <div className="relative px-4 sm:px-8 py-2 sm:py-3 rounded-2xl bg-gradient-to-r from-cyan-950/50 via-blue-950/70 to-cyan-950/50 border border-cyan-400/40 shadow-[0_0_35px_rgba(34,211,238,0.25)] backdrop-blur-md max-w-full">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-[family-name:var(--font-outfit)] font-black text-white tracking-[0.10em] sm:tracking-[0.18em] drop-shadow-[0_0_25px_rgba(34,211,238,0.7)] select-none whitespace-nowrap">
                 BASE DE DATOS{" "}
                 <span className="inline-block font-black text-transparent bg-clip-text bg-gradient-to-b from-cyan-200 via-cyan-400 to-blue-500 drop-shadow-[0_0_35px_rgba(34,211,238,0.9)] ml-1">
                   II
