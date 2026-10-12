@@ -1,13 +1,7 @@
 import React from "react";
-import { Home, User, BookOpen, LogIn } from "lucide-react";
+import { Home, LogIn } from "lucide-react";
 
 export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActiveTab: (t: string) => void }) {
-  const tabs = [
-    { id: "inicio", label: "Inicio", icon: Home },
-    { id: "informacion", label: "Sobre Mí", icon: User },
-    { id: "trabajos", label: "Unidades", icon: BookOpen },
-    { id: "login", label: "Acceso", icon: LogIn }
-  ];
 
   return (
     <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#0B1120]/95 border-b border-cyan-400/30 shadow-[0_4px_30px_rgba(34,211,238,0.15)]">
@@ -57,29 +51,27 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
         </div>
 
         <div className="flex items-center gap-2 sm:gap-4">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center pr-3 sm:pr-6 pl-1.5 py-1.5 rounded-full font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 group ${
-                  isActive
-                    ? "bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-lg shadow-cyan-500/20"
-                    : "bg-[#0f172a] text-slate-300 hover:text-white border border-cyan-900/50 hover:border-cyan-400/50"
-                }`}
-              >
-                <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center mr-0 sm:mr-3 transition-transform group-hover:scale-105 ${
-                  isActive ? "border-white/80" : "border-slate-500/50 group-hover:border-cyan-400/50"
-                }`}>
-                  <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-slate-400 group-hover:text-cyan-300"}`} />
-                </div>
-                <span className="hidden sm:inline-block">{tab.label}</span>
-              </button>
-            );
-          })}
+          {activeTab === "login" ? (
+            <button
+              onClick={() => setActiveTab("inicio")}
+              className="flex items-center pr-4 sm:pr-6 pl-1.5 py-1.5 rounded-full font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 group bg-[#0f172a] text-slate-300 hover:text-white border border-cyan-900/50 hover:border-cyan-400/50 cursor-pointer shadow-lg hover:shadow-cyan-500/20"
+            >
+              <div className="w-8 h-8 rounded-full border-2 flex items-center justify-center mr-2 sm:mr-3 transition-transform group-hover:scale-105 border-slate-500/50 group-hover:border-cyan-400/50">
+                <Home className="w-4 h-4 text-slate-400 group-hover:text-cyan-300" />
+              </div>
+              <span>Volver</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => setActiveTab("login")}
+              className="flex items-center pr-4 sm:pr-6 pl-1.5 py-1.5 rounded-full font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 group bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white shadow-lg shadow-cyan-500/25 cursor-pointer hover:-translate-y-0.5 active:translate-y-0"
+            >
+              <div className="w-8 h-8 rounded-full border-2 border-white/80 flex items-center justify-center mr-2 sm:mr-3 transition-transform group-hover:scale-105">
+                <LogIn className="w-4 h-4 text-white" />
+              </div>
+              <span>Acceso</span>
+            </button>
+          )}
         </div>
       </div>
     </nav>

@@ -24,25 +24,33 @@ export default function Home() {
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
       
       <main className="flex-1 w-full relative">
-        <div className={`transition-opacity duration-300 ${activeTab === 'inicio' || activeTab === 'presentacion' ? 'block' : 'hidden'}`}>
-          <Presentacion setActiveTab={setActiveTab} activeTab={activeTab} />
-        </div>
-        
-        <div className={`transition-opacity duration-300 ${activeTab === 'informacion' ? 'block' : 'hidden'}`}>
-          <Informacion />
-        </div>
-        
-        <div className={`transition-opacity duration-300 ${activeTab === 'trabajos' ? 'block' : 'hidden'}`}>
-          <Trabajos />
-        </div>
-        
-        <div className={`transition-opacity duration-300 ${activeTab === 'contacto' ? 'block' : 'hidden'}`}>
-          <Contacto />
-        </div>
-        
-        <div className={`transition-opacity duration-300 ${activeTab === 'login' ? 'block' : 'hidden'}`}>
-          <Login />
-        </div>
+        {activeTab === "login" ? (
+          <div className="animate-in fade-in duration-300">
+            <Login />
+          </div>
+        ) : (
+          <div className="flex flex-col gap-12 sm:gap-20 pb-16">
+            {/* 1. Inicio / Presentación */}
+            <section id="inicio" className="scroll-mt-20">
+              <Presentacion setActiveTab={setActiveTab} />
+            </section>
+
+            {/* 2. Sobre Mí */}
+            <section id="sobre-mi" className="scroll-mt-20">
+              <Informacion />
+            </section>
+
+            {/* 3. Unidades del Curso */}
+            <section id="unidades" className="scroll-mt-20">
+              <Trabajos />
+            </section>
+
+            {/* 4. Contacto */}
+            <section id="contacto" className="scroll-mt-20">
+              <Contacto />
+            </section>
+          </div>
+        )}
       </main>
 
       <Footer />

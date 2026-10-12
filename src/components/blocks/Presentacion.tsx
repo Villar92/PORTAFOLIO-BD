@@ -54,23 +54,23 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
           </p>
         </div>
 
-        {/* Botones de acción */}
+        {/* Botones de acción con scroll suave hacia las secciones */}
         <div className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto items-center justify-center">
-          <button 
-            onClick={() => setActiveTab("trabajos")}
+          <a 
+            href="#unidades"
             className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-cyan-500 via-blue-600 to-blue-700 hover:from-cyan-400 hover:via-blue-500 hover:to-blue-600 text-white rounded-full font-bold text-sm tracking-widest shadow-[0_0_25px_rgba(34,211,238,0.4)] hover:shadow-[0_0_35px_rgba(34,211,238,0.7)] hover:-translate-y-1.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer group"
           >
             <BookOpen className="w-5 h-5 transition-transform duration-300 group-hover:rotate-6" />
             <span>VER UNIDADES</span>
-          </button>
+          </a>
           
-          <button 
-            onClick={() => setActiveTab("informacion")}
+          <a 
+            href="#sobre-mi"
             className="w-full sm:w-auto px-8 py-3.5 bg-white/[0.08] hover:bg-white/[0.16] text-white border border-cyan-400/30 hover:border-cyan-400/70 rounded-full font-bold text-sm tracking-widest backdrop-blur-md shadow-[0_0_20px_rgba(0,0,0,0.4)] hover:shadow-[0_0_25px_rgba(34,211,238,0.3)] hover:-translate-y-1.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer group"
           >
             <User className="w-5 h-5 text-cyan-400 transition-transform duration-300 group-hover:scale-110" />
             <span>SOBRE MÍ</span>
-          </button>
+          </a>
         </div>
 
       </div>
