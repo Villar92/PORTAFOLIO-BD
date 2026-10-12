@@ -91,11 +91,11 @@ export function ChatWidget() {
           {/* Header del Chat */}
           <div className="p-4 bg-gradient-to-r from-blue-900/90 via-slate-900/90 to-cyan-950/90 border-b border-cyan-400/20 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-full bg-cyan-950/60 border border-cyan-400/50 p-1 flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.4)]">
+              <div className="relative w-10 h-10 rounded-full bg-cyan-950/60 border border-cyan-400/50 overflow-hidden flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.4)]">
                 <img
-                  src="/robot-assistant.svg"
+                  src="/BOTS.png"
                   alt="Robot Asistente"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover scale-110"
                 />
                 <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border border-slate-900 animate-pulse"></span>
               </div>
@@ -211,14 +211,14 @@ export function ChatWidget() {
           <span className="absolute inset-0 rounded-full border-2 border-cyan-400/60 animate-ping opacity-30 pointer-events-none"></span>
 
           {/* Imagen del robot droide */}
-          <div className="w-full h-full rounded-full bg-[#0B1120]/90 p-2 flex items-center justify-center">
+          <div className="w-full h-full rounded-full bg-[#0B1120]/90 overflow-hidden flex items-center justify-center">
             {isOpen ? (
               <X className="w-7 h-7 text-cyan-300 transition-transform group-hover:rotate-90" />
             ) : (
               <img
-                src="/robot-assistant.svg"
+                src="/BOTS.png"
                 alt="Robot Asistente"
-                className="w-full h-full object-contain drop-shadow-[0_0_8px_rgba(34,211,238,0.7)] group-hover:scale-110 transition-transform duration-300"
+                className="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-300"
               />
             )}
           </div>
