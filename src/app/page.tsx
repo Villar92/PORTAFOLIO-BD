@@ -5,7 +5,6 @@ import { Navbar } from "@/components/blocks/Navbar";
 import { Presentacion } from "@/components/blocks/Presentacion";
 import { Informacion } from "@/components/blocks/Informacion";
 import { Trabajos } from "@/components/blocks/Trabajos";
-import { Contacto } from "@/components/blocks/Contacto";
 import { Login } from "@/components/blocks/Login";
 import { Footer } from "@/components/blocks/Footer";
 import { AntigravityBackground } from "@/components/blocks/AntigravityBackground";
@@ -43,11 +42,6 @@ export default function Home() {
             {/* 3. Unidades del Curso */}
             <section id="unidades" className="scroll-mt-20">
               <Trabajos />
-            </section>
-
-            {/* 4. Contacto */}
-            <section id="contacto" className="scroll-mt-20">
-              <Contacto />
             </section>
           </div>
         )}
