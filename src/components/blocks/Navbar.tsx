@@ -18,8 +18,8 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
           </div>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-4">
-          {activeTab === "login" ? (
+        <div className="flex items-center gap-2 sm:gap-3">
+          {activeTab === "clausulas" ? (
             <button
               onClick={() => setActiveTab("inicio")}
               className="flex items-center pr-4 sm:pr-6 pl-1.5 py-1.5 rounded-full font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 group bg-[#0f172a] text-slate-300 hover:text-white border border-cyan-900/50 hover:border-cyan-400/50 cursor-pointer shadow-lg hover:shadow-cyan-500/20"
@@ -30,15 +30,52 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
               <span>Volver</span>
             </button>
           ) : (
-            <button
-              onClick={() => setActiveTab("login")}
-              className="flex items-center pr-4 sm:pr-6 pl-1.5 py-1.5 rounded-full font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 group bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white shadow-lg shadow-cyan-500/25 cursor-pointer hover:-translate-y-0.5 active:translate-y-0"
-            >
-              <div className="w-8 h-8 rounded-full border-2 border-white/80 flex items-center justify-center mr-2 sm:mr-3 transition-transform group-hover:scale-105">
-                <LogIn className="w-4 h-4 text-white" />
-              </div>
-              <span>Acceso</span>
-            </button>
+            <>
+              {/* Botón Laboratorio de Cláusulas & Robot */}
+              <button
+                onClick={() => setActiveTab("clausulas")}
+                className="flex items-center pr-3.5 sm:pr-4 pl-1.5 py-1 rounded-full font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 group bg-cyan-950/70 hover:bg-cyan-900/80 text-cyan-300 hover:text-white border border-cyan-500/40 hover:border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] cursor-pointer hover:-translate-y-0.5 active:translate-y-0"
+                title="Cláusulas SQL y Robot Trainer de Aprendizaje"
+              >
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-cyan-400/70 bg-[#0B1120] flex items-center justify-center mr-2 overflow-hidden shadow-inner flex-shrink-0 group-hover:scale-105 transition-transform">
+                  <img 
+                    src="/BOTS.png" 
+                    alt="Robot" 
+                    className="w-full h-full object-cover scale-110" 
+                  />
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="font-extrabold text-[11px] sm:text-xs leading-tight tracking-wider uppercase text-cyan-200 group-hover:text-cyan-100">
+                    Cláusulas & Bot
+                  </span>
+                  <span className="text-[9px] text-cyan-400/70 hidden sm:inline leading-none">
+                    Robot Trainer SQL
+                  </span>
+                </div>
+              </button>
+
+              {activeTab === "login" ? (
+                <button
+                  onClick={() => setActiveTab("inicio")}
+                  className="flex items-center pr-4 sm:pr-6 pl-1.5 py-1.5 rounded-full font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 group bg-[#0f172a] text-slate-300 hover:text-white border border-cyan-900/50 hover:border-cyan-400/50 cursor-pointer shadow-lg hover:shadow-cyan-500/20"
+                >
+                  <div className="w-8 h-8 rounded-full border-2 flex items-center justify-center mr-2 sm:mr-3 transition-transform group-hover:scale-105 border-slate-500/50 group-hover:border-cyan-400/50">
+                    <Home className="w-4 h-4 text-slate-400 group-hover:text-cyan-300" />
+                  </div>
+                  <span>Volver</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => setActiveTab("login")}
+                  className="flex items-center pr-3.5 sm:pr-5 pl-1.5 py-1.5 rounded-full font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 group bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white shadow-lg shadow-cyan-500/25 cursor-pointer hover:-translate-y-0.5 active:translate-y-0"
+                >
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white/80 flex items-center justify-center mr-2 sm:mr-2.5 transition-transform group-hover:scale-105">
+                    <LogIn className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                  </div>
+                  <span>Acceso</span>
+                </button>
+              )}
+            </>
           )}
         </div>
       </div>

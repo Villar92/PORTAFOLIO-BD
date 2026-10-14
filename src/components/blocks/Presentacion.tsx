@@ -52,6 +52,27 @@ export function Presentacion({ setActiveTab }: { setActiveTab: (tab: string) => 
             
             {/* Línea decorativa luminosa centrada con brillo */}
             <div className="w-56 sm:w-80 h-[3px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto mt-5 shadow-[0_0_15px_rgba(34,211,238,1)]" />
+
+            {/* Acceso directo al Laboratorio de Cláusulas & Robot Trainer */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <button
+                onClick={() => setActiveTab("clausulas")}
+                className="group relative inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-gradient-to-r from-cyan-950/80 via-blue-950/80 to-cyan-950/80 border border-cyan-400/50 hover:border-cyan-300 shadow-[0_0_30px_rgba(34,211,238,0.25)] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+              >
+                <div className="w-9 h-9 rounded-xl border border-cyan-400/60 p-0.5 bg-black/40 overflow-hidden flex-shrink-0 group-hover:scale-110 transition-transform">
+                  <img src="/BOTS.png" alt="Robot Trainer" className="w-full h-full object-cover scale-110" />
+                </div>
+                <div className="text-left">
+                  <div className="text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <span>Laboratorio Interactivo</span>
+                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                  </div>
+                  <div className="text-sm sm:text-base font-extrabold text-white group-hover:text-cyan-200 transition-colors">
+                    Cláusulas SQL & Robot Trainer →
+                  </div>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
 

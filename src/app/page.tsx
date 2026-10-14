@@ -6,6 +6,7 @@ import { Presentacion } from "@/components/blocks/Presentacion";
 import { Informacion } from "@/components/blocks/Informacion";
 import { Trabajos } from "@/components/blocks/Trabajos";
 import { Login } from "@/components/blocks/Login";
+import { ClausulasLaboratorio } from "@/components/blocks/ClausulasLaboratorio";
 import { Footer } from "@/components/blocks/Footer";
 import { AntigravityBackground } from "@/components/blocks/AntigravityBackground";
 import { ChatWidget } from "@/components/blocks/ChatWidget";
@@ -27,6 +28,10 @@ export default function Home() {
         {activeTab === "login" ? (
           <div className="animate-in fade-in duration-300">
             <Login />
+          </div>
+        ) : activeTab === "clausulas" ? (
+          <div className="animate-in fade-in duration-300">
+            <ClausulasLaboratorio setActiveTab={setActiveTab} />
           </div>
         ) : (
           <div className="flex flex-col gap-12 sm:gap-20 pb-16">
