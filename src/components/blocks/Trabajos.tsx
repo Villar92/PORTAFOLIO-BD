@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Server, Database, ShieldCheck, Gauge, Upload, FileText, CheckCircle2, Eye, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Download } from "lucide-react";
+import { Server, Database, ShieldCheck, Gauge, Upload, FileText, CheckCircle2, Eye, X, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Download, Code, FileCode, Copy, Check, Globe } from "lucide-react";
 
 export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
   const [uploadedFiles, setUploadedFiles] = useState<Record<string, any[]>>({});
@@ -12,6 +12,105 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
   
   // Preview file modal
   const [previewFile, setPreviewFile] = useState<{url: string, name: string} | null>(null);
+  const [codeContent, setCodeContent] = useState<string | null>(null);
+  const [loadingCode, setLoadingCode] = useState<boolean>(false);
+  const [copiedCode, setCopiedCode] = useState<boolean>(false);
+  const [htmlViewMode, setHtmlViewMode] = useState<'render' | 'code'>('render');
+
+  useEffect(() => {
+    if (!previewFile) {
+      setCodeContent(null);
+      setCopiedCode(false);
+      setHtmlViewMode('render');
+      return;
+    }
+    const ext = previewFile.name.split('.').pop()?.toLowerCase() || '';
+    const textExts = ['sql', 'html', 'htm', 'txt', 'json', 'js', 'ts', 'css', 'py', 'java', 'cs', 'cpp', 'c', 'php', 'xml', 'md'];
+
+    if (textExts.includes(ext)) {
+      setLoadingCode(true);
+      const localFile = (previewFile as any).file;
+      if (localFile && typeof localFile.text === 'function') {
+        localFile.text().then((text: string) => {
+          setCodeContent(text);
+          setLoadingCode(false);
+        }).catch(() => {
+          setCodeContent("No se pudo leer el archivo local.");
+          setLoadingCode(false);
+        });
+      } else {
+        fetch(previewFile.url)
+          .then(res => res.text())
+          .then(text => {
+            setCodeContent(text);
+            setLoadingCode(false);
+          })
+          .catch(() => {
+            setCodeContent("No se pudo cargar el contenido del archivo.");
+            setLoadingCode(false);
+          });
+      }
+    }
+  }, [previewFile]);
+
+  const handleCopyCode = () => {
+    if (codeContent) {
+      navigator.clipboard.writeText(codeContent);
+      setCopiedCode(true);
+      setTimeout(() => setCopiedCode(false), 2000);
+    }
+  };
+
+  const getFileBadge = (fileName: string) => {
+    const ext = fileName.split('.').pop()?.toLowerCase() || '';
+    if (ext === 'sql') {
+      return {
+        icon: <Database className="w-4 h-4 text-cyan-300" />,
+        bg: 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40',
+        label: 'SQL'
+      };
+    }
+    if (ext === 'html' || ext === 'htm') {
+      return {
+        icon: <Code className="w-4 h-4 text-amber-400" />,
+        bg: 'bg-amber-500/20 text-amber-300 border border-amber-500/40',
+        label: 'HTML'
+      };
+    }
+    if (['js', 'ts', 'json', 'css', 'py', 'java', 'cs', 'cpp', 'c', 'php', 'xml', 'md'].includes(ext)) {
+      return {
+        icon: <FileCode className="w-4 h-4 text-purple-400" />,
+        bg: 'bg-purple-500/20 text-purple-300 border border-purple-500/40',
+        label: ext.toUpperCase()
+      };
+    }
+    if (ext === 'pdf') {
+      return {
+        icon: <FileText className="w-4 h-4 text-red-400" />,
+        bg: 'bg-red-500/20 text-red-300 border border-red-500/40',
+        label: 'PDF'
+      };
+    }
+    if (['doc', 'docx'].includes(ext)) {
+      return {
+        icon: <FileText className="w-4 h-4 text-blue-400" />,
+        bg: 'bg-blue-500/20 text-blue-300 border border-blue-500/40',
+        label: 'DOC'
+      };
+    }
+    if (['zip', 'rar', '7z'].includes(ext)) {
+      return {
+        icon: <FileText className="w-4 h-4 text-emerald-400" />,
+        bg: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40',
+        label: 'ZIP'
+      };
+    }
+    return {
+      icon: <FileText className="w-4 h-4 text-cyan-400" />,
+      bg: 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30',
+      label: ext.toUpperCase() || 'FILE'
+    };
+  };
 
   // Close modal on Escape
   useEffect(() => {
@@ -328,7 +427,7 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
                               className="hidden" 
                               multiple
                               onChange={(e) => handleFileUpload(act.id, e)}
-                              accept=".pdf,.doc,.docx,.zip,.png,.jpg"
+                              accept=".html,.htm,.sql,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.json,.js,.ts,.css,.py,.java,.cs,.cpp,.c,.php,.xml,.md,.zip,.rar,.7z,.png,.jpg,.jpeg,.webp"
                             />
                           </label>
                         )}
@@ -338,40 +437,46 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
                       <div className="mt-auto bg-[#0B1120]/80 rounded-2xl p-4 sm:p-5 border border-white/5 shadow-inner min-h-[100px] flex flex-col justify-center">
                         {filesForAct.length > 0 ? (
                           <div className="flex flex-col gap-3">
-                            {filesForAct.map((file, idx) => (
-                              <div key={idx} className="flex items-center justify-between bg-white/5 hover:bg-white/10 p-3 rounded-xl border border-white/5 transition-colors">
-                                <div className="flex items-center gap-3 overflow-hidden pr-2">
-                                  <div className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
-                                    <FileText className="w-4 h-4 text-cyan-400" />
+                            {filesForAct.map((file, idx) => {
+                              const badge = getFileBadge(file.name);
+                              return (
+                                <div key={idx} className="flex items-center justify-between bg-white/5 hover:bg-white/10 p-3 rounded-xl border border-white/5 transition-colors">
+                                  <div className="flex items-center gap-3 overflow-hidden pr-2">
+                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${badge.bg}`}>
+                                      {badge.icon}
+                                    </div>
+                                    <div className="flex flex-col min-w-0">
+                                      <span className="text-sm text-slate-200 truncate font-medium">{file.name}</span>
+                                      <span className="text-[10px] text-cyan-400/80 font-bold tracking-wider">{badge.label}</span>
+                                    </div>
+                                    {uploading[`${act.id}-${file.name}`] && (
+                                      <span className="text-xs text-cyan-400 animate-pulse ml-2 whitespace-nowrap">Subiendo...</span>
+                                    )}
                                   </div>
-                                  <span className="text-sm text-slate-200 truncate font-medium">{file.name}</span>
-                                  {uploading[`${act.id}-${file.name}`] && (
-                                    <span className="text-xs text-cyan-400 animate-pulse ml-2 whitespace-nowrap">Subiendo...</span>
-                                  )}
-                                </div>
-                                <div className="flex items-center gap-2 flex-shrink-0">
-                                  <button 
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      setPreviewFile(file);
-                                    }}
-                                    className="w-8 h-8 flex items-center justify-center bg-blue-500/20 hover:bg-blue-500/40 text-blue-300 rounded-lg transition-colors"
-                                    title="Ver archivo"
-                                  >
-                                    <Eye className="w-4 h-4" />
-                                  </button>
-                                  {isAdmin && (
+                                  <div className="flex items-center gap-2 flex-shrink-0">
                                     <button 
-                                      onClick={() => handleRemoveFile(act.id, idx)}
-                                      className="w-8 h-8 flex items-center justify-center bg-red-500/10 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors"
-                                      title="Eliminar"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        setPreviewFile(file);
+                                      }}
+                                      className="w-8 h-8 flex items-center justify-center bg-blue-500/20 hover:bg-blue-500/40 text-blue-300 rounded-lg transition-colors"
+                                      title="Ver archivo"
                                     >
-                                      <X className="w-4 h-4" />
+                                      <Eye className="w-4 h-4" />
                                     </button>
-                                  )}
+                                    {isAdmin && (
+                                      <button 
+                                        onClick={() => handleRemoveFile(act.id, idx)}
+                                        className="w-8 h-8 flex items-center justify-center bg-red-500/10 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors"
+                                        title="Eliminar"
+                                      >
+                                        <X className="w-4 h-4" />
+                                      </button>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            ))}
+                              );
+                            })}
                           </div>
                         ) : (
                           <div className="flex flex-col items-center justify-center text-center py-4 opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
@@ -399,19 +504,71 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
           <div className="relative w-full max-w-5xl h-[85vh] bg-[#0f172a] rounded-2xl shadow-2xl flex flex-col border border-cyan-500/20 animate-in fade-in zoom-in-95 duration-300 overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b border-white/10 bg-[#0f172a]">
               <div className="flex items-center gap-3 overflow-hidden pr-4">
-                <FileText className="w-5 h-5 text-cyan-400 flex-shrink-0" />
-                <h3 className="text-white font-medium truncate">{previewFile.name}</h3>
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${getFileBadge(previewFile.name).bg}`}>
+                  {getFileBadge(previewFile.name).icon}
+                </div>
+                <div className="flex items-center gap-2 min-w-0">
+                  <h3 className="text-white font-medium truncate">{previewFile.name}</h3>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wider bg-cyan-950 text-cyan-300 border border-cyan-500/30 flex-shrink-0">
+                    {getFileBadge(previewFile.name).label}
+                  </span>
+                </div>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
+                {/* HTML Toggle View */}
+                {(previewFile.name.endsWith('.html') || previewFile.name.endsWith('.htm')) && (
+                  <div className="flex items-center bg-[#0B1120] rounded-lg p-0.5 border border-cyan-500/30 mr-1 sm:mr-2">
+                    <button
+                      onClick={() => setHtmlViewMode('render')}
+                      className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded text-xs font-semibold transition-all ${
+                        htmlViewMode === 'render' ? 'bg-cyan-500 text-white' : 'text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      <Globe className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Vista</span> Web
+                    </button>
+                    <button
+                      onClick={() => setHtmlViewMode('code')}
+                      className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded text-xs font-semibold transition-all ${
+                        htmlViewMode === 'code' ? 'bg-cyan-500 text-white' : 'text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      <Code className="w-3.5 h-3.5" />
+                      Código
+                    </button>
+                  </div>
+                )}
+
+                {/* Copy button for code/sql files */}
+                {codeContent !== null && (
+                  <button
+                    onClick={handleCopyCode}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 rounded-lg transition-colors text-xs font-medium border border-cyan-500/30"
+                    title="Copiar código"
+                  >
+                    {copiedCode ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-green-400" />
+                        <span className="text-green-400 hidden sm:inline">¡Copiado!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Copiar</span>
+                      </>
+                    )}
+                  </button>
+                )}
+
                 <a 
                   href={previewFile.url}
                   download
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 rounded-lg transition-colors text-sm font-medium"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 rounded-lg transition-colors text-xs sm:text-sm font-medium"
                 >
                   <Download className="w-4 h-4" />
-                  Descargar
+                  <span className="hidden sm:inline">Descargar</span>
                 </a>
                 <button 
                   onClick={() => setPreviewFile(null)}
@@ -425,7 +582,8 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
               {(() => {
                 const ext = previewFile.name.split('.').pop()?.toLowerCase() || '';
                 const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp'];
-                const docExts = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'rtf', 'csv'];
+                const codeExts = ['sql', 'html', 'htm', 'txt', 'json', 'js', 'ts', 'css', 'py', 'java', 'cs', 'cpp', 'c', 'php', 'xml', 'md'];
+                const docExts = ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'rtf', 'csv'];
 
                 if (imageExts.includes(ext)) {
                   return (
@@ -437,6 +595,48 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
                         className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
                       />
                     </div>
+                  );
+                }
+
+                if (ext === 'html' || ext === 'htm') {
+                  if (htmlViewMode === 'render') {
+                    return (
+                      <iframe 
+                        srcDoc={codeContent || undefined}
+                        src={!codeContent ? previewFile.url : undefined}
+                        className="w-full h-full border-0 bg-white" 
+                        title={previewFile.name}
+                        sandbox="allow-scripts allow-same-origin"
+                      />
+                    );
+                  }
+                  // If code view, fall through to code container below
+                }
+
+                if (codeExts.includes(ext)) {
+                  return (
+                    <div className="w-full h-full bg-[#070d17] p-5 overflow-auto select-text font-mono text-xs sm:text-sm text-cyan-200 leading-relaxed">
+                      {loadingCode ? (
+                        <div className="flex flex-col items-center justify-center h-full text-slate-400 gap-3">
+                          <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+                          <p className="text-xs">Cargando código...</p>
+                        </div>
+                      ) : (
+                        <pre className="whitespace-pre font-mono selection:bg-cyan-500/30 selection:text-white">
+                          <code>{codeContent || "Archivo sin contenido."}</code>
+                        </pre>
+                      )}
+                    </div>
+                  );
+                }
+
+                if (ext === 'pdf') {
+                  return (
+                    <iframe 
+                      src={previewFile.url} 
+                      className="absolute inset-0 w-full h-full border-0 bg-slate-900" 
+                      title={previewFile.name}
+                    />
                   );
                 }
 
