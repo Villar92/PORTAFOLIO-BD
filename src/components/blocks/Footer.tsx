@@ -3,8 +3,8 @@ import { GraduationCap } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-slate-950/90 backdrop-blur-md text-slate-400 py-5 sm:py-6 border-t border-cyan-500/10 mt-auto">
-      <div className="max-w-6xl mx-auto px-4 flex flex-col items-center gap-3">
+    <footer className="bg-slate-950/90 backdrop-blur-md text-slate-400 py-4 sm:py-5 border-t border-cyan-500/10 mt-auto">
+      <div className="max-w-4xl mx-auto px-4 flex flex-col items-center gap-2.5">
         <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-3">
           <div className="flex items-center gap-2 text-slate-300 font-medium">
             <span className="text-xs sm:text-sm tracking-wider">JORGE LUIS CURO VILLAR</span>

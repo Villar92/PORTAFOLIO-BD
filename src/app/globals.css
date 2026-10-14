@@ -2,8 +2,8 @@
 @plugin "tailwindcss-animate";
 
 :root {
-  --background: #f1f5f9; /* Fondo claro general para que las tarjetas oscuras resalten */
-  --foreground: #0B1120;
+  --background: #0B1120;
+  --foreground: #f8fafc;
 }
 
 @theme inline {
@@ -18,6 +18,19 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 14px;
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 13.5px;
+  }
+}
+
+@media (min-width: 1536px) {
+  html {
+    font-size: 14px;
+  }
 }
 
 body {

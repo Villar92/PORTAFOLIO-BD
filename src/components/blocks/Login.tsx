@@ -33,7 +33,7 @@ export function Login() {
   if (success) {
     return (
       <div className="animate-in fade-in zoom-in duration-500 w-full min-h-[75vh] flex flex-col">
-        <div className="max-w-5xl mx-auto py-6 px-4 w-full">
+        <div className="max-w-4xl mx-auto py-5 px-4 w-full">
           {/* Header Premium Admin */}
           <div className="relative rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#0f172a]/95 to-[#0B1120]/95 border border-cyan-500/20 shadow-[0_4px_30px_rgba(34,211,238,0.12)] p-6 sm:p-7 backdrop-blur-xl flex flex-col md:flex-row justify-between items-center gap-6 overflow-hidden group">
             {/* Glow de fondo dinámico */}

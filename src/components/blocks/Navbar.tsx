@@ -5,7 +5,7 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
 
   return (
     <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#0B1120]/90 border-b border-cyan-400/20 shadow-[0_2px_20px_rgba(34,211,238,0.1)]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-13 sm:h-14 flex items-center justify-between">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 h-12 sm:h-13 flex items-center justify-between">
         <div className="flex items-center gap-4 sm:gap-8">
           <div className="flex items-center">
             <div className="relative h-6 w-18 sm:h-7 sm:w-24 bg-white rounded-lg px-2 py-0.5 flex items-center justify-center shadow-[0_0_12px_rgba(34,211,238,0.15)] border border-cyan-400/20">

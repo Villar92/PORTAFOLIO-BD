@@ -29,19 +29,19 @@ export default function Home() {
             <Login />
           </div>
         ) : (
-          <div className="flex flex-col gap-4 sm:gap-8 pb-10">
+          <div className="flex flex-col gap-2 sm:gap-4 pb-6">
             {/* 1. Inicio / Presentación */}
-            <section id="inicio" className="scroll-mt-16">
+            <section id="inicio" className="scroll-mt-14">
               <Presentacion setActiveTab={setActiveTab} />
             </section>
 
             {/* 2. Sobre Mí */}
-            <section id="sobre-mi" className="scroll-mt-16">
+            <section id="sobre-mi" className="scroll-mt-14">
               <Informacion />
             </section>
 
             {/* 3. Unidades del Curso */}
-            <section id="unidades" className="scroll-mt-16">
+            <section id="unidades" className="scroll-mt-14">
               <Trabajos />
             </section>
           </div>
