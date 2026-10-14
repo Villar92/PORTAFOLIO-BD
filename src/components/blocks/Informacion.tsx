@@ -11,17 +11,17 @@ export function Informacion() {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto py-2 sm:py-4 px-4 animate-in fade-in zoom-in-95 duration-500">
+    <div className="max-w-6xl mx-auto py-8 px-4 animate-in fade-in zoom-in-95 duration-500">
       
       {/* Grid: 1 columna en móvil, 2 en PC (Izquierda foto, Derecha texto) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center bg-[#0f172a]/85 border border-cyan-500/25 backdrop-blur-xl p-4 sm:p-6 rounded-2xl shadow-[0_10px_35px_rgba(0,0,0,0.6)] relative overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center bg-[#2A3441] p-6 md:p-8 rounded-[2rem] shadow-2xl relative overflow-hidden">
         
         {/* Glow de fondo */}
-        <div className="absolute top-0 right-0 w-44 h-44 bg-cyan-400/10 blur-[60px] pointer-events-none rounded-full"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-400/10 blur-[80px] pointer-events-none rounded-full"></div>
 
         {/* Lado Izquierdo: Foto */}
         <div className="lg:col-span-4 flex flex-col items-center justify-center relative z-10">
-          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-[#0B1120] relative border border-cyan-400/30 shadow-lg mb-2.5">
+          <div className="w-40 h-40 md:w-48 md:h-48 rounded-full p-1.5 bg-[#1E252F] relative border border-cyan-400/30 shadow-xl mb-6">
             <div className="w-full h-full relative rounded-full overflow-hidden">
               <NextImage 
                 src="/JORGE CV.jpg" 
@@ -31,37 +31,37 @@ export function Informacion() {
               />
             </div>
           </div>
-          <span className="px-2.5 py-0.5 bg-[#0B1120] border border-cyan-400/30 text-cyan-300 rounded-full text-[10px] font-bold flex items-center gap-1.5 shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span className="px-4 py-1.5 bg-[#1E252F] border border-cyan-400/30 text-cyan-400 rounded-full text-xs font-bold flex items-center gap-2 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
             Estudiante activo
           </span>
         </div>
 
         {/* Lado Derecho: Contenido */}
         <div className="lg:col-span-8 flex flex-col relative z-10">
-          <p className="text-cyan-400 font-bold tracking-widest text-[10px] mb-0.5 uppercase">Sobre Mí</p>
-          <h3 className="text-lg sm:text-xl md:text-2xl font-serif font-bold text-white tracking-wide mb-0.5">
-            JORGE LUIS <span className="text-base sm:text-lg md:text-xl text-cyan-200/80">CURO VILLAR</span>
+          <p className="text-cyan-400 font-bold tracking-widest text-xs mb-2 uppercase">Sobre Mí</p>
+          <h3 className="text-2xl md:text-4xl font-serif font-bold text-white tracking-wide mb-2">
+            JORGE LUIS <span className="text-xl md:text-3xl text-cyan-100/80">CURO VILLAR</span>
           </h3>
-          <p className="text-cyan-100/70 mb-2.5 font-medium tracking-wide text-[11px] sm:text-xs">
+          <p className="text-cyan-100/70 mb-5 font-medium tracking-wide text-sm md:text-base">
             Estudiante de Ingeniería de Sistemas · V Ciclo
           </p>
           
-          <div className="bg-[#0B1120]/75 p-3 sm:p-3.5 rounded-xl border border-white/5 mb-3">
-            <p className="text-slate-300 leading-relaxed font-light text-[11px] sm:text-xs">
+          <div className="bg-[#1E252F] p-6 rounded-2xl border border-white/5 mb-8">
+            <p className="text-slate-300 leading-relaxed font-light text-sm md:text-base">
               Bienvenidos a mi portafolio de Base de Datos II. Como estudiante del V ciclo de Ingeniería de Sistemas en la Universidad Peruana Los Andes, me apasiona entender la arquitectura detrás de los sistemas de información. Al considerar las bases de datos como el motor principal de cualquier aplicación moderna, aquí documento mi dominio en la gestión de datos relacionales, la optimización de consultas y la administración en SQL Server.
             </p>
           </div>
 
           {/* Cards de Datos */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {data.map((item, index) => (
               <div 
                 key={index} 
-                className="bg-[#0B1120]/75 p-2 sm:p-2.5 rounded-lg border border-white/5 hover:border-cyan-400/30 transition-all duration-300 group"
+                className="bg-[#1E252F] p-4 rounded-xl border border-white/5 hover:border-cyan-400/30 transition-all duration-300 group"
               >
-                <p className="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider mb-0.5 group-hover:text-cyan-400/70 transition-colors">{item.label}</p>
-                <p className="text-white font-medium text-[11px] sm:text-xs truncate">{item.value}</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 group-hover:text-cyan-400/70 transition-colors">{item.label}</p>
+                <p className="text-white font-semibold text-sm">{item.value}</p>
               </div>
             ))}
           </div>

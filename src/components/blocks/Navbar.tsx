@@ -4,11 +4,11 @@ import { Home, LogIn } from "lucide-react";
 export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActiveTab: (t: string) => void }) {
 
   return (
-    <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#0B1120]/90 border-b border-cyan-400/20 shadow-[0_2px_20px_rgba(34,211,238,0.1)]">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 h-12 sm:h-13 flex items-center justify-between">
-        <div className="flex items-center gap-4 sm:gap-8">
+    <nav className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#0B1120]/95 border-b border-cyan-400/30 shadow-[0_4px_30px_rgba(34,211,238,0.15)]">
+      <div className="container mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+        <div className="flex items-center gap-3 sm:gap-6">
           <div className="flex items-center">
-            <div className="relative h-6 w-18 sm:h-7 sm:w-24 bg-white rounded-lg px-2 py-0.5 flex items-center justify-center shadow-[0_0_12px_rgba(34,211,238,0.15)] border border-cyan-400/20">
+            <div className="relative h-7 w-20 sm:h-8 sm:w-28 bg-white rounded-xl px-2 py-1 flex items-center justify-center shadow-[0_0_15px_rgba(34,211,238,0.15)] border border-cyan-400/20">
               <img 
                 src="/upla-logo.png" 
                 alt="Logo UPLA" 
@@ -16,34 +16,26 @@ export function Navbar({ activeTab, setActiveTab }: { activeTab: string, setActi
               />
             </div>
           </div>
-
-          {activeTab !== "login" && (
-            <div className="hidden md:flex items-center gap-5 text-xs font-medium text-slate-300">
-              <a href="#inicio" className="hover:text-cyan-400 transition-colors">Inicio</a>
-              <a href="#sobre-mi" className="hover:text-cyan-400 transition-colors">Sobre Mí</a>
-              <a href="#unidades" className="hover:text-cyan-400 transition-colors">Unidades</a>
-            </div>
-          )}
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-4">
           {activeTab === "login" ? (
             <button
               onClick={() => setActiveTab("inicio")}
-              className="flex items-center pr-3.5 sm:pr-4 pl-1 py-1 rounded-full font-semibold text-xs tracking-wide transition-all duration-300 group bg-[#0f172a] text-slate-300 hover:text-white border border-cyan-900/50 hover:border-cyan-400/50 cursor-pointer shadow-md hover:shadow-cyan-500/15"
+              className="flex items-center pr-4 sm:pr-6 pl-1.5 py-1.5 rounded-full font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 group bg-[#0f172a] text-slate-300 hover:text-white border border-cyan-900/50 hover:border-cyan-400/50 cursor-pointer shadow-lg hover:shadow-cyan-500/20"
             >
-              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border flex items-center justify-center mr-2 transition-transform group-hover:scale-105 border-slate-500/50 group-hover:border-cyan-400/50">
-                <Home className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-300" />
+              <div className="w-8 h-8 rounded-full border-2 flex items-center justify-center mr-2 sm:mr-3 transition-transform group-hover:scale-105 border-slate-500/50 group-hover:border-cyan-400/50">
+                <Home className="w-4 h-4 text-slate-400 group-hover:text-cyan-300" />
               </div>
               <span>Volver</span>
             </button>
           ) : (
             <button
               onClick={() => setActiveTab("login")}
-              className="flex items-center pr-3.5 sm:pr-4 pl-1 py-1 rounded-full font-semibold text-xs tracking-wide transition-all duration-300 group bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white shadow-md shadow-cyan-500/20 cursor-pointer hover:-translate-y-0.5 active:translate-y-0"
+              className="flex items-center pr-4 sm:pr-6 pl-1.5 py-1.5 rounded-full font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 group bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white shadow-lg shadow-cyan-500/25 cursor-pointer hover:-translate-y-0.5 active:translate-y-0"
             >
-              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full border border-white/80 flex items-center justify-center mr-2 transition-transform group-hover:scale-105">
-                <LogIn className="w-3.5 h-3.5 text-white" />
+              <div className="w-8 h-8 rounded-full border-2 border-white/80 flex items-center justify-center mr-2 sm:mr-3 transition-transform group-hover:scale-105">
+                <LogIn className="w-4 h-4 text-white" />
               </div>
               <span>Acceso</span>
             </button>

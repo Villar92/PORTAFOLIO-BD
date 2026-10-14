@@ -2,8 +2,8 @@
 @plugin "tailwindcss-animate";
 
 :root {
-  --background: #0B1120;
-  --foreground: #f8fafc;
+  --background: #f1f5f9; /* Fondo claro general para que las tarjetas oscuras resalten */
+  --foreground: #0B1120;
 }
 
 @theme inline {
@@ -16,59 +16,11 @@
   --font-bodoni: var(--font-bodoni), serif;
 }
 
-html {
-  scroll-behavior: smooth;
-  font-size: 14px;
-}
-
-@media (min-width: 1024px) {
-  html {
-    font-size: 13.5px;
-  }
-}
-
-@media (min-width: 1536px) {
-  html {
-    font-size: 14px;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-
-/* Chrome / Safari / Edge Sleek Scrollbar */
-::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0B1120;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(34, 211, 238, 0.25);
-  border-radius: 9999px;
-  border: 1px solid rgba(34, 211, 238, 0.1);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(34, 211, 238, 0.5);
-}
-
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
 
 /* Animations from previous version */
