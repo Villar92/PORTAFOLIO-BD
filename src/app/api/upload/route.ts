@@ -1,4 +1,8 @@
 import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
   try {
@@ -32,6 +36,7 @@ export async function POST(request: Request) {
       headers: {
         'Authorization': `Bearer ${GITHUB_TOKEN}`,
         'Content-Type': 'application/json',
+        'User-Agent': 'PortfolioApp',
       },
       body: JSON.stringify({
         message: `Upload file: ${file.name} for ${actividadId}`,
@@ -45,6 +50,17 @@ export async function POST(request: Request) {
     if (!response.ok) {
       console.error("GitHub API Error:", data);
       return NextResponse.json({ error: "Failed to upload to GitHub", details: data }, { status: response.status });
+    }
+
+    // Also write locally if filesystem allows
+    try {
+      const localDir = path.join(process.cwd(), 'uploads', actividadId);
+      if (!fs.existsSync(localDir)) {
+        fs.mkdirSync(localDir, { recursive: true });
+      }
+      fs.writeFileSync(path.join(process.cwd(), filePath), buffer);
+    } catch {
+      // Non-fatal on serverless environments
     }
 
     return NextResponse.json({ success: true, data: data });
