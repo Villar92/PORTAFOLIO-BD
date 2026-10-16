@@ -15,6 +15,21 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
   // Selected unit for the modal
   const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
   
+  // Category filter state per week: 'all' | 'pdf' | 'sql' | 'visual'
+  const [categoryFilter, setCategoryFilter] = useState<Record<string, 'all' | 'pdf' | 'sql' | 'visual'>>({});
+
+  // Categorizador de archivos para los apartados
+  const categorizeFile = (fileName: string): 'pdf' | 'sql' | 'visual' => {
+    const ext = fileName.split('.').pop()?.toLowerCase() || '';
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico', 'tiff', 'avif'].includes(ext)) {
+      return 'visual';
+    }
+    if (['sql', 'js', 'ts', 'py', 'java', 'cs', 'cpp', 'c', 'php', 'html', 'htm', 'json', 'xml', 'css', 'sh', 'bat'].includes(ext)) {
+      return 'sql';
+    }
+    return 'pdf';
+  };
+  
   // Preview file modal
   const [previewFile, setPreviewFile] = useState<{ url: string; name: string } | null>(null);
   const [codeContent, setCodeContent] = useState<string | null>(null);
@@ -264,8 +279,11 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
     }
   };
 
-  const handleRemoveFile = async (actividadId: string, index: number) => {
-    const fileToDelete = uploadedFiles[actividadId]?.[index];
+  const handleRemoveFile = async (actividadId: string, fileOrIndex: any) => {
+    const fileToDelete = typeof fileOrIndex === 'number' 
+      ? uploadedFiles[actividadId]?.[fileOrIndex]
+      : fileOrIndex;
+
     if (!fileToDelete) return;
 
     if (!confirm(`¿Estás seguro de que quieres eliminar ${fileToDelete.name}?`)) return;
@@ -292,8 +310,9 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
     }
 
     setUploadedFiles(prev => {
-      const updatedFiles = [...(prev[actividadId] || [])];
-      updatedFiles.splice(index, 1);
+      const updatedFiles = (prev[actividadId] || []).filter(
+        (f) => f.path !== fileToDelete.path && f.name !== fileToDelete.name
+      );
       return {
         ...prev,
         [actividadId]: updatedFiles
@@ -510,13 +529,107 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
                 const weekLabel = parts[0];
                 const weekDesc = parts[1] || "";
 
+                const pdfFiles = filesForAct.filter(f => categorizeFile(f.name) === 'pdf');
+                const sqlFiles = filesForAct.filter(f => categorizeFile(f.name) === 'sql');
+                const visualFiles = filesForAct.filter(f => categorizeFile(f.name) === 'visual');
+                const otherFiles = filesForAct.filter(f => {
+                  const cat = categorizeFile(f.name);
+                  return cat !== 'pdf' && cat !== 'sql' && cat !== 'visual';
+                });
+
+                const activeCategory = categoryFilter[act.id] || 'all';
+
+                const renderFileRow = (file: any) => {
+                  const badge = getFileBadge(file.name);
+                  return (
+                    <div key={file.path || file.name} className="flex items-center justify-between bg-white/5 hover:bg-white/10 p-2.5 sm:p-3 rounded-xl border border-white/5 transition-colors gap-2">
+                      <div 
+                        className="flex items-center gap-2.5 sm:gap-3 overflow-hidden pr-2 cursor-pointer flex-1 min-w-0"
+                        onClick={() => setPreviewFile(file)}
+                        title="Haz clic para previsualizar sin descargar"
+                      >
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${badge.bg}`}>
+                          {badge.icon}
+                        </div>
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-xs sm:text-sm text-slate-200 hover:text-cyan-300 truncate font-medium transition-colors">
+                            {file.name}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] text-cyan-400/80 font-bold tracking-wider">{badge.label}</span>
+                            <span className="text-[10px] text-slate-500 hidden sm:inline">• Clic para ver</span>
+                          </div>
+                        </div>
+                        {uploading[`${act.id}-${file.name}`] && (
+                          <span className="text-xs text-cyan-400 animate-pulse ml-2 whitespace-nowrap">Subiendo...</span>
+                        )}
+                      </div>
+                      
+                      {/* Botones de acción explícitos */}
+                      <div className="flex items-center gap-1.5 flex-shrink-0">
+                        {/* Botón 1: VER ARCHIVO (Previsualizar en panel sin descargar) */}
+                        <button 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setPreviewFile(file);
+                          }}
+                          className="px-2.5 py-1.5 flex items-center gap-1.5 bg-blue-500/20 hover:bg-blue-500/40 text-blue-300 rounded-lg transition-colors cursor-pointer border border-blue-500/30 text-xs font-semibold"
+                          title="Ver archivo en el panel interactivo (sin descargar)"
+                        >
+                          <Eye className="w-3.5 h-3.5" />
+                          <span className="hidden sm:inline">Ver</span>
+                        </button>
+
+                        {/* Botón 2: DESCARGAR MANUALMENTE */}
+                        <button 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleDownloadFile(file);
+                          }}
+                          className="px-2.5 py-1.5 flex items-center gap-1.5 bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 rounded-lg transition-colors cursor-pointer border border-cyan-500/30 text-xs font-semibold"
+                          title="Descargar este archivo a tu equipo"
+                          disabled={downloadingFile === file.name}
+                        >
+                          {downloadingFile === file.name ? (
+                            <>
+                              <div className="w-3.5 h-3.5 border-2 border-cyan-300 border-t-transparent rounded-full animate-spin" />
+                              <span className="hidden sm:inline">...</span>
+                            </>
+                          ) : (
+                            <>
+                              <Download className="w-3.5 h-3.5" />
+                              <span className="hidden sm:inline">Descargar</span>
+                            </>
+                          )}
+                        </button>
+
+                        {isAdmin && (
+                          <button 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleRemoveFile(act.id, file);
+                            }}
+                            className="w-8 h-8 flex items-center justify-center bg-red-500/10 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors"
+                            title="Eliminar archivo"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                };
+
                 return (
                   <div key={act.id} className="group relative bg-[#0f172a]/80 backdrop-blur-xl rounded-[2rem] border border-cyan-900/50 hover:border-cyan-400/60 transition-all duration-500 overflow-hidden shadow-xl hover:shadow-[0_10px_40px_rgba(34,211,238,0.2)] flex flex-col">
                     {/* Línea de brillo superior */}
                     <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-500/0 to-transparent group-hover:via-cyan-400/80 transition-all duration-700"></div>
                     
                     <div className="p-5 sm:p-7 flex-1 flex flex-col">
-                      <div className="flex items-start justify-between mb-5 gap-3">
+                      <div className="flex items-start justify-between mb-4 gap-3">
                         <div className="flex items-start gap-3 sm:gap-4">
                           <div className="w-12 h-12 rounded-2xl bg-[#0B1120] border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-black text-base sm:text-lg group-hover:scale-105 group-hover:bg-gradient-to-br group-hover:from-blue-500 group-hover:to-cyan-400 group-hover:text-white group-hover:border-transparent transition-all duration-500 flex-shrink-0 shadow-inner">
                             S{act.id.split('_s')[1] || index + 1}
@@ -537,7 +650,7 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
                         </div>
                         
                         {isAdmin && (
-                          <label className="cursor-pointer flex-shrink-0 inline-flex items-center justify-center w-9 h-9 bg-cyan-950/50 hover:bg-cyan-500 hover:text-white text-cyan-400 rounded-xl transition-all border border-cyan-500/30 hover:border-transparent group/btn" title="Subir archivo a esta semana">
+                          <label className="cursor-pointer flex-shrink-0 inline-flex items-center justify-center w-9 h-9 bg-cyan-950/50 hover:bg-cyan-500 hover:text-white text-cyan-400 rounded-xl transition-all border border-cyan-500/30 hover:border-transparent group/btn" title="Subir cualquier archivo a esta semana">
                             <Upload className="w-4 h-4 group-hover/btn:-translate-y-0.5 transition-transform" />
                             <input 
                               type="file" 
@@ -550,98 +663,274 @@ export function Trabajos({ isAdmin = false }: { isAdmin?: boolean }) {
                         )}
                       </div>
 
-                      {/* Área de Archivos */}
+                      {/* APARTADOS DE ORDEN (Conforme a referencia imagen) */}
+                      <div className="flex flex-col gap-2 mb-4">
+                        <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
+                          {/* Apartado 1: Ver documento PDF (marcado en rojo) */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (activeCategory === 'pdf') {
+                                setCategoryFilter(prev => ({ ...prev, [act.id]: 'all' }));
+                              } else {
+                                setCategoryFilter(prev => ({ ...prev, [act.id]: 'pdf' }));
+                                if (pdfFiles.length === 1) {
+                                  setPreviewFile(pdfFiles[0]);
+                                }
+                              }
+                            }}
+                            className={`group/btn relative px-3 py-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between transition-all duration-300 cursor-pointer ${
+                              activeCategory === 'pdf'
+                                ? 'bg-rose-950/50 border-rose-400 text-white shadow-[0_0_20px_rgba(244,63,94,0.3)] ring-1 ring-rose-400/50'
+                                : 'bg-[#0B1120]/90 hover:bg-rose-950/20 border-white/10 hover:border-rose-500/40 text-slate-300 hover:text-white'
+                            }`}
+                            title="Ver documento PDF"
+                          >
+                            <div className="flex items-center gap-2 truncate pr-1">
+                              <FileText className={`w-4 h-4 flex-shrink-0 ${activeCategory === 'pdf' ? 'text-rose-400' : 'text-rose-400/80 group-hover/btn:text-rose-300'}`} />
+                              <span className="truncate">Ver documento PDF</span>
+                            </div>
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${
+                              pdfFiles.length > 0 
+                                ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' 
+                                : 'bg-white/5 text-slate-500 border border-white/5'
+                            }`}>
+                              {pdfFiles.length}
+                            </span>
+                          </button>
+
+                          {/* Apartado 2: Script SQL (marcado en azul) */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (activeCategory === 'sql') {
+                                setCategoryFilter(prev => ({ ...prev, [act.id]: 'all' }));
+                              } else {
+                                setCategoryFilter(prev => ({ ...prev, [act.id]: 'sql' }));
+                                if (sqlFiles.length === 1) {
+                                  setPreviewFile(sqlFiles[0]);
+                                }
+                              }
+                            }}
+                            className={`group/btn relative px-3 py-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between transition-all duration-300 cursor-pointer ${
+                              activeCategory === 'sql'
+                                ? 'bg-cyan-950/50 border-cyan-400 text-white shadow-[0_0_20px_rgba(34,211,238,0.3)] ring-1 ring-cyan-400/50'
+                                : 'bg-[#0B1120]/90 hover:bg-cyan-950/20 border-white/10 hover:border-cyan-500/40 text-slate-300 hover:text-white'
+                            }`}
+                            title="Script SQL"
+                          >
+                            <div className="flex items-center gap-2 truncate pr-1">
+                              <Database className={`w-4 h-4 flex-shrink-0 ${activeCategory === 'sql' ? 'text-cyan-400' : 'text-cyan-400/80 group-hover/btn:text-cyan-300'}`} />
+                              <span className="truncate">Script SQL</span>
+                            </div>
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${
+                              sqlFiles.length > 0 
+                                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40' 
+                                : 'bg-white/5 text-slate-500 border border-white/5'
+                            }`}>
+                              {sqlFiles.length}
+                            </span>
+                          </button>
+                        </div>
+
+                        {/* Apartado 3: Documentación visual (marcado en amarillo) */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (activeCategory === 'visual') {
+                              setCategoryFilter(prev => ({ ...prev, [act.id]: 'all' }));
+                            } else {
+                              setCategoryFilter(prev => ({ ...prev, [act.id]: 'visual' }));
+                              if (visualFiles.length === 1) {
+                                setPreviewFile(visualFiles[0]);
+                              }
+                            }
+                          }}
+                          className={`group/btn relative w-full px-3 py-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between transition-all duration-300 cursor-pointer ${
+                            activeCategory === 'visual'
+                              ? 'bg-amber-950/50 border-amber-400 text-white shadow-[0_0_20px_rgba(251,191,36,0.3)] ring-1 ring-amber-400/50'
+                              : 'bg-[#0B1120]/90 hover:bg-amber-950/20 border-white/10 hover:border-amber-500/40 text-slate-300 hover:text-white'
+                          }`}
+                          title="Documentación visual"
+                        >
+                          <div className="flex items-center gap-2 truncate pr-1">
+                            <ImageIcon className={`w-4 h-4 flex-shrink-0 ${activeCategory === 'visual' ? 'text-amber-400' : 'text-amber-400/80 group-hover/btn:text-amber-300'}`} />
+                            <span className="truncate">Documentación visual</span>
+                          </div>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${
+                            visualFiles.length > 0 
+                              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' 
+                              : 'bg-white/5 text-slate-500 border border-white/5'
+                          }`}>
+                            {visualFiles.length}
+                          </span>
+                        </button>
+
+                        {/* Filtro activo: barra rápida para volver a todos */}
+                        {activeCategory !== 'all' && (
+                          <div className="flex items-center justify-between px-3 py-1.5 rounded-lg bg-cyan-950/40 border border-cyan-500/30 text-[11px] animate-in fade-in duration-200">
+                            <span className="text-cyan-300 flex items-center gap-1.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                              Mostrando: <strong className="text-white">
+                                {activeCategory === 'pdf' ? 'Documentos PDF' : activeCategory === 'sql' ? 'Scripts SQL' : 'Documentación Visual'}
+                              </strong>
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => setCategoryFilter(prev => ({ ...prev, [act.id]: 'all' }))}
+                              className="text-cyan-400 hover:text-white font-semibold underline underline-offset-2 cursor-pointer transition-colors"
+                            >
+                              Ver todos los apartados
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Área de Archivos Ordenados */}
                       <div className="mt-auto bg-[#0B1120]/80 rounded-2xl p-3.5 sm:p-4 border border-white/5 shadow-inner min-h-[90px] flex flex-col justify-center">
                         {filesForAct.length > 0 ? (
-                          <div className="flex flex-col gap-2.5">
-                            {filesForAct.map((file, idx) => {
-                              const badge = getFileBadge(file.name);
-                              return (
-                                <div key={idx} className="flex items-center justify-between bg-white/5 hover:bg-white/10 p-2.5 sm:p-3 rounded-xl border border-white/5 transition-colors gap-2">
-                                  <div 
-                                    className="flex items-center gap-2.5 sm:gap-3 overflow-hidden pr-2 cursor-pointer flex-1 min-w-0"
-                                    onClick={() => setPreviewFile(file)}
-                                    title="Haz clic para previsualizar sin descargar"
-                                  >
-                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${badge.bg}`}>
-                                      {badge.icon}
+                          <div className="flex flex-col gap-3">
+                            {/* 1. SECCIÓN DOCUMENTOS PDF */}
+                            {(activeCategory === 'all' || activeCategory === 'pdf') && (
+                              <div className="flex flex-col gap-2">
+                                {(activeCategory === 'all' ? pdfFiles.length > 0 : true) && (
+                                  <div className="flex items-center justify-between text-xs font-bold text-rose-300 pb-1 px-1 border-b border-rose-500/20">
+                                    <div className="flex items-center gap-2">
+                                      <FileText className="w-3.5 h-3.5 text-rose-400" />
+                                      <span>Documentos PDF ({pdfFiles.length})</span>
                                     </div>
-                                    <div className="flex flex-col min-w-0">
-                                      <span className="text-xs sm:text-sm text-slate-200 hover:text-cyan-300 truncate font-medium transition-colors">
-                                        {file.name}
-                                      </span>
-                                      <div className="flex items-center gap-2">
-                                        <span className="text-[10px] text-cyan-400/80 font-bold tracking-wider">{badge.label}</span>
-                                        <span className="text-[10px] text-slate-500 hidden sm:inline">• Clic para ver</span>
-                                      </div>
-                                    </div>
-                                    {uploading[`${act.id}-${file.name}`] && (
-                                      <span className="text-xs text-cyan-400 animate-pulse ml-2 whitespace-nowrap">Subiendo...</span>
-                                    )}
-                                  </div>
-                                  
-                                  {/* Botones de acción explícitos */}
-                                  <div className="flex items-center gap-1.5 flex-shrink-0">
-                                    {/* Botón 1: VER ARCHIVO (Previsualizar en panel sin descargar) */}
-                                    <button 
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        setPreviewFile(file);
-                                      }}
-                                      className="px-2.5 py-1.5 flex items-center gap-1.5 bg-blue-500/20 hover:bg-blue-500/40 text-blue-300 rounded-lg transition-colors cursor-pointer border border-blue-500/30 text-xs font-semibold"
-                                      title="Ver archivo en el panel interactivo (sin descargar)"
-                                    >
-                                      <Eye className="w-3.5 h-3.5" />
-                                      <span className="hidden sm:inline">Ver</span>
-                                    </button>
-
-                                    {/* Botón 2: DESCARGAR MANUALMENTE (Solo descarga al hacer clic explícito aquí) */}
-                                    <button 
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        handleDownloadFile(file);
-                                      }}
-                                      className="px-2.5 py-1.5 flex items-center gap-1.5 bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 rounded-lg transition-colors cursor-pointer border border-cyan-500/30 text-xs font-semibold"
-                                      title="Descargar este archivo a tu equipo"
-                                      disabled={downloadingFile === file.name}
-                                    >
-                                      {downloadingFile === file.name ? (
-                                        <>
-                                          <div className="w-3.5 h-3.5 border-2 border-cyan-300 border-t-transparent rounded-full animate-spin" />
-                                          <span className="hidden sm:inline">...</span>
-                                        </>
-                                      ) : (
-                                        <>
-                                          <Download className="w-3.5 h-3.5" />
-                                          <span className="hidden sm:inline">Descargar</span>
-                                        </>
-                                      )}
-                                    </button>
-
                                     {isAdmin && (
-                                      <button 
-                                        onClick={(e) => {
-                                          e.preventDefault();
-                                          e.stopPropagation();
-                                          handleRemoveFile(act.id, idx);
-                                        }}
-                                        className="w-8 h-8 flex items-center justify-center bg-red-500/10 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors"
-                                        title="Eliminar archivo"
-                                      >
-                                        <X className="w-3.5 h-3.5" />
-                                      </button>
+                                      <label className="cursor-pointer text-[10px] text-rose-400 hover:text-rose-300 flex items-center gap-1 font-semibold" title="Subir otro documento PDF">
+                                        <Upload className="w-3 h-3" />
+                                        <span>+ Subir PDF</span>
+                                        <input type="file" className="hidden" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt" onChange={(e) => handleFileUpload(act.id, e)} />
+                                      </label>
                                     )}
                                   </div>
+                                )}
+                                
+                                {pdfFiles.length > 0 ? (
+                                  pdfFiles.map((file) => renderFileRow(file))
+                                ) : activeCategory === 'pdf' ? (
+                                  <div className="text-center py-4 bg-white/[0.02] rounded-xl border border-dashed border-rose-500/20">
+                                    <p className="text-xs text-slate-400">Sin documentos PDF subidos en esta semana</p>
+                                    {isAdmin && (
+                                      <label className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 rounded-lg text-xs font-semibold cursor-pointer border border-rose-500/30">
+                                        <Upload className="w-3 h-3" />
+                                        <span>Subir documento PDF</span>
+                                        <input type="file" className="hidden" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt" onChange={(e) => handleFileUpload(act.id, e)} />
+                                      </label>
+                                    )}
+                                  </div>
+                                ) : null}
+                              </div>
+                            )}
+
+                            {/* 2. SECCIÓN SCRIPTS SQL */}
+                            {(activeCategory === 'all' || activeCategory === 'sql') && (
+                              <div className={`flex flex-col gap-2 ${activeCategory === 'all' && pdfFiles.length > 0 && sqlFiles.length > 0 ? 'pt-2 border-t border-white/5' : ''}`}>
+                                {(activeCategory === 'all' ? sqlFiles.length > 0 : true) && (
+                                  <div className="flex items-center justify-between text-xs font-bold text-cyan-300 pb-1 px-1 border-b border-cyan-500/20">
+                                    <div className="flex items-center gap-2">
+                                      <Database className="w-3.5 h-3.5 text-cyan-400" />
+                                      <span>Scripts SQL ({sqlFiles.length})</span>
+                                    </div>
+                                    {isAdmin && (
+                                      <label className="cursor-pointer text-[10px] text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-semibold" title="Subir otro script SQL">
+                                        <Upload className="w-3 h-3" />
+                                        <span>+ Subir SQL</span>
+                                        <input type="file" className="hidden" multiple accept=".sql,.txt,.py,.js,.ts,.html,.css,.json" onChange={(e) => handleFileUpload(act.id, e)} />
+                                      </label>
+                                    )}
+                                  </div>
+                                )}
+
+                                {sqlFiles.length > 0 ? (
+                                  sqlFiles.map((file) => renderFileRow(file))
+                                ) : activeCategory === 'sql' ? (
+                                  <div className="text-center py-4 bg-white/[0.02] rounded-xl border border-dashed border-cyan-500/20">
+                                    <p className="text-xs text-slate-400">Sin scripts SQL subidos en esta semana</p>
+                                    {isAdmin && (
+                                      <label className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 rounded-lg text-xs font-semibold cursor-pointer border border-cyan-500/30">
+                                        <Upload className="w-3 h-3" />
+                                        <span>Subir script SQL</span>
+                                        <input type="file" className="hidden" multiple accept=".sql,.txt,.py,.js,.ts,.html,.css,.json" onChange={(e) => handleFileUpload(act.id, e)} />
+                                      </label>
+                                    )}
+                                  </div>
+                                ) : null}
+                              </div>
+                            )}
+
+                            {/* 3. SECCIÓN DOCUMENTACIÓN VISUAL */}
+                            {(activeCategory === 'all' || activeCategory === 'visual') && (
+                              <div className={`flex flex-col gap-2 ${activeCategory === 'all' && (pdfFiles.length > 0 || sqlFiles.length > 0) && visualFiles.length > 0 ? 'pt-2 border-t border-white/5' : ''}`}>
+                                {(activeCategory === 'all' ? visualFiles.length > 0 : true) && (
+                                  <div className="flex items-center justify-between text-xs font-bold text-amber-300 pb-1 px-1 border-b border-amber-500/20">
+                                    <div className="flex items-center gap-2">
+                                      <ImageIcon className="w-3.5 h-3.5 text-amber-400" />
+                                      <span>Documentación Visual ({visualFiles.length})</span>
+                                    </div>
+                                    {isAdmin && (
+                                      <label className="cursor-pointer text-[10px] text-amber-400 hover:text-amber-300 flex items-center gap-1 font-semibold" title="Subir fotos o capturas">
+                                        <Upload className="w-3 h-3" />
+                                        <span>+ Subir Foto</span>
+                                        <input type="file" className="hidden" multiple accept="image/*" onChange={(e) => handleFileUpload(act.id, e)} />
+                                      </label>
+                                    )}
+                                  </div>
+                                )}
+
+                                {visualFiles.length > 0 ? (
+                                  visualFiles.map((file) => renderFileRow(file))
+                                ) : activeCategory === 'visual' ? (
+                                  <div className="text-center py-4 bg-white/[0.02] rounded-xl border border-dashed border-amber-500/20">
+                                    <p className="text-xs text-slate-400">Sin fotos o capturas subidas en esta semana</p>
+                                    {isAdmin && (
+                                      <label className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-lg text-xs font-semibold cursor-pointer border border-amber-500/30">
+                                        <Upload className="w-3 h-3" />
+                                        <span>Subir Foto / Captura</span>
+                                        <input type="file" className="hidden" multiple accept="image/*" onChange={(e) => handleFileUpload(act.id, e)} />
+                                      </label>
+                                    )}
+                                  </div>
+                                ) : null}
+                              </div>
+                            )}
+
+                            {/* 4. SECCIÓN OTROS ARCHIVOS (si existen) */}
+                            {activeCategory === 'all' && otherFiles.length > 0 && (
+                              <div className="flex flex-col gap-2 pt-2 border-t border-white/5">
+                                <div className="flex items-center justify-between text-xs font-bold text-slate-300 pb-1 px-1 border-b border-white/10">
+                                  <span>Otros Archivos ({otherFiles.length})</span>
                                 </div>
-                              );
-                            })}
+                                {otherFiles.map((file) => renderFileRow(file))}
+                              </div>
+                            )}
                           </div>
                         ) : (
-                          <div className="flex flex-col items-center justify-center text-center py-4 opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
+                          <div className="flex flex-col items-center justify-center text-center py-4 opacity-75">
                             <FileText className="w-7 h-7 text-slate-500 mb-1.5" />
                             <span className="text-xs font-medium text-slate-400">Sin archivos adjuntos en esta semana</span>
+                            {isAdmin && (
+                              <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
+                                <label className="cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-500/15 hover:bg-rose-500/30 border border-rose-500/30 text-rose-300 text-[11px] font-semibold transition-all">
+                                  <Upload className="w-3 h-3" />
+                                  <span>+ Subir PDF</span>
+                                  <input type="file" className="hidden" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt" onChange={(e) => handleFileUpload(act.id, e)} />
+                                </label>
+                                <label className="cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/30 border border-cyan-500/30 text-cyan-300 text-[11px] font-semibold transition-all">
+                                  <Upload className="w-3 h-3" />
+                                  <span>+ Subir SQL</span>
+                                  <input type="file" className="hidden" multiple accept=".sql,.txt,.py,.js,.ts,.html,.css,.json" onChange={(e) => handleFileUpload(act.id, e)} />
+                                </label>
+                                <label className="cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/15 hover:bg-amber-500/30 border border-amber-500/30 text-amber-300 text-[11px] font-semibold transition-all">
+                                  <Upload className="w-3 h-3" />
+                                  <span>+ Subir Foto</span>
+                                  <input type="file" className="hidden" multiple accept="image/*" onChange={(e) => handleFileUpload(act.id, e)} />
+                                </label>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
