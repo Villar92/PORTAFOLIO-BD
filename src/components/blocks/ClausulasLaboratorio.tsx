@@ -20,6 +20,7 @@ import {
   Flame,
   Layers,
   ChevronRight,
+  ChevronLeft,
   Sparkles,
   RotateCcw,
   FileText,
@@ -37,15 +38,17 @@ import {
   Zap
 } from "lucide-react";
 
-interface ClausulaItem {
-  id: string;
-  nombre: string;
-  categoria: string;
-  resumen: string;
-  sintaxis: string;
-  ejemplo: string;
-  tip: string;
-}
+import { 
+  CLAUSULAS_DATABASE, 
+  CATEGORIAS_SQL, 
+  type ClausulaItem 
+} from "@/data/clausulasData";
+
+import { 
+  type ApuntePersonal, 
+  generarLote5Apuntes, 
+  verificarCicloAutoGeneracion 
+} from "@/data/apuntesData";
 
 interface TestQuestion {
   id: number;
@@ -60,15 +63,6 @@ interface TestQuestion {
   categoria: string;
 }
 
-interface ApuntePersonal {
-  id: string;
-  titulo: string;
-  clausula: string;
-  nota: string;
-  codigo: string;
-  fecha: string;
-}
-
 interface SemanaDef {
   id: string;
   numero: number;
@@ -77,160 +71,6 @@ interface SemanaDef {
   nombre: string;
   temaPrincipal: string;
 }
-
-// 1. BANCO DE CLÁUSULAS AGRUPADAS POR CATEGORÍAS TÉCNICAS CLARAS
-const CATEGORIAS_SQL = [
-  { id: "Todas", label: "Todas", icon: Layers, desc: "Catálogo integral de cláusulas" },
-  { id: "DQL & Agrupación", label: "DQL & Agrupación", icon: Table, desc: "Consultas, agregación y filtrado condicional" },
-  { id: "Cruce de Tablas (JOINs)", label: "Cruce (JOINs)", icon: Database, desc: "Relaciones internas, externas y cruzadas" },
-  { id: "Subconsultas & CTEs", label: "CTEs & Ventana", icon: Code, desc: "Expresiones tabulares temporales y particionado" },
-  { id: "Manipulación DML", label: "Manipulación DML", icon: Zap, desc: "Inserción, actualización, eliminación y Upsert" },
-  { id: "Programabilidad T-SQL", label: "Programabilidad", icon: Cpu, desc: "Triggers, Procedimientos Almacenados y Funciones" },
-  { id: "Transacciones ACID", label: "Transacciones ACID", icon: ShieldCheck, desc: "Atomicidad, concurrencia y control de fallos" },
-  { id: "Optimización & Índices", label: "Optimización", icon: Sparkles, desc: "Árboles B, índices cubrientes y planes" }
-];
-
-const CLAUSULAS_DATABASE: ClausulaItem[] = [
-  // 1. DQL & Agrupación
-  {
-    id: "group-by",
-    nombre: "GROUP BY",
-    categoria: "DQL & Agrupación",
-    resumen: "Agrupa filas con valores idénticos en columnas para aplicar funciones de agregado (SUM, COUNT, AVG).",
-    sintaxis: "SELECT columna, COUNT(*)\nFROM tabla\nGROUP BY columna;",
-    ejemplo: `SELECT departamento_id, COUNT(*) AS TotalEmpleados, AVG(salario) AS SalarioPromedio\nFROM Empleados\nGROUP BY departamento_id;`,
-    tip: "Toda columna presente en el SELECT que no sea una función de agregación debe figurar en el GROUP BY."
-  },
-  {
-    id: "having",
-    nombre: "HAVING",
-    categoria: "DQL & Agrupación",
-    resumen: "Filtra grupos calculados por GROUP BY una vez aplicadas las funciones agregadas.",
-    sintaxis: "SELECT columna, COUNT(*)\nFROM tabla\nGROUP BY columna\nHAVING COUNT(*) > valor;",
-    ejemplo: `SELECT departamento_id, COUNT(*) AS Cantidad\nFROM Empleados\nGROUP BY departamento_id\nHAVING COUNT(*) > 5;`,
-    tip: "WHERE filtra filas antes de la agrupación; HAVING filtra los grupos resultantes del agrupamiento."
-  },
-  {
-    id: "case-when",
-    nombre: "CASE WHEN",
-    categoria: "DQL & Agrupación",
-    resumen: "Estructura lógica condicional (IF-THEN-ELSE) evaluada directamente dentro de sentencias SELECT o UPDATE.",
-    sintaxis: "CASE\n    WHEN condicion THEN resultado\n    ELSE por_defecto\nEND",
-    ejemplo: `SELECT orden_id, total,\n    CASE \n        WHEN total > 5000 THEN 'CLIENTE PLATINUM'\n        WHEN total > 1500 THEN 'CLIENTE GOLD'\n        ELSE 'ESTÁNDAR'\n    END AS CategoriaCliente\nFROM Pedidos;`,
-    tip: "Todo bloque condicional CASE debe cerrarse obligatoriamente con la palabra clave END."
-  },
-  {
-    id: "order-by",
-    nombre: "ORDER BY",
-    categoria: "DQL & Agrupación",
-    resumen: "Ordena el conjunto de resultados de manera ascendente (ASC) o descendente (DESC).",
-    sintaxis: "SELECT columnas FROM tabla ORDER BY columna [ASC | DESC];",
-    ejemplo: `SELECT empleado_id, nombre, fecha_ingreso\nFROM Empleados\nORDER BY fecha_ingreso DESC, nombre ASC;`,
-    tip: "Es la última cláusula procesada lógicamente en el flujo de ejecución de una consulta SQL."
-  },
-
-  // 2. Cruce de Tablas (JOINs)
-  {
-    id: "inner-join",
-    nombre: "INNER JOIN",
-    categoria: "Cruce de Tablas (JOINs)",
-    resumen: "Retorna únicamente los registros que tienen coincidencia exacta en las dos tablas relacionadas.",
-    sintaxis: "SELECT *\nFROM TablaA\nINNER JOIN TablaB ON TablaA.id = TablaB.a_id;",
-    ejemplo: `SELECT o.orden_id, c.nombre_cliente, o.fecha\nFROM Ordenes o\nINNER JOIN Clientes c ON o.cliente_id = c.cliente_id;`,
-    tip: "Excluye registros huérfanos o sin coincidencia en cualquiera de los dos extremos."
-  },
-  {
-    id: "left-join",
-    nombre: "LEFT JOIN",
-    categoria: "Cruce de Tablas (JOINs)",
-    resumen: "Devuelve todos los registros de la tabla izquierda y las coincidencias de la derecha (o NULL si no existen).",
-    sintaxis: "SELECT *\nFROM TablaA\nLEFT JOIN TablaB ON TablaA.id = TablaB.a_id;",
-    ejemplo: `SELECT c.cliente_id, c.nombre_cliente, o.orden_id\nFROM Clientes c\nLEFT JOIN Ordenes o ON c.cliente_id = o.cliente_id\nWHERE o.orden_id IS NULL; -- Halla clientes sin compras`,
-    tip: "Ideal para detectar registros que nunca han generado movimientos o registros dependientes."
-  },
-  {
-    id: "full-join",
-    nombre: "FULL OUTER JOIN",
-    categoria: "Cruce de Tablas (JOINs)",
-    resumen: "Retorna todos los registros cuando hay coincidencia en cualquiera de las dos tablas.",
-    sintaxis: "SELECT *\nFROM TablaA\nFULL OUTER JOIN TablaB ON TablaA.id = TablaB.a_id;",
-    ejemplo: `SELECT p.producto_id, p.nombre, v.venta_id\nFROM Productos p\nFULL OUTER JOIN VentasDetalle v ON p.producto_id = v.producto_id;`,
-    tip: "Combina los efectos de LEFT JOIN y RIGHT JOIN, rellenando con NULL en ambos sentidos."
-  },
-
-  // 3. Subconsultas & CTEs
-  {
-    id: "with-cte",
-    nombre: "WITH (CTE)",
-    categoria: "Subconsultas & CTEs",
-    resumen: "Define una expresión de tabla común (vista temporal en memoria) para simplificar consultas recursivas y complejas.",
-    sintaxis: "WITH NombreCTE AS (\n    SELECT ...\n)\nSELECT * FROM NombreCTE;",
-    ejemplo: `WITH VentasPorCliente AS (\n    SELECT cliente_id, SUM(total) AS TotalGastado\n    FROM Ordenes\n    GROUP BY cliente_id\n)\nSELECT v.*, c.nombre_cliente\nFROM VentasPorCliente v\nINNER JOIN Clientes c ON v.cliente_id = c.cliente_id\nWHERE v.TotalGastado > 5000;`,
-    tip: "Mejora la legibilidad frente a subconsultas anidadas y permite algoritmos jerárquicos recursivos."
-  },
-  {
-    id: "row-number",
-    nombre: "ROW_NUMBER() OVER",
-    categoria: "Subconsultas & CTEs",
-    resumen: "Función de ventana analítica que numera secuencialmente filas dentro de una partición determinada.",
-    sintaxis: "SELECT ROW_NUMBER() OVER(PARTITION BY columna_grupo ORDER BY columna_orden DESC) AS Pos\nFROM tabla;",
-    ejemplo: `WITH RankingPrecios AS (\n    SELECT producto_id, categoria_id, precio,\n           ROW_NUMBER() OVER(PARTITION BY categoria_id ORDER BY precio DESC) AS Ranking\n    FROM Productos\n)\nSELECT * FROM RankingPrecios WHERE Ranking = 1; -- Producto más caro de cada categoría`,
-    tip: "PARTITION BY reinicia el contador de numeración en 1 por cada nuevo grupo identificado."
-  },
-
-  // 4. Manipulación DML
-  {
-    id: "merge",
-    nombre: "MERGE INTO (Upsert)",
-    categoria: "Manipulación DML",
-    resumen: "Sentencia atómica que combina UPDATE, INSERT y DELETE según condición de coincidencia en un solo paso.",
-    sintaxis: "MERGE INTO Destino AS d\nUSING Origen AS o ON d.id = o.id\nWHEN MATCHED THEN UPDATE ...\nWHEN NOT MATCHED THEN INSERT ...;",
-    ejemplo: `MERGE INTO Inventario AS dest\nUSING LoteLlegada AS orig ON dest.codigo = orig.codigo\nWHEN MATCHED THEN\n    UPDATE SET dest.stock = dest.stock + orig.stock\nWHEN NOT MATCHED THEN\n    INSERT (codigo, stock) VALUES (orig.codigo, orig.stock);`,
-    tip: "Siempre debe finalizar con punto y coma (;) obligatorio según la especificación ANSI SQL."
-  },
-
-  // 5. Programabilidad T-SQL
-  {
-    id: "stored-procedure",
-    nombre: "CREATE PROCEDURE",
-    categoria: "Programabilidad T-SQL",
-    resumen: "Bloque de código T-SQL precompilado que acepta parámetros de entrada y salida, ejecutado en el motor.",
-    sintaxis: "CREATE PROCEDURE sp_Nombre\n    @Parametro INT\nAS\nBEGIN\n    SET NOCOUNT ON;\n    -- Lógica\nEND;",
-    ejemplo: `CREATE PROCEDURE sp_RegistrarTransferencia\n    @origen_id INT, @destino_id INT, @monto DECIMAL(12,2)\nAS\nBEGIN\n    SET NOCOUNT ON;\n    UPDATE Cuentas SET saldo = saldo - @monto WHERE id = @origen_id;\n    UPDATE Cuentas SET saldo = saldo + @monto WHERE id = @destino_id;\nEND;`,
-    tip: "Optimiza planes de ejecución en memoria caché y protege la base de datos contra inyección SQL."
-  },
-  {
-    id: "trigger",
-    nombre: "CREATE TRIGGER",
-    categoria: "Programabilidad T-SQL",
-    resumen: "Disparador automático ejecutado como respuesta inmediata a eventos DML (INSERT, UPDATE o DELETE).",
-    sintaxis: "CREATE TRIGGER tr_Nombre\nON Tabla\nAFTER INSERT, UPDATE\nAS\nBEGIN\n    -- Usa tablas virtuales inserted y deleted\nEND;",
-    ejemplo: `CREATE TRIGGER tr_AuditoriaPrecios\nON Productos\nAFTER UPDATE\nAS\nBEGIN\n    IF UPDATE(precio)\n    BEGIN\n        INSERT INTO HistorialPrecios (producto_id, precio_anterior, precio_nuevo, fecha)\n        SELECT d.producto_id, d.precio, i.precio, GETDATE()\n        FROM deleted d\n        INNER JOIN inserted i ON d.producto_id = i.producto_id;\n    END\nEND;`,
-    tip: "Las tablas temporales del sistema 'inserted' y 'deleted' contienen el estado nuevo y anterior de las filas."
-  },
-
-  // 6. Transacciones ACID
-  {
-    id: "transaction",
-    nombre: "BEGIN TRANSACTION / COMMIT",
-    categoria: "Transacciones ACID",
-    resumen: "Garantiza la propiedad de Atomicidad: todas las operaciones se confirman o se cancelan por completo.",
-    sintaxis: "BEGIN TRY\n    BEGIN TRANSACTION;\n        -- DML\n    COMMIT TRANSACTION;\nEND TRY\nBEGIN CATCH\n    ROLLBACK TRANSACTION;\nEND CATCH;",
-    ejemplo: `BEGIN TRY\n    BEGIN TRANSACTION;\n        UPDATE Cuentas SET saldo = saldo - 300 WHERE id = 10;\n        UPDATE Cuentas SET saldo = saldo + 300 WHERE id = 20;\n    COMMIT TRANSACTION;\nEND TRY\nBEGIN CATCH\n    IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;\nEND CATCH;`,
-    tip: "ROLLBACK revierte todos los cambios a su estado inicial si ocurre un fallo en el bloque TRY."
-  },
-
-  // 7. Optimización & Índices
-  {
-    id: "index",
-    nombre: "CREATE NONCLUSTERED INDEX",
-    categoria: "Optimización & Índices",
-    resumen: "Estructura de árbol B secundaria que acelera lecturas sin modificar el orden físico de la tabla.",
-    sintaxis: "CREATE NONCLUSTERED INDEX IX_Tabla_Columna\nON Tabla(columna ASC)\nINCLUDE (columna_adicional);",
-    ejemplo: `CREATE NONCLUSTERED INDEX IX_Clientes_DNI\nON Clientes(dni ASC)\nINCLUDE (nombre, apellido, correo);`,
-    tip: "La cláusula INCLUDE guarda columnas complementarias en las hojas evitando accesos costosos Key Lookup."
-  }
-];
 
 // 2. BANCO DE RETOS DEL TEST INTERACTIVO (ROBOT TRAINER)
 const BANCO_TEST: TestQuestion[] = [
@@ -399,7 +239,7 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
   // -------------------------------------------------------------
   // ESTADO DICCIONARIO SQL POR CATEGORÍAS
   // -------------------------------------------------------------
-  const [selectedClauseId, setSelectedClauseId] = useState<string>("group-by");
+  const [selectedClauseId, setSelectedClauseId] = useState<string>("select");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todas");
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -415,7 +255,7 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
   const [downloadingName, setDownloadingName] = useState<string | null>(null);
 
   // -------------------------------------------------------------
-  // ESTADO APUNTES PERSONALES
+  // ESTADO APUNTES PERSONALES & AUTO-GENERACIÓN CADA 7 DÍAS
   // -------------------------------------------------------------
   const [apuntes, setApuntes] = useState<ApuntePersonal[]>([]);
   const [nuevoTitulo, setNuevoTitulo] = useState("");
@@ -423,6 +263,10 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
   const [nuevaNota, setNuevaNota] = useState("");
   const [nuevoCodigo, setNuevoCodigo] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
+  const [diasParaProximoCiclo, setDiasParaProximoCiclo] = useState<number>(7);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [filtroTipoApunte, setFiltroTipoApunte] = useState<"todos" | "auto" | "manual">("todos");
+  const [busquedaApunte, setBusquedaApunte] = useState("");
 
   // Cargar archivos para el apartado de PDFs
   const loadFiles = async () => {
@@ -444,36 +288,23 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
     loadFiles();
   }, []);
 
-  // Cargar apuntes al montar
+  // Cargar y verificar ciclo de auto-generación de 5 apuntes cada 7 días
   useEffect(() => {
     try {
       const saved = localStorage.getItem("upla_apuntes_db2");
+      let baseNotes: ApuntePersonal[] = [];
       if (saved) {
-        setApuntes(JSON.parse(saved));
-      } else {
-        const defaultNotes: ApuntePersonal[] = [
-          {
-            id: "1",
-            titulo: "Índices No Agrupados con INCLUDE",
-            clausula: "CREATE NONCLUSTERED INDEX",
-            nota: "Usar columnas INCLUDE en índices no agrupados evita lecturas lookup en la tabla física y acelera búsquedas en cláusulas WHERE.",
-            codigo: `CREATE NONCLUSTERED INDEX IX_Clientes_DNI\nON Clientes(dni ASC)\nINCLUDE (nombre, apellido, telefono);`,
-            fecha: "16 Oct 2026"
-          },
-          {
-            id: "2",
-            titulo: "Transacciones ACID Seguras con XACT_ABORT",
-            clausula: "SET XACT_ABORT ON",
-            nota: "SET XACT_ABORT ON cancela y revierte la transacción automáticamente ante cualquier error en tiempo de ejecución sin dejar bloqueos colgando.",
-            codigo: `SET XACT_ABORT ON;\nBEGIN TRANSACTION;\n    -- Operaciones DML críticas\nCOMMIT TRANSACTION;`,
-            fecha: "18 Oct 2026"
-          }
-        ];
-        setApuntes(defaultNotes);
-        localStorage.setItem("upla_apuntes_db2", JSON.stringify(defaultNotes));
+        baseNotes = JSON.parse(saved);
+      }
+      const resultado = verificarCicloAutoGeneracion(baseNotes);
+      setApuntes(resultado.apuntesActualizados);
+      setDiasParaProximoCiclo(resultado.diasRestantes);
+      if (resultado.seGeneraron) {
+        setToastMessage(`🤖 Se han auto-generado ${resultado.cantidadNuevos} apuntes de clase para tu portafolio esta semana.`);
+        setTimeout(() => setToastMessage(null), 6000);
       }
     } catch (e) {
-      console.error(e);
+      console.error("Error al inicializar apuntes:", e);
     }
   }, []);
 
@@ -569,9 +400,14 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
   // Filtrado de cláusulas
   const filteredClausulas = CLAUSULAS_DATABASE.filter(item => {
     const matchCategory = selectedCategory === "Todas" || item.categoria === selectedCategory;
-    const matchQuery = item.nombre.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                       item.resumen.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                       item.categoria.toLowerCase().includes(searchQuery.toLowerCase());
+    const q = searchQuery.toLowerCase().trim();
+    const matchQuery = !q || 
+                       item.nombre.toLowerCase().includes(q) || 
+                       item.resumen.toLowerCase().includes(q) ||
+                       item.categoria.toLowerCase().includes(q) ||
+                       item.bloque.toLowerCase().includes(q) ||
+                       item.numero.toString() === q.replace("#", "") ||
+                       item.numero.toString().includes(q.replace("#", ""));
     return matchCategory && matchQuery;
   });
 
@@ -612,6 +448,30 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
     setApuntes(updated);
     localStorage.setItem("upla_apuntes_db2", JSON.stringify(updated));
   };
+
+  const handleForzarGeneracion5 = () => {
+    const nuevos = generarLote5Apuntes(apuntes);
+    const updated = [...nuevos, ...apuntes];
+    setApuntes(updated);
+    localStorage.setItem("upla_apuntes_db2", JSON.stringify(updated));
+    localStorage.setItem("upla_apuntes_last_gen", Date.now().toString());
+    setDiasParaProximoCiclo(7);
+    setToastMessage("✨ ¡Se han auto-generado 5 nuevos apuntes de clase con éxito!");
+    setTimeout(() => setToastMessage(null), 5000);
+  };
+
+  const filteredApuntes = apuntes.filter(a => {
+    const q = busquedaApunte.toLowerCase().trim();
+    const matchQuery = !q || 
+                       a.titulo.toLowerCase().includes(q) || 
+                       a.clausula.toLowerCase().includes(q) || 
+                       a.nota.toLowerCase().includes(q) ||
+                       (a.codigo && a.codigo.toLowerCase().includes(q));
+    
+    if (filtroTipoApunte === "auto") return matchQuery && a.autoGenerado;
+    if (filtroTipoApunte === "manual") return matchQuery && !a.autoGenerado;
+    return matchQuery;
+  });
 
   // Helper para extraer todos los PDFs de una semana
   const getPdfsForSemana = (actividadId: string) => {
@@ -703,6 +563,9 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
         >
           <BookOpen className="w-4 h-4 text-cyan-300" />
           <span className="truncate">2. Cláusulas SQL</span>
+          <span className="px-1.5 py-0.2 bg-cyan-500/30 text-cyan-200 border border-cyan-500/40 text-[10px] rounded-full font-black">
+            100
+          </span>
         </button>
 
         {/* Apartado 3: PDFs de Cada Semana (NUEVO) */}
@@ -737,6 +600,11 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
         >
           <Terminal className="w-4 h-4 text-cyan-300" />
           <span className="truncate">4. Mis Apuntes</span>
+          {apuntes.length > 0 && (
+            <span className="px-1.5 py-0.2 bg-cyan-500/30 text-cyan-200 border border-cyan-500/40 text-[10px] rounded-full font-black font-mono">
+              {apuntes.length}
+            </span>
+          )}
         </button>
       </div>
 
@@ -1009,7 +877,29 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
       {activeSubTab === "clausulas" && (
         <div className="space-y-4 animate-in fade-in duration-300">
           
-          {/* Píldoras de Categorías en fila */}
+          {/* Encabezado informativo del catálogo */}
+          <div className="bg-[#0f172a]/80 border border-cyan-500/20 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-lg">
+            <div>
+              <div className="flex flex-wrap items-center gap-2 mb-1">
+                <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-[11px] font-mono font-bold">
+                  Catálogo Técnico Oficial
+                </span>
+                <span className="text-xs text-slate-400">
+                  100 Cláusulas en 6 Bloques Progresivos
+                </span>
+              </div>
+              <h3 className="text-base sm:text-xl font-black text-white">
+                Diccionario Integral de Cláusulas SQL Server / T-SQL
+              </h3>
+            </div>
+            <div className="flex items-center gap-2 text-xs">
+              <span className="bg-[#131d35] px-3 py-1.5 rounded-xl border border-white/5 font-mono text-slate-300">
+                Mostrando <strong className="text-cyan-400 font-bold">{filteredClausulas.length}</strong> de 100
+              </span>
+            </div>
+          </div>
+
+          {/* Píldoras de Categorías en fila con scroll horizontal */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-2 text-xs scrollbar-none">
             {CATEGORIAS_SQL.map(cat => {
               const IconComp = cat.icon;
@@ -1029,7 +919,7 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
                   <IconComp className="w-3.5 h-3.5 text-cyan-300" />
                   <span>{cat.label}</span>
                   <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                    selectedCategory === cat.id ? "bg-black/30 text-white" : "bg-white/10 text-slate-400"
+                    selectedCategory === cat.id ? "bg-black/30 text-white font-mono" : "bg-white/10 text-slate-400 font-mono"
                   }`}>
                     {count}
                   </span>
@@ -1050,36 +940,47 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Buscar cláusula o palabra clave..."
-                  className="w-full pl-8 pr-3 py-2 bg-[#0f172a] border border-cyan-500/30 rounded-xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+                  placeholder="Buscar por nombre, #número o función..."
+                  className="w-full pl-8 pr-8 py-2 bg-[#0f172a] border border-cyan-500/30 rounded-xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400"
                 />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
 
-              {/* Lista compacta de botones de cláusula */}
-              <div className="space-y-1.5 max-h-[560px] overflow-y-auto pr-1">
+              {/* Lista compacta de botones de cláusula con scroll */}
+              <div className="space-y-1.5 max-h-[640px] overflow-y-auto pr-1">
                 {filteredClausulas.map((item) => (
                   <button
                     key={item.id}
                     onClick={() => setSelectedClauseId(item.id)}
-                    className={`w-full text-left px-3.5 py-2.5 rounded-xl border transition-all flex items-center justify-between cursor-pointer ${
+                    className={`w-full text-left px-3 py-2 rounded-xl border transition-all flex items-center justify-between cursor-pointer ${
                       selectedClause.id === item.id
                         ? "bg-cyan-950/70 border-cyan-400 text-white shadow-md shadow-cyan-500/20"
                         : "bg-[#0f172a]/60 border-white/5 text-slate-300 hover:bg-[#0f172a] hover:border-cyan-500/30"
                     }`}
                   >
-                    <div>
+                    <div className="min-w-0 pr-2">
                       <p className="font-bold text-xs text-white flex items-center gap-1.5">
-                        <span>{item.nombre}</span>
+                        <span className="text-[10px] text-cyan-400 font-mono font-bold bg-cyan-950 px-1.5 py-0.2 rounded border border-cyan-500/30 shrink-0">
+                          #{item.numero}
+                        </span>
+                        <span className="truncate">{item.nombre}</span>
                       </p>
-                      <span className="text-[10px] text-cyan-400/80">{item.categoria}</span>
+                      <span className="text-[10px] text-cyan-400/70 block truncate mt-0.5">{item.categoria}</span>
                     </div>
-                    <ChevronRight className={`w-3.5 h-3.5 ${selectedClause.id === item.id ? "text-cyan-400" : "text-slate-600"}`} />
+                    <ChevronRight className={`w-3.5 h-3.5 shrink-0 ${selectedClause.id === item.id ? "text-cyan-400" : "text-slate-600"}`} />
                   </button>
                 ))}
 
                 {filteredClausulas.length === 0 && (
                   <div className="text-center py-8 text-xs text-slate-500 bg-[#0f172a]/40 rounded-xl border border-white/5">
-                    No se hallaron cláusulas con ese criterio.
+                    No se hallaron cláusulas con ese criterio de búsqueda.
                   </div>
                 )}
               </div>
@@ -1090,34 +991,77 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
             <div className="md:col-span-7 lg:col-span-8">
               <div className="bg-[#0f172a] border border-cyan-500/30 rounded-2xl p-5 sm:p-6 shadow-xl sticky top-20">
                 
-                <div className="flex items-start justify-between gap-3 pb-3 mb-4 border-b border-white/10">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-3 mb-4 border-b border-white/10">
                   <div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/30 uppercase tracking-wider">
-                      {selectedClause.categoria}
-                    </span>
-                    <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+                    <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
+                        #{selectedClause.numero} de 100
+                      </span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/30 uppercase tracking-wider">
+                        {selectedClause.categoria}
+                      </span>
+                      <span className="text-[10px] text-slate-400 hidden xl:inline">
+                        {selectedClause.bloque}
+                      </span>
+                    </div>
+                    <h2 className="text-xl sm:text-2xl font-black text-white">
                       {selectedClause.nombre}
                     </h2>
                   </div>
 
-                  <button
-                    onClick={() => {
-                      setActiveSubTab("robot");
-                      const matched = BANCO_TEST.find(t => t.clausulaNombre.toLowerCase().includes(selectedClause.nombre.toLowerCase().split(" ")[0])) || BANCO_TEST[0];
-                      const idx = BANCO_TEST.indexOf(matched);
-                      if (idx >= 0) {
-                        setCurrentTestIndex(idx);
-                        setAttemptCount(0);
-                        setEvaluationState("pending");
-                        setUserAnswer("");
-                      }
-                      setRobotSpeech(`Practica la cláusula ${selectedClause.nombre} en este reto.`);
-                    }}
-                    className="px-3.5 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5 cursor-pointer flex-shrink-0"
-                  >
-                    <Bot className="w-3.5 h-3.5" />
-                    <span>Practicar en Test</span>
-                  </button>
+                  <div className="flex items-center gap-2 shrink-0">
+                    {/* Botones Anterior y Siguiente */}
+                    <div className="flex items-center bg-[#070d17] border border-white/10 rounded-xl p-0.5">
+                      <button
+                        onClick={() => {
+                          const currIdx = CLAUSULAS_DATABASE.findIndex(c => c.id === selectedClause.id);
+                          if (currIdx > 0) {
+                            setSelectedClauseId(CLAUSULAS_DATABASE[currIdx - 1].id);
+                          }
+                        }}
+                        disabled={CLAUSULAS_DATABASE.findIndex(c => c.id === selectedClause.id) === 0}
+                        title="Cláusula anterior"
+                        className="p-1.5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 hover:text-white rounded-lg transition-all cursor-pointer"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      <span className="text-[10px] font-mono px-1.5 text-slate-400">
+                        {selectedClause.numero}/100
+                      </span>
+                      <button
+                        onClick={() => {
+                          const currIdx = CLAUSULAS_DATABASE.findIndex(c => c.id === selectedClause.id);
+                          if (currIdx < CLAUSULAS_DATABASE.length - 1) {
+                            setSelectedClauseId(CLAUSULAS_DATABASE[currIdx + 1].id);
+                          }
+                        }}
+                        disabled={CLAUSULAS_DATABASE.findIndex(c => c.id === selectedClause.id) === CLAUSULAS_DATABASE.length - 1}
+                        title="Cláusula siguiente"
+                        className="p-1.5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed text-slate-300 hover:text-white rounded-lg transition-all cursor-pointer"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        setActiveSubTab("robot");
+                        const matched = BANCO_TEST.find(t => t.clausulaNombre.toLowerCase().includes(selectedClause.nombre.toLowerCase().split(" ")[0])) || BANCO_TEST[0];
+                        const idx = BANCO_TEST.indexOf(matched);
+                        if (idx >= 0) {
+                          setCurrentTestIndex(idx);
+                          setAttemptCount(0);
+                          setEvaluationState("pending");
+                          setUserAnswer("");
+                        }
+                        setRobotSpeech(`Practica la cláusula ${selectedClause.nombre} en este reto.`);
+                      }}
+                      className="px-3 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5 cursor-pointer shrink-0"
+                    >
+                      <Bot className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Practicar en Test</span>
+                    </button>
+                  </div>
                 </div>
 
                 {/* Resumen */}
@@ -1169,7 +1113,7 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
 
                 {/* Regla de Oro */}
                 <div className="p-3 bg-cyan-950/40 border border-cyan-500/30 rounded-xl text-xs text-cyan-200 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                  <Sparkles className="w-4 h-4 text-cyan-400 shrink-0" />
                   <span><strong>Regla de Oro:</strong> {selectedClause.tip}</span>
                 </div>
 
@@ -1331,50 +1275,164 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
       {activeSubTab === "apuntes" && (
         <div className="space-y-4 animate-in fade-in duration-300">
           
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
+          {/* Banner de Notificación Toast */}
+          {toastMessage && (
+            <div className="p-3 bg-cyan-950/90 border border-cyan-400 rounded-xl text-xs text-cyan-200 flex items-center justify-between shadow-lg shadow-cyan-500/10 animate-in fade-in duration-200">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-cyan-400 shrink-0" />
+                <span>{toastMessage}</span>
+              </div>
+              <button 
+                onClick={() => setToastMessage(null)} 
+                className="text-slate-400 hover:text-white cursor-pointer"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
+
+          {/* Encabezado y Control del Ciclo de 7 Días */}
+          <div className="bg-[#0f172a]/90 border border-cyan-500/30 rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 shadow-xl">
             <div>
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                <Terminal className="w-4 h-4 text-cyan-400" />
-                Mis Apuntes Personales de Clase
+              <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-[10px] font-mono font-bold flex items-center gap-1">
+                  <Sparkles className="w-3 h-3 text-cyan-400" />
+                  Auto-generación Activa: 5 apuntes cada 7 días
+                </span>
+                <span className="text-[11px] text-slate-400 flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5 text-slate-500" />
+                  Próxima entrega automática: en ~{diasParaProximoCiclo} días
+                </span>
+              </div>
+              <h2 className="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+                <Terminal className="w-5 h-5 text-cyan-400" />
+                Mis Apuntes de Clase (UPLA)
               </h2>
-              <p className="text-xs text-slate-400">
-                Registra códigos, tips y apuntes explicados por el docente durante la sesión
+              <p className="text-xs text-slate-400 mt-0.5">
+                Repositorio inteligente con notas del docente, scripts de laboratorio y tips de rendimiento.
               </p>
             </div>
 
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="px-3.5 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5 cursor-pointer"
-            >
-              <Plus className="w-4 h-4" />
-              <span>+ Nuevo Apunte</span>
-            </button>
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
+              <button
+                onClick={handleForzarGeneracion5}
+                title="Generar 5 apuntes automáticos ahora mismo"
+                className="px-3.5 py-2 bg-[#131d35] hover:bg-[#1a2747] text-cyan-300 hover:text-white border border-cyan-500/30 rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                <span>✨ Auto-generar 5 Ahora</span>
+              </button>
+              <button
+                onClick={() => setShowAddModal(true)}
+                className="px-3.5 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5 cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span>+ Nuevo Apunte Manual</span>
+              </button>
+            </div>
           </div>
 
+          {/* Barra de Filtros y Búsqueda */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <div className="relative flex-1">
+              <Search className="w-3.5 h-3.5 text-cyan-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={busquedaApunte}
+                onChange={(e) => setBusquedaApunte(e.target.value)}
+                placeholder="Buscar en apuntes (título, cláusula, código)..."
+                className="w-full pl-8 pr-8 py-2 bg-[#0f172a] border border-cyan-500/30 rounded-xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+              />
+              {busquedaApunte && (
+                <button
+                  onClick={() => setBusquedaApunte("")}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white cursor-pointer"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            <div className="flex items-center gap-1.5 overflow-x-auto text-xs scrollbar-none">
+              <button
+                onClick={() => setFiltroTipoApunte("todos")}
+                className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                  filtroTipoApunte === "todos"
+                    ? "bg-cyan-500 text-white shadow-md shadow-cyan-500/20"
+                    : "bg-[#0f172a] text-slate-400 hover:text-white border border-white/5"
+                }`}
+              >
+                Todos ({apuntes.length})
+              </button>
+              <button
+                onClick={() => setFiltroTipoApunte("auto")}
+                className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                  filtroTipoApunte === "auto"
+                    ? "bg-cyan-500 text-white shadow-md shadow-cyan-500/20"
+                    : "bg-[#0f172a] text-slate-400 hover:text-white border border-white/5"
+                }`}
+              >
+                🤖 Auto-generados ({apuntes.filter(a => a.autoGenerado).length})
+              </button>
+              <button
+                onClick={() => setFiltroTipoApunte("manual")}
+                className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer ${
+                  filtroTipoApunte === "manual"
+                    ? "bg-cyan-500 text-white shadow-md shadow-cyan-500/20"
+                    : "bg-[#0f172a] text-slate-400 hover:text-white border border-white/5"
+                }`}
+              >
+                ✍️ Manuales ({apuntes.filter(a => !a.autoGenerado).length})
+              </button>
+            </div>
+          </div>
+
+          {/* Grilla de Apuntes */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {apuntes.map((apunte) => (
+            {filteredApuntes.map((apunte) => (
               <div 
                 key={apunte.id}
-                className="bg-[#0f172a] border border-cyan-900/50 hover:border-cyan-400/40 rounded-xl p-4 shadow-lg flex flex-col justify-between"
+                className={`bg-[#0f172a] rounded-xl p-4 shadow-lg flex flex-col justify-between transition-all border ${
+                  apunte.autoGenerado 
+                    ? "border-cyan-500/40 hover:border-cyan-400 shadow-cyan-950/30" 
+                    : "border-white/10 hover:border-cyan-500/30"
+                }`}
               >
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <div>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/30 uppercase">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {apunte.autoGenerado ? (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center gap-1">
+                          <Sparkles className="w-2.5 h-2.5" />
+                          Semana {apunte.semana || 1}
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-white/10">
+                          ✍️ Manual
+                        </span>
+                      )}
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/30 uppercase font-mono">
                         {apunte.clausula}
                       </span>
-                      <h3 className="text-sm font-bold text-white mt-1">
-                        {apunte.titulo}
-                      </h3>
                     </div>
-                    <button
-                      onClick={() => handleDeleteApunte(apunte.id)}
-                      className="p-1 rounded text-red-400 hover:bg-red-500/20 transition-colors cursor-pointer"
-                      title="Eliminar"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
+                    
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[10px] text-slate-400 font-mono">
+                        {apunte.fecha}
+                      </span>
+                      <button
+                        onClick={() => handleDeleteApunte(apunte.id)}
+                        className="p-1 rounded text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer shrink-0"
+                        title="Eliminar apunte"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
+
+                  <h3 className="text-sm font-bold text-white mb-1.5">
+                    {apunte.titulo}
+                  </h3>
 
                   <p className="text-xs text-slate-300 font-light mb-3 leading-relaxed">
                     {apunte.nota}
@@ -1384,7 +1442,7 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
                 {apunte.codigo && (
                   <div className="bg-[#070d17] border border-white/5 rounded-lg overflow-hidden mt-2">
                     <div className="flex items-center justify-between px-2.5 py-1 bg-[#0B1120] text-[10px] text-slate-400 font-mono">
-                      <span>Script SQL</span>
+                      <span>Script T-SQL</span>
                       <button
                         onClick={() => handleCopyCode(apunte.id, apunte.codigo)}
                         className="text-cyan-400 hover:text-cyan-300 flex items-center gap-1 cursor-pointer"
@@ -1402,7 +1460,7 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
                         )}
                       </button>
                     </div>
-                    <pre className="p-2.5 font-mono text-[11px] text-cyan-200 overflow-x-auto">
+                    <pre className="p-2.5 font-mono text-[11px] text-cyan-200 overflow-x-auto leading-relaxed">
                       <code>{apunte.codigo}</code>
                     </pre>
                   </div>
@@ -1411,15 +1469,23 @@ export function ClausulasLaboratorio({ setActiveTab }: { setActiveTab: (tab: str
             ))}
           </div>
 
-          {apuntes.length === 0 && (
+          {filteredApuntes.length === 0 && (
             <div className="text-center py-10 bg-[#0f172a]/50 rounded-2xl border border-white/5">
-              <p className="text-xs text-slate-400">No hay apuntes registrados aún.</p>
-              <button
-                onClick={() => setShowAddModal(true)}
-                className="mt-2 text-cyan-400 text-xs font-bold hover:underline cursor-pointer"
-              >
-                + Registrar mi primer apunte
-              </button>
+              <p className="text-xs text-slate-400">No se hallaron apuntes con el criterio seleccionado.</p>
+              <div className="mt-3 flex items-center justify-center gap-2">
+                <button
+                  onClick={handleForzarGeneracion5}
+                  className="px-3 py-1.5 bg-cyan-950 border border-cyan-500/40 text-cyan-300 text-xs font-bold rounded-xl hover:bg-cyan-900 transition-colors cursor-pointer"
+                >
+                  ✨ Generar lote de 5 apuntes
+                </button>
+                <button
+                  onClick={() => setShowAddModal(true)}
+                  className="px-3 py-1.5 bg-white/5 border border-white/10 text-white text-xs font-bold rounded-xl hover:bg-white/10 transition-colors cursor-pointer"
+                >
+                  + Escribir apunte manual
+                </button>
+              </div>
             </div>
           )}
 
